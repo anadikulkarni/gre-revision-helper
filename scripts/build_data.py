@@ -1,15 +1,29 @@
-"""Turn data/GRE_Prep.xlsx into the JSON decks the Streamlit app reads.
+"""Build the JSON decks the Streamlit app reads.
 
     python scripts/build_data.py            # rebuild data/vocab.json + data/quant.json
     python scripts/build_data.py --check    # rebuild and fail if anything looks off
 
-Vocab  ("New Words" sheet): one row == one word.  Rows are kept in sheet order
-and split into 16 evenly sized groups (order does not matter for vocab).
+Vocab comes from the "New Words" sheet of data/GRE_Prep.xlsx: one row is one
+word, rows keep their sheet order and are split into 16 even groups.
 
-Quant  ("Quant Notes" sheet): a row whose Concept cell is empty is a
-*continuation* of the concept above it, so its explanation / example is merged
-into that concept as an extra block.  Concepts are then arranged into the 16
-hand-curated days in scripts/grouping.py.
+Quant comes from content/quant/*.md, one file per day, written in this shape:
+
+    # Day title
+
+    ## Concept title
+    covers: 12, 13
+
+    Explanation paragraphs.
+
+    ### Example
+    A worked example.
+
+    ### Watch out
+    An optional trap.
+
+`covers:` lists the audit ids from content/quant/_source_concepts.json - the
+frozen list of the 162 concepts in the original spreadsheet - so the rewrite can
+be checked for completeness. Every id must be claimed by exactly one entry.
 """
 
 from __future__ import annotations
@@ -23,15 +37,14 @@ from pathlib import Path
 
 from openpyxl import load_workbook
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-from grouping import QUANT_GROUPS, VOCAB_GROUP_COUNT  # noqa: E402
-
 ROOT = Path(__file__).resolve().parent.parent
 WORKBOOK = ROOT / "data" / "GRE_Prep.xlsx"
+QUANT_CONTENT = ROOT / "content" / "quant"
+SOURCE_CONCEPTS = QUANT_CONTENT / "_source_concepts.json"
 OUT_DIR = ROOT / "data"
 
 VOCAB_SHEET = "New Words"
-QUANT_SHEET = "Quant Notes"
+GROUP_COUNT = 16
 
 
 def cell(value) -> str:
@@ -41,7 +54,6 @@ def cell(value) -> str:
 
 
 def norm(title: str) -> str:
-    """Normalised concept title used to match the sheet against grouping.py."""
     return re.sub(r"\s+", " ", title.strip().lower())
 
 
@@ -51,8 +63,7 @@ def item_id(prefix: str, text: str) -> str:
 
 def chunk_evenly(items: list, n_groups: int) -> list[list]:
     """Split a list into n_groups chunks whose sizes differ by at most one."""
-    total = len(items)
-    base, extra = divmod(total, n_groups)
+    base, extra = divmod(len(items), n_groups)
     out, start = [], 0
     for i in range(n_groups):
         size = base + (1 if i < extra else 0)
@@ -61,119 +72,148 @@ def chunk_evenly(items: list, n_groups: int) -> list[list]:
     return out
 
 
-def read_rows(path: Path, sheet: str, n_cols: int = 4) -> list[list[str]]:
-    workbook = load_workbook(path, data_only=True, read_only=True)
-    if sheet not in workbook.sheetnames:
-        raise SystemExit(f"Sheet {sheet!r} not found in {path.name} ({workbook.sheetnames})")
-    rows = []
-    for raw in workbook[sheet].iter_rows(min_row=2, max_col=n_cols, values_only=True):
-        row = [cell(v) for v in raw] + [""] * n_cols
-        if any(row[:n_cols]):
-            rows.append(row[:n_cols])
-    workbook.close()
-    return rows
-
-
 # --------------------------------------------------------------------------- vocab
 
 
 def build_vocab(warnings: list[str]) -> dict:
-    rows = read_rows(WORKBOOK, VOCAB_SHEET)
+    workbook = load_workbook(WORKBOOK, data_only=True, read_only=True)
+    if VOCAB_SHEET not in workbook.sheetnames:
+        raise SystemExit(f"Sheet {VOCAB_SHEET!r} not found in {WORKBOOK.name}")
+    rows = []
+    for raw in workbook[VOCAB_SHEET].iter_rows(min_row=2, max_col=4, values_only=True):
+        row = [cell(v) for v in raw] + [""] * 4
+        if any(row[:4]):
+            rows.append(row[:4])
+    workbook.close()
 
-    items, seen = [], {}
+    items, seen = [], set()
     for word, definition, synonyms, example in rows:
         if not word:
             continue
-        key = norm(word)
-        if key in seen:
+        if norm(word) in seen:
             warnings.append(f"vocab: duplicate word {word!r} (keeping the first entry)")
             continue
+        seen.add(norm(word))
         blocks = [{"label": "Definition", "text": definition}]
         if synonyms:
             blocks.append({"label": "Synonyms", "text": synonyms})
         if example:
             blocks.append({"label": "Example", "text": example})
-        entry = {"id": item_id("v", word), "label": word, "blocks": blocks}
-        seen[key] = entry
-        items.append(entry)
+        items.append({"id": item_id("v", word), "label": word, "blocks": blocks})
         if not definition:
             warnings.append(f"vocab: {word!r} has no definition")
 
-    groups = []
-    for index, chunk in enumerate(chunk_evenly(items, VOCAB_GROUP_COUNT), start=1):
-        groups.append({"title": f"Vocab {index}", "items": chunk})
+    groups = [
+        {"title": f"Vocab {index}", "items": chunk}
+        for index, chunk in enumerate(chunk_evenly(items, GROUP_COUNT), start=1)
+    ]
     return {"deck": "vocab", "noun": "word", "groups": groups}
 
 
 # --------------------------------------------------------------------------- quant
 
 
-def read_quant_concepts(warnings: list[str]) -> list[dict]:
-    """Merge continuation rows (empty Concept cell) into the concept above."""
-    concepts: list[dict] = []
-    for concept, explanation, question, answer in read_rows(WORKBOOK, QUANT_SHEET):
-        if concept:
-            concepts.append({"label": concept, "parts": []})
-        elif not concepts:
-            warnings.append(f"quant: row with no concept before any concept: {explanation[:60]!r}")
-            continue
-        concepts[-1]["parts"].append(
-            {"explanation": explanation, "question": question, "answer": answer}
-        )
+def parse_day(path: Path, warnings: list[str]) -> dict:
+    """Parse one content/quant/NN-*.md file into a group of entries."""
+    lines = path.read_text(encoding="utf-8").splitlines()
+    if not lines or not lines[0].startswith("# "):
+        raise SystemExit(f"{path.name}: first line must be '# Day title'")
 
-    out = []
-    for concept in concepts:
-        parts = [p for p in concept["parts"] if any(p.values())]
-        explanations = [p["explanation"] for p in parts if p["explanation"]]
-        blocks = []
-        if explanations:
-            # Several explanation rows for one concept: keep them as numbered notes.
-            if len(explanations) == 1:
-                blocks.append({"label": "Explanation", "text": explanations[0]})
+    group = {"title": lines[0][2:].strip(), "items": []}
+    entry: dict | None = None
+    block: dict | None = None
+
+    def close_block() -> None:
+        nonlocal block
+        if entry is not None and block is not None:
+            text = "\n".join(block["lines"]).strip()
+            if text:
+                entry["blocks"].append({"label": block["label"], "text": text})
             else:
-                for i, text in enumerate(explanations, start=1):
-                    blocks.append({"label": f"Explanation {i}", "text": text})
-        else:
-            warnings.append(f"quant: {concept['label'][:60]!r} has no explanation")
-        examples = [p for p in parts if p["question"] or p["answer"]]
-        for i, part in enumerate(examples, start=1):
-            suffix = f" {i}" if len(examples) > 1 else ""
-            if part["question"]:
-                blocks.append({"label": f"Example question{suffix}", "text": part["question"]})
-            if part["answer"]:
-                blocks.append({"label": f"Example answer{suffix}", "text": part["answer"]})
-        out.append({"id": item_id("q", concept["label"]), "label": concept["label"], "blocks": blocks})
-    return out
+                warnings.append(f"{path.name}: {entry['label']!r} has an empty {block['label']!r}")
+        block = None
+
+    def close_entry() -> None:
+        nonlocal entry
+        close_block()
+        if entry is not None:
+            if not entry["covers"] and not entry["new"]:
+                warnings.append(f"{path.name}: {entry['label']!r} has no 'covers:' line")
+            if not entry["blocks"]:
+                warnings.append(f"{path.name}: {entry['label']!r} has no explanation")
+            group["items"].append(entry)
+        entry = None
+
+    for line in lines[1:]:
+        if line.startswith("## "):
+            close_entry()
+            label = line[3:].strip()
+            entry = {
+                "id": item_id("q", label),
+                "label": label,
+                "covers": [],
+                "new": False,
+                "split": False,
+                "blocks": [],
+            }
+            block = {"label": "Explanation", "lines": []}
+        elif line.startswith("### "):
+            close_block()
+            block = {"label": line[4:].strip(), "lines": []}
+        elif entry is not None and not entry["blocks"] and line.lower().startswith("covers:"):
+            # "covers: new" marks a concept added by the rewrite rather than one
+            # carried over from the original sheet.
+            rest = line.split(":", 1)[1]
+            entry["covers"] = [int(n) for n in re.findall(r"\d+", rest)]
+            entry["new"] = "new" in rest.lower()
+            # "(split)" says on purpose that this source concept is taught across
+            # more than one entry, so a second claim on it is not a mistake.
+            entry["split"] = "split" in rest.lower()
+        elif block is not None:
+            block["lines"].append(line)
+        elif line.strip():
+            warnings.append(f"{path.name}: text outside any concept: {line.strip()[:50]!r}")
+    close_entry()
+    return group
 
 
 def build_quant(warnings: list[str]) -> dict:
-    concepts = read_quant_concepts(warnings)
-    by_title = {norm(c["label"]): c for c in concepts}
-
-    groups, used = [], set()
-    for title, wanted in QUANT_GROUPS:
-        items = []
-        for want in wanted:
-            key = norm(want)
-            concept = by_title.get(key)
-            if concept is None:
-                warnings.append(f"quant: grouping lists {want!r} but the sheet has no such concept")
-                continue
-            if key in used:
-                warnings.append(f"quant: {want!r} is listed in more than one group")
-                continue
-            used.add(key)
-            items.append(concept)
-        groups.append({"title": title, "items": items})
-
-    leftovers = [c for c in concepts if norm(c["label"]) not in used]
-    for concept in leftovers:
-        smallest = min(groups, key=lambda g: len(g["items"]))
-        smallest["items"].append(concept)
-        warnings.append(
-            f"quant: {concept['label'][:60]!r} is not in grouping.py; "
-            f"appended to group {groups.index(smallest) + 1!r}"
+    files = sorted(QUANT_CONTENT.glob("[0-9]*.md"))
+    if len(files) != GROUP_COUNT:
+        raise SystemExit(
+            f"expected {GROUP_COUNT} day files in {QUANT_CONTENT.relative_to(ROOT)}, found {len(files)}"
         )
+
+    groups = [parse_day(path, warnings) for path in files]
+
+    # Every concept from the original sheet must still be covered, exactly once.
+    source = json.loads(SOURCE_CONCEPTS.read_text(encoding="utf-8"))["concepts"]
+    claimed: dict[int, list[dict]] = {}
+    for group in groups:
+        for item in group["items"]:
+            for audit_id in item["covers"]:
+                claimed.setdefault(audit_id, []).append(item)
+    for audit_id, items in sorted(claimed.items()):
+        if str(audit_id) not in source:
+            warnings.append(f"quant: {items[0]['label']!r} covers unknown source concept {audit_id}")
+        elif len(items) > 1 and not all(i["split"] for i in items):
+            warnings.append(
+                f"quant: source concept {audit_id} ({source[str(audit_id)][:40]!r}) is claimed by "
+                f"{len(items)} entries without '(split)': {[i['label'] for i in items]}"
+            )
+    for audit_id, title in sorted(source.items(), key=lambda kv: int(kv[0])):
+        if int(audit_id) not in claimed:
+            warnings.append(f"quant: source concept {audit_id} ({title[:60]!r}) is not covered")
+
+    seen: set[str] = set()
+    for group in groups:
+        for item in group["items"]:
+            if item["label"] in seen:
+                warnings.append(f"quant: duplicate concept title {item['label']!r}")
+            seen.add(item["label"])
+            del item["covers"]  # audit-only, not needed by the app
+            del item["new"]
+            del item["split"]
     return {"deck": "quant", "noun": "concept", "groups": groups}
 
 
@@ -192,7 +232,11 @@ def main() -> int:
         path = OUT_DIR / f"{name}.json"
         path.write_text(json.dumps(deck, ensure_ascii=False, indent=1), encoding="utf-8")
         sizes = [len(g["items"]) for g in deck["groups"]]
-        print(f"{name}: {sum(sizes)} items in {len(sizes)} groups {sizes} -> {path.relative_to(ROOT)}")
+        words = sum(len(b["text"].split()) for g in deck["groups"] for i in g["items"] for b in i["blocks"])
+        print(
+            f"{name}: {sum(sizes)} items in {len(sizes)} groups {sizes} "
+            f"({words:,} words) -> {path.relative_to(ROOT)}"
+        )
 
     for warning in warnings:
         print(f"  ! {warning}")

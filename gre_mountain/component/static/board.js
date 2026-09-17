@@ -180,6 +180,57 @@ function paintSelection(scroll = false) {
   }
 }
 
+/** Inline `code`, **bold** and *italic*, built as DOM nodes (never innerHTML). */
+function applyInline(element, text) {
+  const pattern = /(`[^`]+`|\*\*[^*]+\*\*|\*[^*\n]+\*)/g;
+  let last = 0;
+  let match;
+  while ((match = pattern.exec(text)) !== null) {
+    if (match.index > last) {
+      element.appendChild(document.createTextNode(text.slice(last, match.index)));
+    }
+    const token = match[0];
+    let node;
+    if (token.startsWith("`")) {
+      node = document.createElement("code");
+      node.textContent = token.slice(1, -1);
+    } else if (token.startsWith("**")) {
+      node = document.createElement("strong");
+      node.textContent = token.slice(2, -2);
+    } else {
+      node = document.createElement("em");
+      node.textContent = token.slice(1, -1);
+    }
+    element.appendChild(node);
+    last = match.index + token.length;
+  }
+  element.appendChild(document.createTextNode(text.slice(last)));
+}
+
+/** Blank lines separate paragraphs; a run of "- " lines becomes a list. */
+function renderRichText(container, text) {
+  text
+    .split(/\n\s*\n/)
+    .map((chunk) => chunk.trim())
+    .filter(Boolean)
+    .forEach((chunk) => {
+      const lines = chunk.split("\n").map((line) => line.trim());
+      if (lines.every((line) => line.startsWith("- "))) {
+        const list = document.createElement("ul");
+        lines.forEach((line) => {
+          const item = document.createElement("li");
+          applyInline(item, line.slice(2));
+          list.appendChild(item);
+        });
+        container.appendChild(list);
+      } else {
+        const paragraph = document.createElement("p");
+        applyInline(paragraph, lines.join(" "));
+        container.appendChild(paragraph);
+      }
+    });
+}
+
 function renderDetail() {
   const details = state.payload.details || {};
   const id = state.selectedId;
@@ -232,7 +283,7 @@ function renderDetail() {
       label.textContent = block.label;
       const text = document.createElement("div");
       text.className = "block-text";
-      text.textContent = block.text;
+      renderRichText(text, block.text);
       wrap.append(label, text);
       card.appendChild(wrap);
     });
@@ -499,6 +550,7 @@ function applyTheme(theme) {
     root.setProperty("--card", "#161b26");
     root.setProperty("--item", "#12161f");
     root.setProperty("--item-hover", "#1b2231");
+    root.setProperty("--code-bg", "#1e2534");
     root.setProperty("--mint", "#1d3b2c");
     root.setProperty("--mint-line", "#255139");
     root.setProperty("--green-bg", "#2c8f57");
