@@ -31,7 +31,7 @@ to have your phone and your laptop share one climb.
 | `D` / `Space` | Reveal the definition (vocab) or explanation + example (quant) |
 | `G`         | I knew this → green                                          |
 | `R`         | I forgot this → red                                          |
-| `W`         | Clear the mark                                               |
+| `W`         | Clear the mark (back to white)                               |
 
 Click the board once after the page loads so the keyboard reaches it — the blue
 chip under the board says so until you do. On a phone, tap an item and then tap
@@ -45,8 +45,10 @@ its own. `↺ Reset` clears the current day only; the sidebar can reset a whole 
 
 - *Default order* — the spreadsheet order for vocab, the curated topic order for quant.
 - *Shuffle within groups* — each column is scrambled, group membership unchanged.
-- *Shuffle all* — everything on the board is dealt into fresh `Mixed N` columns.
-  The detail panel still names the group an item came from.
+- *Shuffle all* — the items of the groups revealed so far are dealt back across
+  those same columns. On day 2 that is groups 1 and 2 mixed into columns 1 and 2;
+  nothing from a later group ever appears early. The detail panel names the group
+  each item actually came from.
 
 Shuffles are stable (the same order every rerun) until you press `🔀 Reshuffle`.
 

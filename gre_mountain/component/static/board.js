@@ -497,6 +497,8 @@ function applyTheme(theme) {
     root.setProperty("--muted", "#9aa6bd");
     root.setProperty("--line", "#2b3245");
     root.setProperty("--card", "#161b26");
+    root.setProperty("--item", "#12161f");
+    root.setProperty("--item-hover", "#1b2231");
     root.setProperty("--mint", "#1d3b2c");
     root.setProperty("--mint-line", "#255139");
     root.setProperty("--green-bg", "#2c8f57");

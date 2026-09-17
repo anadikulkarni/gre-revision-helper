@@ -55,11 +55,13 @@ with st.expander("How the mountain works", expanded=False):
 - **Marks belong to a day.** `G` and `R` record *how today went*; move to the next day and
   every item starts unmarked again, so the mountain is worth climbing more than once.
 - **Keyboard** (click the board once so it has focus): `←↑↓→` move, `D` reveals the
-  definition/explanation, `G` = I knew this, `R` = I forgot this, `W` clears the mark.
-  Marking auto-advances to the next item; turn that off under the board.
+  definition/explanation, `G` = I knew this (green), `R` = I forgot this (red),
+  `W` clears the mark (back to white). Marking auto-advances to the next item;
+  turn that off under the board.
 - **Order** — *Default order* keeps the spreadsheet/curated order, *Shuffle within groups*
-  scrambles each column, *Shuffle all* deals every item on the board into fresh columns
-  (the detail panel still tells you which group an item came from).
+  scrambles each column, *Shuffle all* deals the groups revealed so far back across those
+  same columns (on day 2: groups 1 and 2 mixed into columns 1 and 2, never anything from
+  a later group). The detail panel still tells you which group an item came from.
 - **Filters** under the board narrow the climb to what you got wrong, or to what you have
   not marked yet — handy once day 12 has 550 words on screen.
         """
