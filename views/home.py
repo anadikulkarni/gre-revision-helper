@@ -86,10 +86,26 @@ with left:
         st.success(f"Progress is saved to **{store.name}** under profile `{store.profile}`.")
     else:
         st.info(
-            f"Progress is saved to **{store.name}**, which only exists on this machine. "
-            "Add a `[storage]` section to `.streamlit/secrets.toml` (see the README) to sync "
-            "your phone and your laptop."
+            f"Progress is saved to **{store.name}**, which only exists on this machine — "
+            "Streamlit Cloud also wipes it on every reboot."
         )
+        with st.expander("Turn on cross-device sync (2 minutes)", expanded=True):
+            st.markdown(
+                "1. Create a token with the **gist** scope at "
+                "[github.com/settings/tokens](https://github.com/settings/tokens).\n"
+                "2. Put it in `.streamlit/secrets.toml` locally, or in "
+                "**Manage app → Settings → Secrets** on Streamlit Cloud:"
+            )
+            st.code(
+                '[storage]\nbackend = "gist"\nprofile = "default"\n\n'
+                '[storage.gist]\ntoken = "ghp_your_token_here"',
+                language="toml",
+            )
+            st.caption(
+                "The app then finds (or creates) a secret gist called "
+                "`gre-mountain-default.json` and every device you open the app on "
+                "reads and writes that one document. Supabase works too — see the README."
+            )
     if progress.pending_count():
         st.error(f"{progress.pending_count()} change(s) could not be saved.")
         if st.button("Retry saving"):
