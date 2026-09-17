@@ -113,9 +113,33 @@ def test_shuffle_modes_differ_but_are_stable():
     assert order(within) != order(decks.build_board.__wrapped__("quant", 6, "within", 1))
 
     # "within" keeps each column's membership, "all" deals across columns.
-    for column, group in zip(within["columns"], load("quant")["groups"]):
+    groups = load("quant")["groups"]
+    for column, group in zip(within["columns"], groups):
         assert {i["id"] for i in column["items"]} == {i["id"] for i in group["items"]}
-    assert [c["title"] for c in mixed["columns"]][0] == "Mixed 1"
+    assert [c["title"] for c in mixed["columns"]] == [g["title"] for g in groups[:6]]
+    assert any(
+        {i["id"] for i in column["items"]} != {i["id"] for i in group["items"]}
+        for column, group in zip(mixed["columns"], groups)
+    ), "shuffle all should move items between columns"
+
+
+@pytest.mark.parametrize("deck", ["vocab", "quant"])
+def test_shuffle_all_only_mixes_the_revealed_groups(deck):
+    """Day 2 deals groups 1-2 across those two columns; nothing from day 3+ leaks in."""
+    from gre_mountain import decks
+
+    groups = load(deck)["groups"]
+    revealed = {i["id"] for g in groups[:2] for i in g["items"]}
+    later = {i["id"] for g in groups[2:] for i in g["items"]}
+
+    board = decks.build_board.__wrapped__(deck, 2, "all")
+    shown = [i["id"] for column in board["columns"] for i in column["items"]]
+    assert sorted(shown) == sorted(revealed)
+    assert not (set(shown) & later)
+    assert [len(c["items"]) for c in board["columns"]] == [len(g["items"]) for g in groups[:2]]
+    assert [c["title"] for c in board["columns"]] == [g["title"] for g in groups[:2]]
+    # The detail panel still names each item's home group.
+    assert all(d["group"].startswith("from ") for d in board["details"].values())
 
 
 # --------------------------------------------------------------------------- storage

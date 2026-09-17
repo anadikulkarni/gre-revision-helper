@@ -78,19 +78,25 @@ def build_board(deck: str, day: int, shuffle: str, reshuffle: int = 0) -> dict[s
             }
 
     if shuffle == "all":
+        # Deal the items of the revealed groups (1..day, never any later ones)
+        # back across those same columns, keeping each column's size and title.
         pool = [item for group in groups for item in group["items"]]
         rng.shuffle(pool)
         columns, start = [], 0
-        for index, group in enumerate(groups, start=1):
+        for group in groups:
             size = len(group["items"])
             chunk = pool[start : start + size]
             start += size
             columns.append(
                 {
-                    "title": f"Mixed {index}",
+                    "title": group["title"],
                     "items": [{"id": i["id"], "label": i["label"]} for i in chunk],
                 }
             )
+        # An item can now sit in a different column than it belongs to, so the
+        # detail panel says where it actually came from.
+        for detail in details.values():
+            detail["group"] = f"from {detail['group']}"
         return {"columns": columns, "details": details}
 
     columns = []

@@ -5,6 +5,8 @@
   --line: #e4e8f0;
   --card: #f7f9fc;
   --accent: #1f6feb;
+  --item: #ffffff;
+  --item-hover: #f2f6fd;
   --mint: #d8f7e4;
   --mint-line: #bfeed2;
   --green: #2fa360;
@@ -139,15 +141,21 @@ body {
   display: flex;
   align-items: center;
   padding: 5px 10px;
-  border: 1px solid transparent;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.55);
-  background: var(--mint);
+  /* Unmarked items are white; the -1px margin collapses adjacent borders so a
+     column still reads as one block. */
+  border: 1px solid var(--line);
+  margin-bottom: -1px;
+  background: var(--item);
   color: var(--fg);
   cursor: pointer;
   line-height: 1.25;
   font-size: 13.5px;
   overflow: hidden;
   user-select: none;
+}
+
+.item:hover {
+  background: var(--item-hover);
 }
 
 .item span {
@@ -165,28 +173,29 @@ body {
 .items .item:last-child {
   border-bottom-left-radius: var(--radius);
   border-bottom-right-radius: var(--radius);
-  border-bottom-color: transparent;
+  margin-bottom: 0;
 }
 
-.item.green {
+.item.green,
+.item.green:hover {
   background: var(--green-bg);
+  border-color: var(--green-bg);
   color: #fff;
 }
 
-.item.red {
+.item.red,
+.item.red:hover {
   background: var(--red-bg);
+  border-color: var(--red-bg);
   color: #fff;
 }
 
 .item.selected {
+  position: relative;
+  z-index: 1;
   border-color: var(--accent);
   border-radius: var(--radius);
   box-shadow: 0 0 0 1px var(--accent);
-}
-
-.item.hit {
-  outline: 2px dashed var(--accent);
-  outline-offset: -3px;
 }
 
 .empty-col {
