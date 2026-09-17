@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Mountain board</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="app" tabindex="0">
+      <div class="layout">
+        <div id="board" class="board" role="grid" aria-label="Revision mountain"></div>
+        <aside id="detail" class="detail" aria-live="polite"></aside>
+      </div>
+      <div class="controls">
+        <div class="legend">
+          <div class="keys">
+            <div class="keyrow">
+              <span class="key">&#8592;</span><span class="key">&#8593;</span
+              ><span class="key">&#8595;</span><span class="key">&#8594;</span>
+              <span class="key key-d">D</span>
+              <span class="key key-g">G</span>
+              <span class="key key-r">R</span>
+              <span class="key key-w">W</span>
+            </div>
+            <div class="keylabels">
+              <span class="klabel wide">Navigation</span>
+              <span class="klabel">Definition</span>
+              <span class="klabel">I knew this</span>
+              <span class="klabel">I forgot this</span>
+              <span class="klabel">Reset</span>
+            </div>
+          </div>
+        </div>
+        <div class="toolbar">
+          <input id="search" class="search" type="search" placeholder="Search&hellip;" autocomplete="off" />
+          <select id="filter" class="select" aria-label="Filter">
+            <option value="all">Show all</option>
+            <option value="unmarked">Not marked yet</option>
+            <option value="green">Green only</option>
+            <option value="red">Red only</option>
+            <option value="red_unmarked">Red + not marked</option>
+          </select>
+          <label class="check"><input type="checkbox" id="always-def" /> Always show definition</label>
+          <label class="check"><input type="checkbox" id="auto-advance" /> Auto-advance</label>
+          <div id="focus-hint" class="focus-hint">click the board to turn on keyboard shortcuts</div>
+          <div class="spacer"></div>
+          <div id="tally" class="tally"></div>
+        </div>
+      </div>
+    </div>
+    <script src="streamlit.js"></script>
+    <script src="board.js"></script>
+  </body>
+</html>

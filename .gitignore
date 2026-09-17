@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# progress written by the local storage backend
+.gre_progress/
+
+# never commit tokens
+.streamlit/secrets.toml

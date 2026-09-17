@@ -1,0 +1,1741 @@
+{
+ "deck": "quant",
+ "noun": "concept",
+ "groups": [
+  {
+   "title": "Strategy & Number Basics",
+   "items": [
+    {
+     "id": "qe8e467f9d0",
+     "label": "How much is 540 sq feet in sq meters? (3.28 ft to a meter)",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Looking at squared value so square the conversion factor. 540/(3.28^2)"
+      }
+     ]
+    },
+    {
+     "id": "q5a01fb79f0",
+     "label": "Always keep in mind units",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Many questions will trick by giving one thing in kmph and then drawing equivalence to a m/s, for example. They are not the same."
+      }
+     ]
+    },
+    {
+     "id": "q38484b62b9",
+     "label": "Equal/Not Equal strategy for comparison",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "In comparison questions, find a case where they're equal, a case where they're not equal, if you find both, answer is D aka cannot be determined which is greater"
+      }
+     ]
+    },
+    {
+     "id": "q16093f4d2a",
+     "label": "\"No Math Needed\" strategy",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Use logic, estimation, or test numbers instead of performing complex calculations."
+      }
+     ]
+    },
+    {
+     "id": "q59bcd2d795",
+     "label": "Pattern Recognition Strategy",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Find repeating patterns that repeat every 3/4 terms, so finding 50th/200th term becomes simple as a multiple of the number of sequences."
+      }
+     ]
+    },
+    {
+     "id": "qca9ef56726",
+     "label": "Unit digit?",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Last digit of a number (far right)"
+      }
+     ]
+    },
+    {
+     "id": "qb809e12872",
+     "label": "Note: floor of negative numbers",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Floor must always be lower than the number, so the floor of a negative number has a higher absolute value than the absolute value of the number. E.g. floor(-16.7) is -17."
+      }
+     ]
+    },
+    {
+     "id": "qf5a42b3610",
+     "label": "Quotient and remainder",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Quotient (q) is the whole number part, and remainder (r) is whats left. For any number, a = bq + r, where 0 <= r < b."
+      }
+     ]
+    },
+    {
+     "id": "q52fd09dd45",
+     "label": "Quotient and remainder for negative numbers",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "For negative numbers, quotient is actually smaller than number, so abs(quotient) for a negative number is 1 + abs(quotient) of its positive equivalent. E.g. -15/9, quotient is -2 not -1. This is because the remainder must be 0 or positive, so the quotient must necessarily be smaller than the number. The remainder in this example is 3."
+      }
+     ]
+    },
+    {
+     "id": "qf849854aa6",
+     "label": "Remainder of sums is sum of remainders",
+     "blocks": []
+    }
+   ]
+  },
+  {
+   "title": "Unit Digits & Divisibility Rules",
+   "items": [
+    {
+     "id": "q65a28fc365",
+     "label": "Unit digits from exponents",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Unit digits in exponents have recurring patterns, memorize the pattern and then figure out how many times the pattern repeated to given number to find the unit digit of given number"
+      }
+     ]
+    },
+    {
+     "id": "q3772fa127e",
+     "label": "unitdigit(a^b) = unitdigit((unitdigit(a))^b)",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "In other words, the unit digit of a large exponent is the same as the unit digit of the exponents base with the same exponent."
+      }
+     ]
+    },
+    {
+     "id": "q5958516de0",
+     "label": "Unit digit of exponent sums",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Unit digit of a sum is just the sum of unit digits of individual terms"
+      }
+     ]
+    },
+    {
+     "id": "qf2fcddbd88",
+     "label": "Unit digit of 3 + 3^2 + 3^3 + ... + 3^50?",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Find repeating pattern in unit digit sums. For this its 3, 2, 9, 0 (then repeats). 3^(multiples of 4) fall on 0 and so 3^48 falls on 0. Thus 3^50 falls on 2, the UD for the whole sequence is 2."
+      }
+     ]
+    },
+    {
+     "id": "q6dd36c58a2",
+     "label": "Find remainder of large exponent a^b divided by small number n",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Find pattern of a^1/n, a^2/n, a^3/n etc. There will be a recurring pattern so can use to calculate b. Note that if we get a value larger than the divisor b, we divide that value by b and get the remainder of that to get the real remainder. E.g. if we dividing by 6 and get 7 in the pattern, the answer isn't 7, as it's larger than 6, it's 1."
+      }
+     ]
+    },
+    {
+     "id": "q2d3c6a346d",
+     "label": "Divisibility rule of 3",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Add up each digit and does the sum divide by 3? If yes, number is a multiple of 3."
+      }
+     ]
+    },
+    {
+     "id": "q71effdb327",
+     "label": "Divisibility rule of 4",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Take number formed by last 2 digits (right-most) and does that number divide by 4? (note: ..00 always divides by 4)"
+      }
+     ]
+    },
+    {
+     "id": "q321ac063bb",
+     "label": "Divisibility rule of 6",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Combo of 2 and 3 rules, if sum of digits is divisible by 3 and even."
+      }
+     ]
+    },
+    {
+     "id": "qa7bc64cb5a",
+     "label": "Divisibility rule of 8",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Take number formed by last 3 digits (right-most) and does that number divide by 8? (note: ..000 always divides by 8)"
+      }
+     ]
+    },
+    {
+     "id": "q22478e49fb",
+     "label": "Divisibility rule of 9",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Add up each digit and does the sum divide by 9? If yes, number is a multiple of 9."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Primes, Factors & GCF",
+   "items": [
+    {
+     "id": "q5d320e7e81",
+     "label": "Divisibility rule of 11",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Alternate signs for each digit from left to right starting with +. If sum is divisible by 11, it's a multiple of all."
+      }
+     ]
+    },
+    {
+     "id": "q67210309f4",
+     "label": "Test whether a number n is prime",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Divide by prime numbers smaller than sqrt(n)."
+      }
+     ]
+    },
+    {
+     "id": "q65069919bd",
+     "label": "Three consecutive integers",
+     "blocks": [
+      {
+       "label": "Explanation 1",
+       "text": "One must be a multiple of 3, the sum must be a multiple of 3, product must be divisible by 6."
+      },
+      {
+       "label": "Explanation 2",
+       "text": "If the middle number is odd (ie. even x odd x even), the three consecutive integers product is divisible by 8 (and hence 4) as well as 6."
+      },
+      {
+       "label": "Explanation 3",
+       "text": "Three consecutive multiples of a number also add up to 3 and product is divible by 3."
+      },
+      {
+       "label": "Explanation 4",
+       "text": "Solve problems through algebraic representation. If 3 consecutive integers, n, n + 1, n + 2, if 3 consecutive even numbers, 2n, 2n + 2, 2n + 4, if 3 consecutive odd numbers then 2n + 1, 2n + 3, 2n + 5"
+      }
+     ]
+    },
+    {
+     "id": "qc1ce9fe79a",
+     "label": "Divisibility derivation",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "If a is divisible by p^m and b is divisible by p^n, ab is divisible by p^(m + n)"
+      }
+     ]
+    },
+    {
+     "id": "q2ff7244d3f",
+     "label": "How many factors does have a number have?",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Prime factorization eg. 60 = 2^2 * 3 * 5. Number of factors = ∏ (exponent of each term in prime factorization + 1), so for 60, its 3 * 2 * 2 = 12"
+      }
+     ]
+    },
+    {
+     "id": "q9d7104ce99",
+     "label": "How many odd factors of a number?",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Odd numbers can't have even factors, so just delete even primes (the 2 term) from prime factorization and number of factors = ∏ (exponent of each term in prime factorization + 1)"
+      }
+     ]
+    },
+    {
+     "id": "qa01b005817",
+     "label": "How many even factors of a number?",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Total factors - odd factors"
+      }
+     ]
+    },
+    {
+     "id": "qf28b2942a3",
+     "label": "Find GCF of group of numbers",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Prime factorize all numbers and take the lowest power of each common prime for prime factorization of new number"
+      }
+     ]
+    },
+    {
+     "id": "qfc23bc1801",
+     "label": "How many shared factors of group of numbers",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Prime factorize all factors and find the new common prime factorization. Then use exponent multiplication trick ∏ on the new prime factorization to find the number of shared factors of the group of numbers (note: this is the same as finding the factors of the GCF)."
+      }
+     ]
+    },
+    {
+     "id": "q65434a782f",
+     "label": "Find LCM of group of numbers",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Prime factorize all numbers and take the highest power of each prime from among all the factorizations and multiply them"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "LCM, Factorials & Legendre's Method",
+   "items": [
+    {
+     "id": "qdd91aec1de",
+     "label": "LCM Divisibility rule",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "If a number is divisible by a and divisible by b it will be divisible by LCM(a, b)"
+      }
+     ]
+    },
+    {
+     "id": "q7b7caafa8a",
+     "label": "GCF and LCM relation",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "GCF(a, b) * LCM(a, b) = a * b"
+      }
+     ]
+    },
+    {
+     "id": "qbc7d4ab517",
+     "label": "Factorial division m!/n!",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "The larger factorial can cancel out the smaller. E.g. m = 8, n = 5, m!/n! = (8*7*6*5!)/5! = 8*7*6"
+      }
+     ]
+    },
+    {
+     "id": "q3c06573406",
+     "label": "How many factors does a factorial have?",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Legendres method to find prime factorization of the factorial, then number of factors = ∏ (exponent of each term in prime factorization + 1)"
+      }
+     ]
+    },
+    {
+     "id": "qdfa9c5adbe",
+     "label": "How to do Legendres method for n!",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "For each prime <= n, find how many multiples of that prime and its exponents are also <= n. Then that returns the prime factorization of n! which is each primes with its corresponding multiples (and the multiples of its exponents)."
+      }
+     ]
+    },
+    {
+     "id": "q0439efd757",
+     "label": "Legendres trick",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Multiples of first exponent (r^1) present = m. 2nd exponent will be floor of m/r (remove the decimal). And so on until 0 is reached."
+      }
+     ]
+    },
+    {
+     "id": "q4d99f1fc6b",
+     "label": "How many of a certain number r in a factorial n!?",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Use legendres method for r. If r is a composite number, do legendres separately for each prime factorization term and find the minimum terms."
+      }
+     ]
+    },
+    {
+     "id": "q696ec38d51",
+     "label": "Largest factor r of factorial n!",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Use legendres method. If r is a composite number, do legendres separately for each prime. If the composite has an exponent, like 2^3, do legendres for 2 and divide legendres answer by 3 (that will effectively give legendres of 8). Then the prime factorization term with the minimum final legendres value will be the legendres answer for the total composite."
+      },
+      {
+       "label": "Example question 1",
+       "text": "Q: If 30!/3^x is an integer, what is the largest possible value of x?"
+      },
+      {
+       "label": "Example answer 1",
+       "text": "Legrendes for 3: 3^1: 10, 3^2 = 3, 3^3 = 1, Total = 14. Largest x is 14."
+      },
+      {
+       "label": "Example question 2",
+       "text": "Q: If 100!/24^x is an integer, what is the largest possible value of x?"
+      },
+      {
+       "label": "Example answer 2",
+       "text": "24 = 2^3 * 3. Legendres for 2: 2^1: 50, 2^2: 25, 2^3: 12, 2^4: 6, 2^5: 3, 2^6: 1. Total = 97. We want 8^x which is 2^3x so x = 97/3 = 32.3. We ignore the 0.3 as we want full integers, so x = 32. Legendres for 3: 3^1: 33, 3^2: 11, 3^3: 3, 3^4: 1. Legendres = 48. Minimum is 32. So answer is 32."
+      }
+     ]
+    },
+    {
+     "id": "qa4aeb15d66",
+     "label": "How many trailing zeroes at the end of factorial?",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Use legendres to find out how many 10s are factors."
+      }
+     ]
+    },
+    {
+     "id": "qb6bc7c618d",
+     "label": "Smallest non-prime numbers that are not factor of factorial n!",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Take smallest primes larger than n and consider them and their multiples."
+      }
+     ]
+    },
+    {
+     "id": "q0598790462",
+     "label": "Number of combinations from n numbers",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "n!, but if some numbers are repeated say a and b then its actually n!/(a!b!)"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Intervals, Sequences & Series",
+   "items": [
+    {
+     "id": "q6620dbf122",
+     "label": "# of integers in interval",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Inclusive: last - first + 1, Exclusive: last - first - 1"
+      }
+     ]
+    },
+    {
+     "id": "qa5c3be8379",
+     "label": "Sum of integers in an interval",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Average of interval * number of terms in interval. So if interval is (a, b), then sum = ((a + b)/2)(a - b + 1)"
+      }
+     ]
+    },
+    {
+     "id": "q76300709aa",
+     "label": "Number of multiples of r in a interval (a, b)",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Take smallest multiple of r greater than a, a2, and largest multiple of r lesser than b, b2. Formula: (b2 - a2)/r + 1"
+      }
+     ]
+    },
+    {
+     "id": "q133c2ea1fa",
+     "label": "Sum of multiples of r in an interval (a, b)",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Answer is number of terms * average of interval. Take smallest multiple of r greater than a, a2, and largest multiple of r lesser than b, b2. Average: (a2+ b2)/2. Number of terms: (b2 - a2)/r + 1"
+      }
+     ]
+    },
+    {
+     "id": "q5e9bda584a",
+     "label": "Types of sequences: arithmetic, geometric, quadratic, cubic",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Arithmetic = constant difference, Geometric = constant ratio (each term is last term * constant), Quadratic = common second difference, Cubic = constant third difference, etc. for higher powers"
+      }
+     ]
+    },
+    {
+     "id": "qda4db2504f",
+     "label": "Series formulas for exponents",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "First power series: (1 + 2 + ... + n) = n(n + 1)/2. Second power series: (1^2 + 2^2 + 3^2 + ... + n^2) = n(n + 1)(2n + 1)/6."
+      }
+     ]
+    },
+    {
+     "id": "q4aab864e35",
+     "label": "Series formula for geometric sequence sums",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "a = first term, r = geometric series ratio. Series sum = a(r^n - 1)/(r - 1). E.g. sum of first 20 terms of series: 3, 6, 12, 24...: 3(2^20 - 1)/(1) = 1048575*3 = 31,45,725."
+      }
+     ]
+    },
+    {
+     "id": "q040a1f4d66",
+     "label": "Sum of \"trick\" series like 1, -2, 3, -4 ...",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Group numbers into pairs to create a regular series then solve. This example series resolves to a series -1 + -1 + -1... whose length is half the length of the original series."
+      }
+     ]
+    },
+    {
+     "id": "qfcb9ba7dc4",
+     "label": "Sum of complicated series: a1 + a2 + ... + an",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Find pattern from sequence: n = 1, n = 2, n = 3 .... This may betray the answer."
+      }
+     ]
+    },
+    {
+     "id": "q49143aca14",
+     "label": "Trick series comparison",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Sometimes there is no clear pattern to series in comparison problems. But the other quantity can be easily compared. Then take the minimum series sum by equaling every number in the series to the minimum number, and the maximum series sum by equaling every number in the series to the maximum number. See whether the compared quantity is in this interval, usually its outside."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Fractions, Decimals, Percents & Rates",
+   "items": [
+    {
+     "id": "qd76ddd56a7",
+     "label": "Difference between repeating and non-repeating decimals",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Repeating decimals have a pattern that repeats even if it goes to infinity, its a repeating pattern. Can represent by writing a horizontal line over the repeating section of the decimal. Non-repeating decimals are irrational numbers."
+      }
+     ]
+    },
+    {
+     "id": "q71bf3fedea",
+     "label": "How to know if a decimal terminates",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "If the prime factorization of the denominator in the fraction's most simplified form has only 2 and 5 exponents, it definitely terminates."
+      }
+     ]
+    },
+    {
+     "id": "q5e166adc1c",
+     "label": "How to convert repeating decimal to a fraction",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Set x = repeating part. Then move the repeating part ahead of the decimal by multiplying by 10^n, however many n needed. E.g. if x = 0.37repeating, then multiply both sides by 100. We get 100x = 37.37repeating. Then minus x from both sides so we get 99x = 37.37repeating - x. We know x = 0.37repeating, so 37.37repeating - x = 37. So we get 99x = 37, x = 37/99."
+      }
+     ]
+    },
+    {
+     "id": "q33d8ec0551",
+     "label": "Smallest positive integer to multiply with a/b to result in an integer",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "It's b, the denominator, as long as a/b is in its simplified form."
+      }
+     ]
+    },
+    {
+     "id": "qbe311c86fe",
+     "label": "Proportions and cross-multiplications of proportions",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Proportions are when one fraction equals another (usually with one value unknown), can cross-multiply numerators and denominators and make equal to find the unknown value. E.g. a man runs 4 km in 30 mins, how many km can they run 45 mins? Proportion: 4/30 = a/45, (4*45) = 30a, 30a = 180, a = 6 km."
+      }
+     ]
+    },
+    {
+     "id": "q445eadebc9",
+     "label": "Simple Interest formula",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "A = p(1 + rt), r = annual interest rate, t = time in years, p = principal, A = final amount. In other words, interest gained is prt, add principal p, A = p + prt"
+      }
+     ]
+    },
+    {
+     "id": "q27703e1ea8",
+     "label": "Compound Interest formula",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "A = p(1 + r)^t. E.g. if r = 0.04, p = 300, t = 5 years, A = 300(1.04)^5."
+      }
+     ]
+    },
+    {
+     "id": "q762f1721a5",
+     "label": "Compound Interest formula (compounds multiple times a year)",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "A = p(1 + r/n)^nt, n = number of compounds per year"
+      }
+     ]
+    },
+    {
+     "id": "q12019985e6",
+     "label": "Compound decrease formula",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "A = p(1 - r)^t"
+      }
+     ]
+    },
+    {
+     "id": "q773492d645",
+     "label": "Speed and time formulas.",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Speed * Time to give important metric, usually Distance or Work. w = rt."
+      }
+     ]
+    },
+    {
+     "id": "q72ae367a94",
+     "label": "Relative speeds",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Look for ways to combine speeds. For example, when describing two cars moving in opposite directions, their speeds can be added, as they are both contributing to increasing the distance between each other. When describing two cars moving in the same direction, their speeds can be subtracted, as distance only increases according to the difference in speed."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Exponents, Roots & Radicals",
+   "items": [
+    {
+     "id": "qde7cae3675",
+     "label": "Exponent rule: exponent of an exponent.",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "When you have an exponent inside and outside the brackets then multiple the exponents: (a^b)^c = a^(bc)."
+      }
+     ]
+    },
+    {
+     "id": "q0138271a5b",
+     "label": "Exponent rule: multiplied exponents when exponents are the same",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "When exponents are the same in 2 multiplied terms, can multiply the bases and keep the same exponent: (a^b)(c^b) = ac^b."
+      }
+     ]
+    },
+    {
+     "id": "q7af4b199a1",
+     "label": "Exponent rule: multiplied exponents when bases are the same.",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "When 2 multiplied exponents have the same base, keep base common and add the exponents: (a^b)(a^c) = a^(b + c)."
+      }
+     ]
+    },
+    {
+     "id": "qa3bb21b99d",
+     "label": "Exponent rule: division when bases are the same",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "When 2 divided exponents have the same base, keep base common and subtract the exponents: (a^b)/(a^c) = a^(b - c)."
+      }
+     ]
+    },
+    {
+     "id": "q5e6153871d",
+     "label": "Instead of radicals, represent roots as fraction exponents to solve problems",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "This may make it easier to notice shortcuts e.g. sqrt(12)/sqrt(3) may not be obvious, but represented as 12^0.5/3^0.5 makes it easy to understand it's the same as (12/3)^0.5 = 4^0.5 = 2."
+      }
+     ]
+    },
+    {
+     "id": "q0fe77613e5",
+     "label": "How to check if root(n) is rational",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "If every exponent in the prime factorization of n is divisible by the root number. E.g. 4th root of 24, 24 pf = 2^3.3. Not all of the exponents (3, 1) are divisible by 4, so 24 to the 4th root is not rational. E.g. to check if the square roots of a number are rational, all terms of the prime factorization of the number have to have even exponents."
+      }
+     ]
+    },
+    {
+     "id": "q63b962807d",
+     "label": "Simplifying roots",
+     "blocks": [
+      {
+       "label": "Explanation 1",
+       "text": "Prime factorize number and see if terms can be taken outside roots. They can be if they are equal or greater exponent than the root (minus if its greater exponent). E.g. cube root(24) = cube root(2^3.3) = 2.cube root(3). sqrt(24) = sqrt(2^3.3) = 2.sqrt(2).sqrt(3) = 2.sqrt(6)"
+      },
+      {
+       "label": "Explanation 2",
+       "text": "For a root like sqrt(2^9), that is the same as sqrt(2^8).sqrt(2) = 2^4.sqrt(2)"
+      }
+     ]
+    },
+    {
+     "id": "q1f2d407b98",
+     "label": "Radicals (roots) in denominators",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Better to take radical out of the denominator by multiplying both sides by the radical to move it into the numerator"
+      }
+     ]
+    },
+    {
+     "id": "qc71617b811",
+     "label": "Trickiness: even exponent under even radical (root)",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "For even exponents under even radicals, we may need to put the absolute value of x after simplifying the exponents. This is because a negative x may not fulfil the simplification requirements. E.g. a is not equal to sqrt(a^2). Only |a| is equal to sqrt(a^2)."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Polynomials & Quadratic Equations",
+   "items": [
+    {
+     "id": "q1d5ea38dd9",
+     "label": "Polynomial degree",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "For each term in the expression, sum the exponents. The largest sum is the degree. For example, for the polynomial term (2x^2)(4y^3), the degree is 5, the sum of all multiplied exponents in the term."
+      }
+     ]
+    },
+    {
+     "id": "qe371e4d11b",
+     "label": "Algebraic Identities: Quadratic",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "First: a^2 + 2ab + b^2 = (a + b)^2 Second: a^2 - 2ab + b^2 = (a - b)^2 Third: a^2 - b^2 = (a + b)(a - b)"
+      }
+     ]
+    },
+    {
+     "id": "qf151d33f82",
+     "label": "Linear equation",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Polynomial with degree 1."
+      }
+     ]
+    },
+    {
+     "id": "q8a98782f83",
+     "label": "Requirements for polynomials",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Can't have negative exponents, can't have absolute values"
+      }
+     ]
+    },
+    {
+     "id": "q386d36c1fa",
+     "label": "Perfect square trinomial to simplify polynomial expressions",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Look for equations of the form a^2 + 2ab + b^2, which returns (a+b)(a+b), or a^2 - 2ab + b^2, which returns (a-b)(a-b), or a^2 - b^2, which returns (a+b)(a-b)."
+      }
+     ]
+    },
+    {
+     "id": "qa573a568e7",
+     "label": "When simplifying algebraic expressions, calculate the domain pre-simplification",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "E.g. an expression with (x + 5)(x - 5) in the denominator. During simplification, we cancelled out the (x - 5). Looking at the simplified result, we can see (x + 5) in the denominator so we can say -5 is not in the domain, as it would make the denominator 0. But we also need to say 5 is not in the domain, because it would also have made the denominator 0. We are assuming x is not equal to 5 when we cancel out the denominator and numerator (as when we cancel, we are effectively dividing by (x - 5)."
+      }
+     ]
+    },
+    {
+     "id": "q0e2b8a5fd7",
+     "label": "Absolute value equations should be split into 2 equations",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "First, simplify the equation to the form |expression1| = expression2. Then split into two equations one where expression1 = expression2 and one where expression1 = -expression2. In other words, the second equation makes negative the non-absolute value part of the initial equation. E.g. |4x + 9| = 21 should be split into 4x + 9 = 21 and 4x + 9 = -21."
+      }
+     ]
+    },
+    {
+     "id": "q914833d234",
+     "label": "How many solutions does a quadratic equation have?",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Check the discriminant (b^2 - 4ac). If it's positive: 2 solutions, 0: 1 solution, negative: 0 solutions."
+      }
+     ]
+    },
+    {
+     "id": "qa44d6f9bc6",
+     "label": "Completing the square",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "For imperfect quadratics, instead of 0 = quadratic, add a number to both sides to make a perfect square + c. Perfect square is square of b/2. E.g. 0 = x^2 - 4x - 6. Perfect square c value for x^2 - 4x is 4 so add 4 to both sides. 4 = x^2 - 4x + 4 - 6, 4 = (x - 2)(x - 2) - 6. Then subtract the 4. 0 = (x - 2)(x - 2) - 10."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Inequalities & Functions",
+   "items": [
+    {
+     "id": "q575a7fff26",
+     "label": "Inequality rule",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Flip the inequality sign when multiplying or dividing both sides by a negative number."
+      }
+     ]
+    },
+    {
+     "id": "qe795edd6cb",
+     "label": "Subtracting inequalities",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Inequalities can be subtracted from one other when they have different signs. The result keeps the sign from the top inequality. E.g. a and b are 2 inequalities. a - b results in an equality that maintains the sign from a."
+      }
+     ]
+    },
+    {
+     "id": "q6cf7286ae6",
+     "label": "Absolute values and inequalities",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Same rule as absolute value equations. Keep the side with the absolute value on the left side and the rest on the right side. Then the 2 equations are one with the standard RHS and one with negative RHS. When doing the negative RHS, the inequality sign flips."
+      }
+     ]
+    },
+    {
+     "id": "qe1d5e15abc",
+     "label": "Inequality scope confusion",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "When we have 2 inequalities eg. (x + 3)(x - 2) > 0, this leads to 2 x-values -3 and 2, but the signs are not intuitive. Test a value less than the smaller x, a value between the 2 x values, and a value greater than the larger x to find the range."
+      }
+     ]
+    },
+    {
+     "id": "q14e5451144",
+     "label": "Function that has expression in input",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Solve for the LHS expression first. E.g. f(x + 3) = x^2 + x, question asks what is f(7) If f(7), then x +3 = 7, x = 4. Right side solve using x = 4 ie. 4^2 + 4 = 20."
+      }
+     ]
+    },
+    {
+     "id": "q2904f7c4a6",
+     "label": "Function that references itself in output",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Find the relationship that lets you solve for different inputs. E.g. f(x + 1) = 10f(x). If f(3) = 5, what is f(6)? This states that input of (x + 1) is 10x output of f(x). So if f(3) = 5 then f(4) = 50, f(5) = 500, f(6) = 5000."
+      }
+     ]
+    },
+    {
+     "id": "q6e2665453e",
+     "label": "How to find range of function",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "To find range of function f(x) set it equal to y then rearrange to solve for x (ie. function becomes x in terms of y). The domain of this new function in terms of y is the range of the original function which was in terms of x. E.g. y = (3 - x)/(x -2) can be solved for x to give x = (3 + 2y)/(y + 1). The domain of this function is any y except -1 so that is the range of the original function."
+      }
+     ]
+    },
+    {
+     "id": "qe9c3c2b113",
+     "label": "Even functions",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "A function is even if f(-x) = f(x). This happens when all exponents of x are even."
+      }
+     ]
+    },
+    {
+     "id": "qabc17e62ea",
+     "label": "Odd functions",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "A function is odd if f(-x) = -f(x). This happens when all exponents of x are odd."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Graphing: Parabolas, Lines & Circles",
+   "items": [
+    {
+     "id": "qa1d4928e0d",
+     "label": "Graphing perfect square quadratics",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "One root, the maxima/minima is at the x-intercept point."
+      }
+     ]
+    },
+    {
+     "id": "qd59bc4fd23",
+     "label": "Shifting parabola rules: y = (x - h)^2",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Shift h right"
+      }
+     ]
+    },
+    {
+     "id": "qf99fc0018e",
+     "label": "Shifting parabola rules: y = (x+ h)^2",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Shift h left"
+      }
+     ]
+    },
+    {
+     "id": "q8f37e4fc41",
+     "label": "Shifting parabola rules: y = x^2 + k",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Shift k up"
+      }
+     ]
+    },
+    {
+     "id": "qbe90711679",
+     "label": "Shifting parabola rules: y = x^2 - k",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Shift k down"
+      }
+     ]
+    },
+    {
+     "id": "q801e40b235",
+     "label": "Graphing quadratics by completing the square",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Can find the perfect square equivalent graph yes and move it according to the constant (y-intercept moves from 0 to whatever the constant part is on top of the perfect square)."
+      }
+     ]
+    },
+    {
+     "id": "qb77a234afe",
+     "label": "Intercept signs",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Positive and negative slope lines that pass through origin, both intercepts are 0. Slope = 0 lines only have one intercept on the y-axis and it can be anywhere on the y-axis. Positive slope lines that don't pass through origin, one intercept has to be positive and one negative, so the product of the intercepts has to be negative. Negative slope lines that don't pass through origin, either both intercepts have to be positive or both intercepts have to be negative, so the product of the intercepts has to be positive."
+      }
+     ]
+    },
+    {
+     "id": "q4996df1656",
+     "label": "Slope of perpendicular lines",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Slopes of perpendicular lines are inverse and negative of each other. E.g. lines a and b are perpendicular. Slope of a = m. Slope of b = -1/m."
+      }
+     ]
+    },
+    {
+     "id": "q957afcfdd3",
+     "label": "Circle equations",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "r = radius. (h, k) = coordinates of circle center. r^2 = (x - h)^2 + (y - k)^2"
+      }
+     ]
+    },
+    {
+     "id": "qf17bffecdf",
+     "label": "How to know if equation makes a circle",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "We know a equation is of a ellipse if there is a form of x^2 + y^2 in there somewhere. It's a circle if the coefficient of x^2 and y^2 is equal."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Reflections, Rotations & Angles",
+   "items": [
+    {
+     "id": "qac1691b5cc",
+     "label": "Reflecting point on axes/origin.",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "When reflecting on an axis, flip the sign of the other axis's coordinate. E.g. (2, 3) reflected on x-axis returns (2, -3). When reflecting on the origin, flip both coordinate signs. E.g. (2, 3) reflected on the origin returns (-2, -3)."
+      }
+     ]
+    },
+    {
+     "id": "q417ecd0100",
+     "label": "Reflecting point (x, y) on line x = k.",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "x value changes by 2k, y value stays constant. New point: (2k - x, y)"
+      }
+     ]
+    },
+    {
+     "id": "qca73cdedab",
+     "label": "Reflecting point (x, y) on line y = k.",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "y value changes by 2k, x value stays constant. New point: (x, 2k - y)"
+      }
+     ]
+    },
+    {
+     "id": "q929fe6e3ed",
+     "label": "Reflecting point (x, y) on line y = x.",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Flip y and x. New point: (y, x)."
+      }
+     ]
+    },
+    {
+     "id": "qf7a0136761",
+     "label": "Rotating point (x, y) about origin: 90 degrees anti-clockwise",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "New point: (-y, x)"
+      }
+     ]
+    },
+    {
+     "id": "q4054da516c",
+     "label": "Rotating point (x, y) about origin: 90 degrees clockwise",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "New point: (y, -x)"
+      }
+     ]
+    },
+    {
+     "id": "q0943a197a5",
+     "label": "Rotating point (x, y) about origin: 180 degrees",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "New point: (-x, -y)"
+      }
+     ]
+    },
+    {
+     "id": "q11a6004458",
+     "label": "Complementary and supplementary angles",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Complementary angles: add up to 90 degrees. Supplementary angles: add up to 180 degrees."
+      }
+     ]
+    },
+    {
+     "id": "q2117d18315",
+     "label": "Sum of interior angles of a polygon with no of sides n",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "(n - 2) * 180"
+      }
+     ]
+    },
+    {
+     "id": "qe61f609bd0",
+     "label": "Sum of exterior angles of any polygon",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Its always 360"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Polygons, Quadrilaterals & Triangles",
+   "items": [
+    {
+     "id": "q44a545699d",
+     "label": "Regular polygons",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Polygons where all angles are the same"
+      }
+     ]
+    },
+    {
+     "id": "q9a1c19b10f",
+     "label": "Types of quadrilaterals: parallelogram, rhombus, rectangle, square, trapezoid",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Parallelogram: 2 pairs of parallel lines. Rhobus: parallelogram where all 4 sides of equal length. Rectangle: parallelogram where all angles are 90. Square: rhombus + rectangle. Trapezoid: only one pair of parallel lines."
+      }
+     ]
+    },
+    {
+     "id": "qd2d77ebeb1",
+     "label": "Trapezoid rule",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "All 4 angles and all 4 side lengths can be unique. Only rule is that the angles on the same side add up to 180 (derived from parallel line rule)."
+      }
+     ]
+    },
+    {
+     "id": "qf1710e8d75",
+     "label": "Inscribed and circumscribed shapes",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Inscribed is inside, circumscribed is outside. In both cases all vertices of the inner shape must touch the outer shape"
+      }
+     ]
+    },
+    {
+     "id": "q2bc0695b12",
+     "label": "Relationship between angles and side length",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Angles and opposite side lengths are related. If triangle with angles a, b, c has opposite sides A, B, C, and a > b > c, then A > B > C."
+      }
+     ]
+    },
+    {
+     "id": "qbe2e09b493",
+     "label": "Triangle Inequality",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "The sum of any two sides must be greater than the 3rd side"
+      }
+     ]
+    },
+    {
+     "id": "q2aa2f08471",
+     "label": "When are 3 triangles congruent",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "When at least one of the following are similar: 1) SSS: 3 sides, 2) SAS: side-angle-side, 3) ASA: angle-side-angle, 4) AAS: angle-angle-side"
+      }
+     ]
+    },
+    {
+     "id": "qfbe6c0c996",
+     "label": "30-60-90 triangles (ie. the 3 angles are 30, 60, 90)",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "There is a specific relationship between the sides: Shortest side is x, Hypotenuse is 2x, and 2nd longest side is x*sqrt(3)"
+      }
+     ]
+    },
+    {
+     "id": "qf41d545c3d",
+     "label": "45-45-90 trianges (isosceles right triangles)",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Base and height are both x so hypotenuse is sqrt(2x^2) = sqrt(2).x"
+      }
+     ]
+    },
+    {
+     "id": "qa2e8a87e4f",
+     "label": "Look to split triangles up into 30-60-90 and 45-45-90 to solve",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "E.g. a triangle with angles 30, 105, 45, one side given. The 105 can be split into 45 and 60 with a perpendicular line in the middle, and suddenly we have 2 triangles one 30-60-90 and one 45-45-90 and its solvable by combining their areas."
+      }
+     ]
+    },
+    {
+     "id": "q2954d09fa2",
+     "label": "Similar triangles (AAA)",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Sides and height are proportional to each other. Can cross-multiply to solve."
+      }
+     ]
+    },
+    {
+     "id": "qe6ce1acfca",
+     "label": "Common pythagorean triplets (remember: all multiples are triplets too)",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "3-4-5, 5-12-13, 8-15-17, 7-24-25"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Area, Perimeter, Volume & Surface Area",
+   "items": [
+    {
+     "id": "qdf3798e86e",
+     "label": "Area of equilateral triangle with side length s",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "(sqrt(3).s^2)/4"
+      }
+     ]
+    },
+    {
+     "id": "q44dbfa98b9",
+     "label": "Area of parallelogram",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "base*height"
+      }
+     ]
+    },
+    {
+     "id": "qa0dc93f11f",
+     "label": "Area of trapezoid",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "((base1 + base2)/2)*h"
+      }
+     ]
+    },
+    {
+     "id": "qabe5366381",
+     "label": "Area of a regular polygon with number of sides n",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "s = side length. a = apothem. Apothem is the distance from the center to the middle of a side (e.g. the height of a equilateral triangle). Area = (nsa)/2."
+      }
+     ]
+    },
+    {
+     "id": "qe67ada5dc0",
+     "label": "Comparing area of two shapes with same sides same perimeter",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "With perimeter and number of sides constant, the closer the polygon is to regular, the greater the area."
+      }
+     ]
+    },
+    {
+     "id": "qc0684baeee",
+     "label": "The regular hexagon with side length s inscribed in a circle with radius r rule",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "s = r. Note that for regular polygons with less sides, s > r, and for regular polygons with more sides s < r."
+      }
+     ]
+    },
+    {
+     "id": "q3354301d1a",
+     "label": "Relationship between perimeter and area and regular shapes",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "For a given perimeter, the maximum area is possible if the shape is regular. The less regular the shape, the lower the area gets."
+      }
+     ]
+    },
+    {
+     "id": "q737fba41a0",
+     "label": "Volume and surface area of a cylinder",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Volume = pi.r^2.h. Surface area = area of 2 circular ends + lateral surface area (area of the rectangle in between) = 2.pi.r^2 + 2.pi.r.h."
+      }
+     ]
+    },
+    {
+     "id": "qe98c6e9487",
+     "label": "Relationship between volume and surface area and regular shapes",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "For a given volume, the minimum surface area is possible if the shape is regular. The more elongated the shape gets, the surface area increases for the same volume."
+      }
+     ]
+    },
+    {
+     "id": "q12c3a02f65",
+     "label": "Longest diagonal",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Diagonal that takes the 2 furthest points in a shape. Both the width and the depth are \"diagonalled\"."
+      }
+     ]
+    },
+    {
+     "id": "q644a6b1fc0",
+     "label": "Longest diagonal of a rectangular solid",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Longest diagonal = sqrt(length^2 + width^2 + depth^2)."
+      }
+     ]
+    },
+    {
+     "id": "q52679d6741",
+     "label": "Trick related to shapes stacking in other shapes",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "If one shape perfectly stacks into another (all integers when divided), we can just do (bigger volume)/(smaller volume). That's fine. But if they don't perfectly stack, we can't do that division. We need to find how many fit length-wise, width-wise, and depth-wise, then calculate the number that way."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Averages, Mixtures & Standard Deviation",
+   "items": [
+    {
+     "id": "q170759095e",
+     "label": "Mixture problems: Find % of important substance in final mixture",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Mixture A: a% of important substance, x litres. Mixture B: b% of important substance, y litres. Final mixture is thus (ax + by)/(x + y)"
+      }
+     ]
+    },
+    {
+     "id": "q45342fd42f",
+     "label": "The mixture trick: finding ratio of 2 mixtures",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "When we have mixture A with x% of important substance, and mixture B with y% of important substance. Required % in final substance: z. Put in terms of ratio abs(z - x):abs(z - y)"
+      }
+     ]
+    },
+    {
+     "id": "q0474d499a5",
+     "label": "Finding the median of a symmetrical sequence",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "(Last number + First number)/2. Can be used to find the median of multiples in a range."
+      }
+     ]
+    },
+    {
+     "id": "qdf22aba99f",
+     "label": "Measures of positions of sequences",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "When we divide a sequence into measures of position, such as quartiles, the elements that are equal to the quartile values e.g. Q1, Q2, Q3, are not part of any quartile. Similar for other measures of position."
+      }
+     ]
+    },
+    {
+     "id": "q7d921b1f30",
+     "label": "Variance",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Sum of the square of the difference of each term from the mean, divided by the number of terms."
+      }
+     ]
+    },
+    {
+     "id": "q70122e6380",
+     "label": "Standard deviation",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Square root of variance. Can be done step wise: 1) Find mean, 2) Create new sequence of difference of each term and mean, 3) Square the differences, 3) Sum the squared differences, 4) Divide by N (number of terms), 5) Square root for sd."
+      }
+     ]
+    },
+    {
+     "id": "q50c9f6986f",
+     "label": "Population vs Sample standard deviation",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "For population sd, we divide by N, number of terms. For sample sd, we divide by (N - 1)."
+      }
+     ]
+    },
+    {
+     "id": "q6b02bd5d9b",
+     "label": "How standard deviation changes with sequence transformations",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Sequence transformation = a transformation applied to every term in the sequence. Add/subtract = no change in sd. Multiply/divide = multiply/divide sd by that number too."
+      }
+     ]
+    },
+    {
+     "id": "q958cf3b086",
+     "label": "Standardization of a sequence",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Change the sequence so the mean is 0 and every value is replaced by number of standard deviations from the mean. Practically, 2 steps: 1) Subtract the mean from every number. 2) Divide each value by the standard deviation. E.g. the sequence 2, 8 gets standardized to -1, 1."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Sets & Counting Principles",
+   "items": [
+    {
+     "id": "q340e3bafc8",
+     "label": "Sets vs Lists",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Sets: order doesn't matter, no duplicates, can be infinite. Number of elements is |S| and values shown as {...} Lists: order matters, duplicates included, finite only."
+      }
+     ]
+    },
+    {
+     "id": "qe2ef688dec",
+     "label": "Inclusion-Exclusion principle",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Union(A, B) = A + B - Intersect(A, B)"
+      }
+     ]
+    },
+    {
+     "id": "qa5de07a701",
+     "label": "Inclusion-Exclusion principle for 3 sets",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Union(A, B, C) = A + B + C - Intersect(A, B) - Intersect(B, C) - Intersect(A, C) - 2*Intersect(A, B, C). Note that the intersect of all 3 is minused twice."
+      }
+     ]
+    },
+    {
+     "id": "qb0d00cfa1a",
+     "label": "Multiplication method for choice in combos",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "If we need a combination of A and B with a options of choice A and b options of choice B then the number of total options is ab."
+      }
+     ]
+    },
+    {
+     "id": "q451da3da97",
+     "label": "When to add in permutations/combinations and when to multiply?",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "In OR situations, when we have this or this happening (but not both), we add their possibilities to find total possibilities. In AND situations, when both this and this need to happen, that's when we multiply."
+      }
+     ]
+    },
+    {
+     "id": "q7781a14555",
+     "label": "Optional choice in combos",
+     "blocks": [
+      {
+       "label": "Explanation 1",
+       "text": "E.g. how many icecream/topping combinations with 4 flavours of ice cream and 4 optional toppings? Set up a choice scenario for each topping. So number of options = number of flavours * options for topping 1 * options for topping 2... = 4 * 2 * 2 * 2 * 2 = 64."
+      },
+      {
+       "label": "Explanation 2",
+       "text": "What if at least one optional topping is compulsory? Then, remove the case where no toppings are chosen. I.e. 64 - (4 * 1 * 1 * 1 * 1) = 64 - 4 = 60."
+      }
+     ]
+    },
+    {
+     "id": "q1c4b1610ea",
+     "label": "Number of correct combinations pick r out of n options",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "n!/(r!(n - r)!)"
+      }
+     ]
+    },
+    {
+     "id": "qd2eabfaddc",
+     "label": "Number of correct permutations (order matters) pick r out of n",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "n!/(n - r)!"
+      }
+     ]
+    },
+    {
+     "id": "q96caa51ac6",
+     "label": "Permutations using the multiplication method",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Can find permutations by using multiplication without repeat. E.g. how many ways to rearrange abcde? 5 * 4 * 3 * 2 * 1 = 120. Equivalent to formula solution, n = 5, r = 5: 5!/(5 - 5)! = 5!/0! = 5!/1 = 5! = 120."
+      }
+     ]
+    },
+    {
+     "id": "q1c070b1026",
+     "label": "Permutations with restrictions",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Use multiplication method, if needed create different multiplications for each restriction option, then add them together if they are separate full options, or multiply them together if they are composite parts of a full option."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Advanced Counting & Probability",
+   "items": [
+    {
+     "id": "q08dba5ba52",
+     "label": "Permutations with repeats, n slots, a and b repeats.",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "n!/(a!b!). E.g. how many ways to rearrange banana? n = 6. a repeated = 3. n repeated = 2. Ans = 6!/(3!2!) = 60."
+      }
+     ]
+    },
+    {
+     "id": "qce79f7e83c",
+     "label": "Permutations with repeats with restrictions",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "With restrictions, split into different calculations as per the restrictions. Then add together if each calculation is a full option, or multiple together if every calculation adds up to a full option. E.g. how many ways can the letters in TEXTBOOK be arranged if all vowels must be first and all consonants at the end? Vowels = E00 = 3!/2! = 3. Consonants = TXTBK = 5!/2! = 60. Total permutations = vowel options * consonant options = 60 * 3 = 180."
+      }
+     ]
+    },
+    {
+     "id": "q2f45a96a85",
+     "label": "Combinatorics Problems",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Convert problems into permutation/combination problems by writing them in terms of number of options/number of choices or repeats."
+      }
+     ]
+    },
+    {
+     "id": "q16619a8d62",
+     "label": "Permutations in a circle with n options",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Instead of n! do (n - 1)!. E.g. normal how many ways can 5 people sit in a row? Ans is 5!. But if they were arranged in a circle? Then several of the row permutations become equivalent, as circles have no start points or end points. Number of possible permutations: (5 - 1)!"
+      }
+     ]
+    },
+    {
+     "id": "q5d954e8671",
+     "label": "Highest possible combinations given n options and r choices",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "Number of possible combinations is highest when number of choices is half the number of options, ie. when r = n/2. So if n is odd, there will be 2 r around the middle that have the highest possible combinations."
+      }
+     ]
+    },
+    {
+     "id": "q05767f7081",
+     "label": "P(A n B): Intersect aka probability both A and B occur",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "P(A) * P(B)."
+      }
+     ]
+    },
+    {
+     "id": "qaeee18c1c0",
+     "label": "P(A u B): Union aka probability at least one of A or B occur",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "P(A) + P(B) - P(A n B)"
+      }
+     ]
+    },
+    {
+     "id": "qfeb6eda07a",
+     "label": "Independent events and mutually exclusive events",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "If an event is independent, P(AnB) = P(A) * P(B). If an event is mutually exclusive, P(AnB) = 0. Note that this means for mutually exclusive events P(A) + P(B) <= 1, because if the 2 probabilities sum to greater than 1, there must be some overlap."
+      }
+     ]
+    },
+    {
+     "id": "q39dbc085ab",
+     "label": "Conditional probability P(A | B)",
+     "blocks": [
+      {
+       "label": "Explanation",
+       "text": "P(A | B) = P(AnB)/P(B)"
+      }
+     ]
+    },
+    {
+     "id": "qf424ff1ac1",
+     "label": "Memorize standard deviation probability under normal distribution (should be able to draw given chart from memory)",
+     "blocks": [
+      {
+       "label": "Explanation 1",
+       "text": "In the normal distribution, within 1 standard deviation from the mean we have 68% of values (34% each side), from 1-2 standard deviations we have 28% of values (14% each side), and greater than 2 standard deviations is 4% (2% each side)."
+      },
+      {
+       "label": "Explanation 2",
+       "text": "In other words, within one standard deviation there are 68% of values, within 2 standard deviations there are 96% of values"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
