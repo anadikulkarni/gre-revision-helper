@@ -3,10 +3,10 @@
 A Gregmat-style revision *mountain* for my own GRE notes, built from
 `data/GRE_Prep.xlsx`. Two boards:
 
-| Page      | Source sheet  | Content                                        |
-| --------- | ------------- | ---------------------------------------------- |
-| **Vocab** | `New Words`   | 733 words → 16 groups of 45–46                 |
-| **Quant** | `Quant Notes` | 162 concepts → 16 topic-coherent groups of 9–12 |
+| Page      | Source                | Content                                          |
+| --------- | --------------------- | ------------------------------------------------ |
+| **Vocab** | `New Words` sheet     | 733 words → 16 groups of 45–46                    |
+| **Quant** | `content/quant/*.md`  | 162 concepts → 16 topic-coherent groups of 8–12   |
 
 The **day slider (1–16)** is the mountain: day 1 shows group 1, day 5 shows
 groups 1–5, day 16 shows everything. Each new day adds a column on the right and
@@ -129,28 +129,57 @@ Hugging Face Spaces) works the same way.
 
 ## Changing the notes
 
-`data/*.json` is generated — edit the workbook, not the JSON:
+`data/*.json` is generated. Edit the sources, then rebuild:
 
 ```bash
 python scripts/build_data.py          # rebuild both decks, print the group sizes
 python scripts/build_data.py --check  # non-zero exit if anything looks off
 ```
 
-- **Vocab** — one row is one word (`Word`, `Definition`, `Synonyms`, `Example`).
-  Rows keep their sheet order and are split into 16 even groups. Repeated words
-  are dropped with a warning.
-- **Quant** — a row whose `Concept` cell is empty *continues* the concept above it,
-  so its explanation and example are merged into that concept and shown as
-  `Explanation 1..n` / `Example question 1..n`. (Five concepts in the sheet are
-  written that way, including `Three consecutive integers` with four notes.)
-- **Quant grouping** — the 16 days are hand-curated in `scripts/grouping.py`,
-  keyed by concept title, so reordering rows in the sheet changes nothing. A new
-  concept that is not listed there is appended to the smallest day and reported
-  when you run the build; move it into the right day by adding its title.
+### Vocab
 
-The quant days run number properties → factors/factorials → series → fractions and
-percents → exponents → algebra → coordinate geometry → plane geometry → statistics
-→ counting → probability, so each day continues where the previous one stopped.
+Comes from the `New Words` sheet of `data/GRE_Prep.xlsx`: one row is one word
+(`Word`, `Definition`, `Synonyms`, `Example`). Rows keep their sheet order and are
+split into 16 even groups. Repeated words are dropped with a warning.
+
+### Quant
+
+The quant notes were rewritten from the original `Quant Notes` sheet into
+`content/quant/`, one markdown file per day, because long explanations and worked
+examples do not fit comfortably in a spreadsheet cell. Each entry looks like this:
+
+```markdown
+## Counting the factors of a number
+covers: 25
+
+Prime factorize, add 1 to every exponent, and multiply those results together...
+
+### Example
+How many factors does 60 have? `60 = 2^2 x 3^1 x 5^1`, so...
+
+### Watch out
+This counts *all* factors including 1 and the number itself.
+```
+
+- The `# heading` on line 1 is the day's name; the file's numeric prefix is its day.
+- `## ` starts a concept, `### ` starts a labelled block. Text between them is the
+  explanation. `**bold**`, `*italic*` and `` `code` `` render in the app.
+- `covers:` lists audit ids from `content/quant/_source_concepts.json`, the frozen
+  list of the 162 concepts in the original sheet. Every id must be claimed by some
+  entry, so nothing can be silently dropped in a rewrite. Use `covers: new` for a
+  concept that was not in the original, and `covers: 23 (split)` when one original
+  concept is deliberately taught across two entries.
+- The build prints a warning for any uncovered id, and `tests/test_mountain.py`
+  fails on one.
+
+The days run number sense → divisibility → primes and factors → GCF/LCM and
+factorials → series → fractions and percents → exponents → algebra → coordinate
+geometry → plane geometry → area and volume → statistics → counting → probability,
+so each day continues where the previous one stopped.
+
+To read the same notes in a spreadsheet, `python scripts/export_quant_xlsx.py`
+writes `data/GRE_Quant_Notes_rewritten.xlsx` (one row per concept). That export is
+one-way — the markdown stays the source of truth.
 
 ## Tests
 
@@ -158,9 +187,9 @@ percents → exponents → algebra → coordinate geometry → plane geometry �
 python -m pytest tests -q
 ```
 
-They cover the deck build (all 162 concepts present exactly once, continuation
-rows merged), the three shuffle modes, and the day-scoped merge logic behind
-cross-device sync.
+They cover the deck build (all 162 original concepts still covered, every entry
+explained with an example), the three shuffle modes, and the day-scoped merge
+logic behind cross-device sync.
 
 ## Layout
 
@@ -173,7 +202,8 @@ gre_mountain/
   storage.py              local / gist / supabase backends
   ui.py                   page chrome shared by both mountains
   component/static/       the board itself (vanilla JS, no build step)
-scripts/build_data.py     workbook -> data/*.json
-scripts/grouping.py       the curated 16 quant days
-data/GRE_Prep.xlsx        the source of truth
+content/quant/            the rewritten quant notes, one file per day
+scripts/build_data.py     workbook + markdown -> data/*.json
+scripts/export_quant_xlsx.py  the quant notes as a spreadsheet
+data/GRE_Prep.xlsx        the vocab source of truth
 ```

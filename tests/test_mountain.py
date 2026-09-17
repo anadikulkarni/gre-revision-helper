@@ -45,43 +45,83 @@ def test_ids_are_unique_and_items_complete(deck):
     assert len(ids) == len(labels)
 
 
+def test_quant_group_sizes_are_reasonable():
+    sizes = [len(g["items"]) for g in load("quant")["groups"]]
+    assert sum(sizes) >= 162, "the rewrite should not have fewer entries than concepts"
+    assert min(sizes) >= 8 and max(sizes) <= 13, f"lopsided days: {sizes}"
+
+
 def test_vocab_group_sizes_are_balanced():
     sizes = [len(g["items"]) for g in load("vocab")["groups"]]
     assert sum(sizes) == 733
     assert max(sizes) - min(sizes) <= 1
 
 
-def test_quant_holds_every_concept_once():
-    quant = load("quant")
-    labels = [item["label"] for group in quant["groups"] for item in group["items"]]
-    assert len(labels) == 162
-    assert len(set(labels)) == 162
+def test_quant_titles_are_unique():
+    labels = [item["label"] for group in load("quant")["groups"] for item in group["items"]]
+    assert len(set(labels)) == len(labels)
 
 
-def test_quant_continuation_rows_are_merged():
-    """Rows with an empty Concept cell become extra blocks on the concept above."""
-    quant = load("quant")
-    by_label = {i["label"]: i for g in quant["groups"] for i in g["items"]}
+def parse_content() -> list[dict]:
+    """Parse content/quant/*.md the way the build script does."""
+    import build_data
 
-    three = by_label["Three consecutive integers"]
-    explanations = [b for b in three["blocks"] if b["label"].startswith("Explanation")]
-    assert len(explanations) == 4, "the four notes for this concept should all be there"
-
-    largest = by_label["Largest factor r of factorial n!"]
-    kinds = [b["label"] for b in largest["blocks"]]
-    assert kinds.count("Example question 1") == 1 and kinds.count("Example question 2") == 1
+    warnings: list[str] = []
+    files = sorted((ROOT / "content" / "quant").glob("[0-9]*.md"))
+    assert len(files) == 16, "one markdown file per day"
+    groups = [build_data.parse_day(path, warnings) for path in files]
+    assert warnings == [], warnings
+    return groups
 
 
-def test_every_item_has_something_to_reveal():
-    """Only the one concept whose sheet row has no explanation may be blockless."""
-    blockless = [
-        item["label"]
-        for deck in ("vocab", "quant")
-        for group in load(deck)["groups"]
-        for item in group["items"]
-        if not item["blocks"]
-    ]
-    assert blockless == ["Remainder of sums is sum of remainders"]
+def test_every_original_concept_is_still_covered():
+    """The rewrite must not drop any of the 162 concepts from the old sheet."""
+    source = json.loads(
+        (ROOT / "content" / "quant" / "_source_concepts.json").read_text(encoding="utf-8")
+    )["concepts"]
+    assert len(source) == 162
+
+    claimed: dict[int, list[str]] = {}
+    for group in parse_content():
+        for entry in group["items"]:
+            for audit_id in entry["covers"]:
+                claimed.setdefault(audit_id, []).append(entry["label"])
+
+    uncovered = {k: v for k, v in source.items() if int(k) not in claimed}
+    assert uncovered == {}, f"these original concepts lost their explanation: {uncovered}"
+    unknown = [k for k in claimed if str(k) not in source]
+    assert unknown == [], f"covers unknown source ids: {unknown}"
+
+
+def test_multiple_claims_on_one_concept_are_deliberate():
+    entries = [entry for group in parse_content() for entry in group["items"]]
+    claimed: dict[int, list[dict]] = {}
+    for entry in entries:
+        for audit_id in entry["covers"]:
+            claimed.setdefault(audit_id, []).append(entry)
+    for audit_id, sharing in claimed.items():
+        if len(sharing) > 1:
+            assert all(e["split"] for e in sharing), (
+                f"source concept {audit_id} is claimed by "
+                f"{[e['label'] for e in sharing]} without marking '(split)'"
+            )
+
+
+def test_every_quant_entry_is_explained_with_an_example():
+    for group in load("quant")["groups"]:
+        for item in group["items"]:
+            labels = [b["label"] for b in item["blocks"]]
+            assert labels[0] == "Explanation", f"{item['label']} does not start with an explanation"
+            assert any(l.startswith("Example") for l in labels), f"{item['label']} has no example"
+            words = sum(len(b["text"].split()) for b in item["blocks"])
+            assert words >= 50, f"{item['label']} is only {words} words"
+
+
+def test_every_vocab_item_has_a_definition():
+    for group in load("vocab")["groups"]:
+        for item in group["items"]:
+            assert item["blocks"] and item["blocks"][0]["label"] == "Definition"
+            assert item["blocks"][0]["text"].strip()
 
 
 # --------------------------------------------------------------------------- board
