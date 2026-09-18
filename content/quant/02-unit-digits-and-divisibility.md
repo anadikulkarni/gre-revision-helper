@@ -1,101 +1,161 @@
 # Unit Digits & Divisibility Rules
 
-## Unit digits of powers run in cycles
+## Last digit of a large power — what do you need?
 covers: 11
 
-Raise any digit to higher and higher powers and its unit digit starts repeating, always within four steps. That is the whole trick behind "what is the last digit of `7^103`" questions: work out the cycle, then find where 103 lands inside it.
+### Answer
+The unit digit's **cycle**, which is always length 4 or shorter. Divide the exponent by 4 and use the remainder to pick the entry.
 
-The cycles worth knowing: 2 goes 2, 4, 8, 6; 3 goes 3, 9, 7, 1; 7 goes 7, 9, 3, 1; 8 goes 8, 4, 2, 6 (all length 4). 4 goes 4, 6 and 9 goes 9, 1 (length 2). 0, 1, 5 and 6 never change at all. Since every cycle length divides 4, dividing the exponent by 4 is enough for all of them.
+2: 2, 4, 8, 6 · 3: 3, 9, 7, 1 · 7: 7, 9, 3, 1 · 8: 8, 4, 2, 6 · 4: 4, 6 · 9: 9, 1 · 0, 1, 5, 6 never change.
+
+### Explanation
+Raise any digit to higher powers and its last digit starts repeating within four steps. Since every cycle length divides 4, dividing the exponent by 4 works for all of them.
 
 ### Example
-Last digit of `7^103`. The cycle for 7 is (7, 9, 3, 1), length 4. `103 / 4` leaves remainder 3, so we want the 3rd entry: **3**. Check the logic on a small case: `7^3 = 343`, and 3 is indeed the 3rd entry.
+Last digit of `7^103`? The cycle for 7 is (7, 9, 3, 1). `103 / 4` leaves remainder 3, so take the 3rd entry: **3**. Check on a small case: `7^3 = 343` ✓.
 
 ### Watch out
-Remainder 0 means the *last* item of the cycle, not the first. `7^100` has remainder 0, so its unit digit is 1, the 4th entry.
+Remainder 0 means the **last** entry of the cycle, not the first. `7^100` has remainder 0, so its unit digit is 1.
 
-## Only the base's unit digit matters
+## Unit digit of `1,234,567^40` — what can you throw away?
 covers: 12
 
-`unitdigit(a^b) = unitdigit(unitdigit(a)^b)`. Everything to the left of the base's last digit is irrelevant to the answer, because multiplying two numbers only lets the unit digits talk to each other. This is what makes the cycles above usable on monstrous numbers.
+### Answer
+Everything except the base's last digit: `unitdigit(a^b) = unitdigit(unitdigit(a)^b)`. So `1,234,567^40` ends in the same digit as `7^40`.
 
-So `1,234,567^40` has the same unit digit as `7^40`, and you can throw the other six digits away the moment you see the question.
+### Explanation
+Multiplying two numbers only lets their unit digits interact, so the digits further left can never reach the ones place. This is what makes the cycles usable on monstrous numbers.
 
 ### Example
-Unit digit of `2,468^15`? Keep only the 8: the cycle for 8 is (8, 4, 2, 6). `15 / 4` leaves remainder 3, so the answer is the 3rd entry, **2**.
+Unit digit of `2,468^15`? Keep the 8; its cycle is (8, 4, 2, 6). `15 / 4` leaves remainder 3, so the answer is the 3rd entry, **2**.
 
-## Unit digit of a sum or product
+## Unit digit of a sum or of a product?
 covers: 13
 
-The unit digit of a sum is the unit digit of the sum of the unit digits, and the same holds for products. This is just the remainder rule for division by 10, and it lets you collapse a long expression into single digits before doing anything else.
+### Answer
+Add or multiply just the unit digits, then keep the last digit of that result.
 
-If the digits add to more than 9, keep only the last digit of that total and carry on.
+### Explanation
+It is the remainder rule for division by 10, and it lets you collapse a long expression into single digits before doing anything else.
 
 ### Example
-Unit digit of `327 + 4,589 + 62`? Add only the last digits: `7 + 9 + 2 = 18`, so the unit digit is **8**. For a product, `327 x 4,589` has unit digit from `7 x 9 = 63`, so **3**.
+`327 + 4,589 + 62`: add `7 + 9 + 2 = 18`, so the unit digit is **8**. For `327 x 4,589`: `7 x 9 = 63`, so **3**.
 
-## Worked example: unit digit of a long power sum
+## Unit digit of `3 + 3^2 + 3^3 + ... + 3^50`?
 covers: 14
 
-Combine the last three ideas and a question like "what is the unit digit of `3 + 3^2 + 3^3 + ... + 3^50`?" becomes a counting exercise. Each power of 3 contributes its own unit digit from the cycle (3, 9, 7, 1), those four digits sum to 20, and 20 contributes a unit digit of 0. So every complete block of four terms adds nothing to the unit digit, and only the leftover terms matter.
+### Answer
+**2.** Each block of four powers contributes `3+9+7+1 = 20`, so complete blocks add 0 to the unit digit. Only the leftover terms count.
+
+### Explanation
+50 terms is 12 complete blocks of four (48 terms, unit digit 0) plus two leftovers, `3^49` and `3^50`. `49 / 4` leaves 1 so `3^49` ends in 3; `50 / 4` leaves 2 so `3^50` ends in 9. `3 + 9 = 12` → unit digit 2.
 
 ### Example
-`3 + 3^2 + ... + 3^50`: 50 terms is 12 complete blocks of 4 (48 terms, contributing unit digit 0) plus 2 leftover terms, `3^49` and `3^50`. `49 / 4` leaves remainder 1, so `3^49` ends in 3; `50 / 4` leaves remainder 2, so `3^50` ends in 9. `3 + 9 = 12`, so the unit digit of the whole sum is **2**.
+Same method on `2 + 2^2 + ... + 2^22`: the cycle (2, 4, 8, 6) sums to 20, so ignore the 20 complete-block terms; the leftovers are `2^21` (ends in 2) and `2^22` (ends in 4), giving unit digit **6**.
 
 ### Watch out
-Count the leftovers from the *end* of the series, and check whether the series starts at `3^1` or `3^0` — an extra first term changes the answer.
+Count the leftovers from the **end** of the series, and check whether it starts at `3^1` or `3^0` — one extra first term changes everything.
 
-## Remainder of a huge power
+## Remainder of `a^b` divided by a small number `n`?
 covers: 15
 
-The same cyclicity idea works for remainders by any divisor, not just 10. To find the remainder of `a^b` divided by `n`, compute the remainders of `a^1, a^2, a^3, ...` divided by `n` until the pattern repeats, then use the exponent's position in that cycle.
+### Answer
+Find the cycle of remainders of `a^1, a^2, a^3, ...` divided by `n`, then use `b`'s position in that cycle. Reduce any running value that grows past `n`.
 
-If a step of the pattern gives you a number bigger than the divisor, reduce it again. When dividing by 6, a running value of 7 is really a remainder of 1.
+### Explanation
+Cyclicity is not just a base-10 trick — remainders by any divisor repeat too. Compute until the pattern comes back round, then jump.
 
 ### Example
-Remainder of `4^35` divided by 6. `4^1 = 4` → 4. `4^2 = 16` → 4. `4^3 = 64` → 4. The cycle has length 1, so the answer is **4** for any positive power. A richer case: `3^20` divided by 7 gives remainders 3, 2, 6, 4, 5, 1 then repeats (length 6); `20 / 6` leaves remainder 2, so the answer is the 2nd entry, 2.
+Remainder of `4^35` divided by 6? `4, 16, 64` give remainders 4, 4, 4 — a cycle of length 1, so the answer is **4** for every positive power. Richer case: `3^n` divided by 7 gives 3, 2, 6, 4, 5, 1 (length 6); `20 / 6` leaves 2, so `3^20` leaves remainder **2**.
 
-## Divisibility by 2, 5 and 10
+## Divisibility by 2, 5 and 10?
 covers: new
 
-Before the clever rules, the three that come straight off the last digit: a number is divisible by 2 if its unit digit is even (0, 2, 4, 6, 8), by 5 if its unit digit is 0 or 5, and by 10 if its unit digit is 0. These are the building blocks that the composite rules below are made from.
+### Answer
+Read the last digit: **2** if it is even (0, 2, 4, 6, 8), **5** if it is 0 or 5, **10** only if it is 0.
+
+### Explanation
+These are the building blocks the composite rules are made from, so they are worth stating before the clever ones.
 
 ### Example
-4,938 is divisible by 2 (ends in 8) but not by 5. 4,935 is divisible by 5 but not by 2, so not by 10. 4,930 ends in 0 so it is divisible by 2, 5 and 10.
+4,938 is divisible by 2 but not 5. 4,935 is divisible by 5 but not 2, so not by 10. 4,930 ends in 0, so it is divisible by all three.
 
-## Divisibility by 3
+## Divisibility by 3?
 covers: 16
 
-Add up the digits. If that sum is a multiple of 3, so is the original number — and if the sum is still too big to judge, add its digits again and repeat.
+### Answer
+Add the digits. If the sum is a multiple of 3, so is the number — and you can repeat the test on the sum.
 
-The rule works because 10, 100, 1000 … all leave remainder 1 when divided by 3, so each digit contributes exactly its own value to the remainder.
+### Explanation
+It works because 10, 100, 1000 … all leave remainder 1 on division by 3, so each digit contributes exactly its own value to the remainder.
 
 ### Example
-Is 4,938 divisible by 3? `4 + 9 + 3 + 8 = 24`, and 24 is a multiple of 3, so yes. For 987,654: `9+8+7+6+5+4 = 39`, and `3+9 = 12`, a multiple of 3, so yes.
+4,938 → `4+9+3+8 = 24`, a multiple of 3, so yes. 987,654 → 39 → `3+9 = 12`, so yes.
 
-## Divisibility by 9
+## Divisibility by 9?
 covers: 20
 
-Exactly the same digit-sum test, but the sum must be a multiple of 9. Every number divisible by 9 is therefore also divisible by 3, though the reverse is not true.
+### Answer
+The same digit sum, but it must be a multiple of **9**.
+
+### Explanation
+Every multiple of 9 is therefore also a multiple of 3, though the reverse fails.
+
+Repeating the digit sum until one digit is left gives the *digital root*, and a digital root of 9 is the same test. It is a quick way to check arithmetic: the digital roots of the inputs must match the digital root of the answer.
 
 ### Example
-4,938: digits sum to 24, which is divisible by 3 but not 9, so 4,938 is a multiple of 3 and not of 9. 4,932: digits sum to 18, a multiple of 9, so it is divisible by 9 (and by 3).
+4,938: digits sum to 24, divisible by 3 but not 9 → multiple of 3 only. 4,932: digits sum to 18 → divisible by 9 and by 3.
 
-## Divisibility by 4
+Digital root of 987,654: `39 → 12 → 3`, so it is divisible by 3 but not 9.
+
+## Divisibility by 4?
 covers: 17
 
-Ignore everything except the last two digits: if the two-digit number they form is divisible by 4, so is the whole number. This works because 100 is itself a multiple of 4, so the hundreds and everything above them can never affect the answer.
+### Answer
+Look only at the **last two digits**. If that two-digit number is a multiple of 4, so is the whole number.
 
-Two handy corollaries: any number ending in 00 is divisible by 4, and any even number whose tens digit is even needs only its unit digit to be 0, 4 or 8.
+### Explanation
+100 is itself a multiple of 4, so the hundreds and everything above them can never affect the answer. Anything ending in 00 is divisible by 4.
+
+A second shortcut: if the tens digit is even, the number is divisible by 4 exactly when the unit digit is 0, 4 or 8; if the tens digit is odd, the unit digit must be 2 or 6.
 
 ### Example
-Is 7,318 divisible by 4? Look at 18 — not a multiple of 4, so no. Is 7,316? Look at 16 — yes, so 7,316 is divisible by 4.
+7,318 → 18 is not a multiple of 4, so no. 7,316 → 16 is, so yes.
 
-## Divisibility by 8
+Squares are a good stress test: every even square is divisible by 4 (`14^2 = 196` → 96 ✓), and every odd square leaves remainder 1.
+
+## Divisibility by 8?
 covers: 19
 
-Same idea one place further: check the last *three* digits, because 1,000 is a multiple of 8. If the three-digit number they form is divisible by 8, so is the original.
+### Answer
+Look at the **last three digits**, because 1,000 is a multiple of 8. Anything ending in 000 qualifies.
 
-Anything ending in 000 is divisible by 8, which is why questions about round numbers often collapse immediately.
+### Explanation
+For a quick check on those three digits, halve three times — if you stay on whole numbers, it divides.
 
 ### Example
-Is 12,344 divisible by 8? Check 344: `344 / 8 = 43` exactly, so yes. Is 12,346? Check 346: `346 / 8 = 43.25`, so no. For a faster check on the three digits, halve three times: 344 → 172 → 86 → 43, all whole numbers, so it is a multiple of 8.
+12,344 → 344, and `344 / 8 = 43` exactly, so yes. Halving: 344 → 172 → 86 → 43 ✓. 12,346 → 346 → 173 → 86.5 ✗.
+
+## Divisibility by 6, 12 or any composite?
+covers: 18
+
+### Answer
+Split it into **coprime** factors and apply both rules. 6 = 2 x 3, so even **and** digit sum divisible by 3. 12 = 4 x 3, so the last two digits divide by 4 **and** the digit sum by 3.
+
+### Explanation
+The factors must share no common factor. `12 = 2 x 6` is useless, because every number divisible by 2 and 6 is just divisible by 6.
+
+### Example
+4,938: even ✓, digits sum to 24 ✓ → divisible by 6. 7,316: last two digits 16 divide by 4 ✓, but `7+3+1+6 = 17` is not a multiple of 3 ✗ → not divisible by 12.
+
+## Divisibility by 11?
+covers: 21
+
+### Answer
+Alternate the digit signs from left to right starting with plus, and add. If that alternating sum is a multiple of 11 (0 counts), so is the number.
+
+### Explanation
+10 leaves remainder -1 on division by 11, so each place value flips sign as you move left.
+
+### Example
+918,082 → `+9 -1 +8 -0 +8 -2 = 22`, a multiple of 11, so yes (`918,082 / 11 = 83,462`). 4,938 → `+4 -9 +3 -8 = -10` ✗.

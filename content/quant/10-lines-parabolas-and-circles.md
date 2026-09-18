@@ -1,90 +1,173 @@
 # Lines, Parabolas & Circles
 
-## What the intercepts tell you about a line
+## What do the signs of a line's two intercepts tell you?
 covers: 96
 
-The signs of a line's two intercepts are decided by its slope and whether it passes through the origin, and questions exploit that constantly.
+### Answer
+Through the origin: both are 0. Not through the origin — **positive slope → intercepts have opposite signs** (product negative); **negative slope → same signs** (product positive). Slope 0 has only a y-intercept.
 
-A line through the origin has both intercepts equal to 0, whatever its slope. A horizontal line (slope 0) has only a y-intercept, which can sit anywhere. For a line **not** through the origin: a positive slope forces one intercept positive and the other negative, so their **product is negative**; a negative slope puts both intercepts on the same side, so their **product is positive**.
+### Explanation
+A rising line that misses the origin has to cross one axis on each side of it; a falling line crosses both on the same side. Questions test this without ever giving you an equation.
 
 ### Example
-`y = 2x - 6` (positive slope): y-intercept -6, x-intercept 3, product -18 — negative, as predicted. `y = -2x + 6` (negative slope): y-intercept 6, x-intercept 3, product 18 — positive.
+`y = 2x - 6`: intercepts -6 and 3, product -18 (negative) ✓. `y = -2x + 6`: intercepts 6 and 3, product 18 (positive) ✓.
 
 ### Watch out
-A vertical line has no slope at all (undefined, not zero) and no y-intercept unless it *is* the y-axis.
+A vertical line has **undefined** slope, not zero, and no y-intercept unless it is the y-axis itself.
 
-## Slopes of perpendicular lines
+## Slopes of perpendicular lines?
 covers: 97
 
-Perpendicular lines have slopes that are negative reciprocals: if one has slope `m`, the other has slope `-1/m`, and their product is always -1. Parallel lines, by contrast, have equal slopes.
+### Answer
+Negative reciprocals: if one is `m`, the other is `-1/m`, and their product is **-1**. (Parallel lines have equal slopes.)
+
+### Explanation
+Turning a line 90° swaps rise and run and reverses one of the signs.
 
 ### Example
-A line with slope 2/3 is perpendicular to one with slope -3/2, and `(2/3)(-3/2) = -1` ✓. So the line perpendicular to `y = 4x + 1` through the origin is `y = -x/4`.
+Slope 2/3 is perpendicular to -3/2, and `(2/3)(-3/2) = -1` ✓. So the perpendicular to `y = 4x + 1` through the origin is `y = -x/4`.
 
 ### Watch out
-Horizontal and vertical lines are perpendicular to each other, but the rule fails numerically because `-1/0` is undefined. Treat that pair as a special case.
+Horizontal and vertical lines are perpendicular but break the formula, since `-1/0` is undefined. Treat that pair as a special case.
 
-## Parabolas from perfect squares
+## A quadratic that is a perfect square — what does its graph do?
 covers: 90
 
-A quadratic that is a perfect square, like `y = (x - 3)^2`, touches the x-axis at exactly one point rather than crossing it. That single point is both the root and the vertex — the minimum of the curve if it opens upward, the maximum if it opens downward.
+### Answer
+It **touches** the x-axis at exactly one point instead of crossing. That point is both the only root and the vertex.
 
+### Explanation
 This is the graphical face of "discriminant = 0, one solution".
 
-### Example
-`y = (x - 3)^2` has its only root at `x = 3`, and the vertex sits at `(3, 0)`. `y = -(x + 2)^2` opens downward with its maximum at `(-2, 0)`.
+It also tells you the sign of the whole expression: `(x - 3)^2` is never negative, so `y = (x-3)^2 + 4` is always at least 4 — a favourite way to hide a minimum value in a comparison.
 
-## Horizontal shifts of a parabola
+### Example
+`y = (x - 3)^2` has its only root and its minimum at `(3, 0)`. `y = -(x + 2)^2` opens downward with its maximum at `(-2, 0)`.
+
+`y = x^2 - 6x + 9 = (x-3)^2` touches the axis at `x = 3`; its discriminant is `36 - 36 = 0` ✓.
+
+## `y = (x - h)^2` and `y = (x + h)^2` — which way do they move?
 covers: 91, 92
 
-Changing `x` inside the bracket slides the curve sideways, and it moves the **opposite** way to the sign you see. `y = (x - h)^2` shifts `h` units **right**; `y = (x + h)^2` shifts `h` units **left**.
+### Answer
+Opposite to the sign you see: `(x - h)^2` shifts `h` **right**, `(x + h)^2` shifts `h` **left**.
 
-The reason is that the vertex sits wherever the bracket equals zero: in `(x - 3)^2` that is `x = +3`.
+### Explanation
+The vertex sits where the bracket equals zero, so in `(x - 3)^2` that is `x = +3`. Solving "bracket = 0" is more reliable than remembering the rule.
 
 ### Example
-`y = (x - 4)^2` is the basic parabola moved 4 right, with vertex `(4, 0)`. `y = (x + 4)^2` is moved 4 left, with vertex `(-4, 0)`.
+`y = (x - 4)^2` has vertex `(4, 0)`; `y = (x + 4)^2` has vertex `(-4, 0)`.
 
 ### Watch out
-This inside-the-bracket sign flip is the single most common graphing error. Solve "bracket = 0" every time rather than trusting the sign.
+This inside-the-bracket sign flip is the single most common graphing error.
 
-## Vertical shifts of a parabola
+## `y = x^2 + k` and `y = x^2 - k` — which way do they move?
 covers: 93, 94
 
-Changing the constant *outside* the square moves the curve up or down, and this time the direction matches the sign. `y = x^2 + k` shifts `k` up; `y = x^2 - k` shifts `k` down.
+### Answer
+The way the sign says: `+k` shifts **up**, `-k` shifts **down**. Outside the square, the direction matches.
+
+### Explanation
+Combine both kinds of shift and you can place any parabola: `y = (x - h)^2 + k` has vertex `(h, k)`.
 
 ### Example
-`y = x^2 + 3` has its vertex at `(0, 3)` and never touches the x-axis. `y = x^2 - 3` has its vertex at `(0, -3)` and crosses at `x = ±sqrt(3)`. Combining both kinds of shift, `y = (x - 2)^2 + 5` has vertex `(2, 5)`.
+`y = x^2 + 3` has vertex `(0, 3)` and never meets the x-axis. `y = x^2 - 3` has vertex `(0, -3)` and crosses at `±sqrt(3)`. `y = (x - 2)^2 + 5` has vertex `(2, 5)`.
 
-## Graphing a quadratic by completing the square
+## How do you find a parabola's vertex from an untidy quadratic?
 covers: 95
 
-Any quadratic can be rewritten as `y = (x - h)^2 + k`, and in that vertex form the graph is simply the basic parabola moved `h` right and `k` up. Completing the square is therefore also a graphing tool: it converts an unreadable expression into a vertex you can plot immediately.
+### Answer
+Complete the square into **vertex form** `y = (x - h)^2 + k`; the vertex is `(h, k)`. (Or use `h = -b/2a`.)
+
+### Explanation
+Vertex form is just the basic parabola shifted `h` right and `k` up, so completing the square doubles as a graphing tool: it converts an unreadable expression into a point you can plot.
 
 ### Example
-`y = x^2 - 4x - 6`. Half of -4 is -2, squared is 4, so `y = (x^2 - 4x + 4) - 4 - 6 = (x - 2)^2 - 10`. The vertex is `(2, -10)`, the minimum value is -10, and the y-intercept is still -6 (set `x = 0`).
+`y = x^2 - 4x - 6` → `(x^2 - 4x + 4) - 4 - 6` → `(x - 2)^2 - 10`. Vertex `(2, -10)`, minimum value -10, y-intercept -6.
 
 ### Watch out
 Whatever you add inside the bracket must be subtracted outside it, or you have changed the function.
 
-## The equation of a circle
+## Equation of a circle?
 covers: 98
 
-A circle of radius `r` centred at `(h, k)` is the set of points at distance `r` from the centre, which the distance formula turns into
+### Answer
+`(x - h)^2 + (y - k)^2 = r^2`, centre `(h, k)`, radius `r`.
 
-`(x - h)^2 + (y - k)^2 = r^2`
-
-Note the same inside-the-bracket sign flip as parabolas: `(x - 3)` means the centre is at `x = +3`. And the right-hand side is `r^2`, not `r`.
+### Explanation
+It is the distance formula rearranged: every point on the circle is `r` away from the centre. Note the same inside-the-bracket sign flip as parabolas, and that the right-hand side is `r^2`, not `r`.
 
 ### Example
-`(x - 3)^2 + (y + 2)^2 = 25` is a circle centred at `(3, -2)` with radius 5. A circle centred at the origin simplifies to `x^2 + y^2 = r^2`.
+`(x - 3)^2 + (y + 2)^2 = 25` is centred at `(3, -2)` with radius **5**. Centred at the origin it simplifies to `x^2 + y^2 = r^2`.
 
-## Recognising a circle from its equation
+## Does an equation describe a circle?
 covers: 99
 
-If an equation contains both `x^2` and `y^2` added together, it is an ellipse of some kind. It is specifically a **circle** when the coefficients of `x^2` and `y^2` are equal — equal coefficients mean the curve stretches by the same amount in both directions.
+### Answer
+It needs `x^2` and `y^2` added together **with equal coefficients**. Equal coefficients → circle; unequal → ellipse; a minus sign → hyperbola.
+
+### Explanation
+Equal coefficients mean the curve stretches by the same amount in both directions, which is what makes it round.
 
 ### Example
-`3x^2 + 3y^2 = 27` is a circle: divide by 3 to get `x^2 + y^2 = 9`, radius 3. `4x^2 + 9y^2 = 36` is an ellipse, since 4 ≠ 9. And `x^2 - y^2 = 9` is neither — a minus sign makes it a hyperbola.
+`3x^2 + 3y^2 = 27` → divide by 3 → `x^2 + y^2 = 9`, a circle of radius 3. `4x^2 + 9y^2 = 36` is an ellipse. `x^2 - y^2 = 9` is neither.
 
 ### Watch out
-Equal coefficients are required, not coefficients of 1. Divide through before reading off the radius.
+Equal coefficients are required, not coefficients of 1 — divide through before reading off the radius.
+
+## Reflecting a point across an axis, or the origin?
+covers: 100
+
+### Answer
+Across the x-axis: `(x, -y)`. Across the y-axis: `(-x, y)`. Through the origin: `(-x, -y)`. The coordinate that flips is the one measuring distance from that axis.
+
+### Explanation
+Ask what stays the same: reflecting in the x-axis keeps your horizontal position, so `x` is untouched.
+
+The same rules apply to whole shapes: reflect each vertex and rejoin them. Reflection preserves lengths and angles, so the image is congruent to the original.
+
+### Example
+`(2, 3)` → x-axis: `(2, -3)`; y-axis: `(-2, 3)`; origin: `(-2, -3)`. Reflecting in both axes in turn is the same as reflecting through the origin.
+
+## Reflecting `(x, y)` across the vertical line `x = k`?
+covers: 101
+
+### Answer
+`(2k - x, y)` — `y` unchanged.
+
+### Explanation
+Rather than memorising it, step the distance twice: from `x` to `k` is `k - x`, so the image sits at `k + (k - x) = 2k - x`.
+
+### Example
+Reflect `(2, 3)` across `x = 5`. The point is 3 left of the line, so the image is 3 right: `(8, 3)`. Formula agrees: `2(5) - 2 = 8`.
+
+Another: reflect `(-1, 4)` across `x = 2`. It is 3 units left, so the image is 3 right, at `(5, 4)` — and `2(2) - (-1) = 5` ✓.
+
+## Reflecting `(x, y)` across the horizontal line `y = k`?
+covers: 102
+
+### Answer
+`(x, 2k - y)` — `x` unchanged.
+
+### Explanation
+The mirror image of the previous rule; setting `k = 0` recovers the x-axis rule `(x, -y)`.
+
+### Example
+Reflect `(2, 3)` across `y = 1`. The point is 2 above, so the image is 2 below: `(2, -1)`. Formula: `2(1) - 3 = -1` ✓.
+
+Another: reflect `(6, -2)` across `y = 3`. It is 5 below, so the image is 5 above, at `(6, 8)` — and `2(3) - (-2) = 8` ✓.
+
+## Reflecting `(x, y)` across the line `y = x`?
+covers: 103
+
+### Answer
+Swap the coordinates: `(y, x)`.
+
+### Explanation
+`y = x` is the diagonal where the coordinates are equal, so reflecting in it exchanges the roles of horizontal and vertical. This is also why an inverse function's graph is the original reflected in `y = x`.
+
+### Example
+`(2, 3)` → `(3, 2)`. Across `y = -x` instead it becomes `(-y, -x)`, so `(2, 3)` → `(-3, -2)`.
+
+So the point `(0, 5)` on the y-axis lands on `(5, 0)` on the x-axis, and any point already on `y = x` stays put.
+

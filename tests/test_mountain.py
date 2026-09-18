@@ -107,14 +107,25 @@ def test_multiple_claims_on_one_concept_are_deliberate():
             )
 
 
-def test_every_quant_entry_is_explained_with_an_example():
+def test_every_quant_entry_is_a_flashcard():
+    """Prompt on the board, short answer first, then explanation and example."""
     for group in load("quant")["groups"]:
         for item in group["items"]:
             labels = [b["label"] for b in item["blocks"]]
-            assert labels[0] == "Explanation", f"{item['label']} does not start with an explanation"
+            assert labels[0] in ("Answer", "In short"), (
+                f"{item['label']} starts with {labels[0]!r}, so there is nothing to recall"
+            )
+            assert "Explanation" in labels, f"{item['label']} has no explanation"
             assert any(l.startswith("Example") for l in labels), f"{item['label']} has no example"
             words = sum(len(b["text"].split()) for b in item["blocks"])
-            assert words >= 50, f"{item['label']} is only {words} words"
+            assert words >= 60, f"{item['label']} is only {words} words"
+
+
+def test_quant_titles_do_not_give_the_answer_away():
+    """A board entry should ask something, not state the rule."""
+    titles = [i["label"] for g in load("quant")["groups"] for i in g["items"]]
+    statements = [t for t in titles if not t.rstrip().endswith(("?", "= ?"))]
+    assert statements == [], f"these titles read as answers, not prompts: {statements}"
 
 
 def test_every_vocab_item_has_a_definition():

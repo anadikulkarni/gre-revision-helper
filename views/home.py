@@ -50,8 +50,10 @@ for column, deck in zip(cards, ("vocab", "quant")):
 with st.expander("How the mountain works", expanded=False):
     st.markdown(
         """
-- **Quant explanations** were rewritten from the spreadsheet: every concept now has
-  a full explanation, a worked example and, where there is a trap, a "watch out".
+- **Both decks are flashcards.** The board shows a prompt — a word, or a question like
+  *"Compound interest formula?"* — you try to recall the answer, then press `D` to check.
+  Quant entries open with the formula or rule, then explain it, work an example and,
+  where there is a trap, add a "watch out".
 - **The slider is the day.** Day 1 shows group 1, day 5 shows groups 1–5, day 16 shows all
   16 groups. Each new day adds a column on the right and you re-climb everything to its left.
 - **Marks belong to a day.** `G` and `R` record *how today went*; move to the next day and

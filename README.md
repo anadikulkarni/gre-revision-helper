@@ -3,10 +3,15 @@
 A Gregmat-style revision *mountain* for my own GRE notes, built from
 `data/GRE_Prep.xlsx`. Two boards:
 
-| Page      | Source                | Content                                          |
-| --------- | --------------------- | ------------------------------------------------ |
-| **Vocab** | `New Words` sheet     | 733 words → 16 groups of 45–46                    |
-| **Quant** | `content/quant/*.md`  | 162 concepts → 16 topic-coherent groups of 8–12   |
+| Page      | Source                | Content                                           |
+| --------- | --------------------- | ------------------------------------------------- |
+| **Vocab** | `New Words` sheet     | 733 words → 16 groups of 45–46                     |
+| **Quant** | `content/quant/*.md`  | 188 concepts → 16 topic-coherent groups of 10–13   |
+
+Both decks work the same way: the board shows a **prompt** — a word, or a question
+like *"Compound interest formula?"* — you try to recall the answer, then press `D`
+to check. Quant entries open with the formula or rule, then explain it and work an
+example.
 
 The **day slider (1–16)** is the mountain: day 1 shows group 1, day 5 shows
 groups 1–5, day 16 shows everything. Each new day adds a column on the right and
@@ -28,7 +33,7 @@ to have your phone and your laptop share one climb.
 | Key         | Action                                                      |
 | ----------- | ----------------------------------------------------------- |
 | `←` `↑` `↓` `→` | Move between items (`h` `j` `k` `l` work too). Up/down walks into the next column at the end of one. |
-| `D` / `Space` | Reveal the definition (vocab) or explanation + example (quant) |
+| `D` / `Space` | Reveal the answer — definition (vocab), or formula + explanation + example (quant) |
 | `G`         | I knew this → green                                          |
 | `R`         | I forgot this → red                                          |
 | `W`         | Clear the mark (back to white)                               |
@@ -146,24 +151,33 @@ split into 16 even groups. Repeated words are dropped with a warning.
 
 The quant notes were rewritten from the original `Quant Notes` sheet into
 `content/quant/`, one markdown file per day, because long explanations and worked
-examples do not fit comfortably in a spreadsheet cell. Each entry looks like this:
+examples do not fit comfortably in a spreadsheet cell. Each entry is a flashcard:
+the `##` heading is the prompt you see on the board, and the first block is the
+answer you were trying to recall.
 
 ```markdown
-## Counting the factors of a number
+## How many factors does a number have?
 covers: 25
 
-Prime factorize, add 1 to every exponent, and multiply those results together...
+### Answer
+Prime factorize, **add 1 to every exponent, and multiply**. For
+`60 = 2^2 x 3^1 x 5^1` that is `3 x 2 x 2 = 12`.
+
+### Explanation
+Building a factor means choosing how many copies of each prime to take...
 
 ### Example
-How many factors does 60 have? `60 = 2^2 x 3^1 x 5^1`, so...
+60's twelve factors: 1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 30, 60.
 
 ### Watch out
-This counts *all* factors including 1 and the number itself.
+The count includes 1 and the number itself.
 ```
 
 - The `# heading` on line 1 is the day's name; the file's numeric prefix is its day.
-- `## ` starts a concept, `### ` starts a labelled block. Text between them is the
-  explanation. `**bold**`, `*italic*` and `` `code` `` render in the app.
+- `## ` starts a concept — write it as a question that does **not** give the answer
+  away. `### ` starts a labelled block; the first one must be `Answer` (or
+  `In short` for the few entries that are not worth quizzing). `**bold**`,
+  `*italic*`, `` `code` `` and `- ` bullet lists all render in the app.
 - `covers:` lists audit ids from `content/quant/_source_concepts.json`, the frozen
   list of the 162 concepts in the original sheet. Every id must be claimed by some
   entry, so nothing can be silently dropped in a rewrite. Use `covers: new` for a
@@ -187,9 +201,9 @@ one-way — the markdown stays the source of truth.
 python -m pytest tests -q
 ```
 
-They cover the deck build (all 162 original concepts still covered, every entry
-explained with an example), the three shuffle modes, and the day-scoped merge
-logic behind cross-device sync.
+They cover the deck build (all 162 original concepts still covered, every entry a
+prompt with an answer and an example), the three shuffle modes, and the day-scoped
+merge logic behind cross-device sync.
 
 ## Layout
 

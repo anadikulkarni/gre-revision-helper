@@ -267,7 +267,13 @@ function renderDetail() {
   if (!state.revealed && !state.ui.alwaysDef) {
     const hidden = document.createElement("div");
     hidden.className = "detail-hidden";
-    hidden.innerHTML = "Press <b>D</b> to reveal";
+    hidden.replaceChildren(
+      document.createTextNode("Try to recall it, then press "),
+      Object.assign(document.createElement("b"), { textContent: "D" }),
+      document.createTextNode(
+        ` to check the ${(state.payload.reveal || "definition").toLowerCase()}`
+      )
+    );
     card.appendChild(hidden);
   } else if (!(detail.blocks || []).length) {
     const hidden = document.createElement("div");
@@ -275,9 +281,9 @@ function renderDetail() {
     hidden.textContent = "No explanation in the spreadsheet for this one.";
     card.appendChild(hidden);
   } else {
-    detail.blocks.forEach((block) => {
+    detail.blocks.forEach((block, index) => {
       const wrap = document.createElement("div");
-      wrap.className = "block";
+      wrap.className = index === 0 ? "block block-answer" : "block";
       const label = document.createElement("div");
       label.className = "block-label";
       label.textContent = block.label;
@@ -582,6 +588,8 @@ function onRender(event) {
   dom.alwaysDef.checked = !!state.ui.alwaysDef;
   dom.autoAdvance.checked = !!state.ui.autoAdvance;
   document.documentElement.style.setProperty("--col-w", `${payload.column_width || 260}px`);
+  const revealLabel = document.getElementById("reveal-label");
+  if (revealLabel) revealLabel.textContent = payload.reveal || "Definition";
 
   render();
   dom.app.focus({ preventScroll: true });

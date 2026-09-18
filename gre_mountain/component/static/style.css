@@ -262,7 +262,21 @@ body {
 }
 
 .block + .block {
-  margin-top: 10px;
+  margin-top: 12px;
+}
+
+/* The first block is the answer you were trying to recall. */
+.block-answer {
+  border-left: 3px solid var(--accent);
+  padding: 2px 0 2px 10px;
+}
+
+.block-answer .block-text {
+  font-size: 15px;
+}
+
+.block-answer .block-label {
+  color: var(--accent);
 }
 
 .block-label {

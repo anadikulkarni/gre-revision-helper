@@ -23,8 +23,8 @@ ROOT = Path(__file__).resolve().parent.parent
 DECK = ROOT / "data" / "quant.json"
 OUT = ROOT / "data" / "GRE_Quant_Notes_rewritten.xlsx"
 
-HEADERS = ["Day", "Group", "Concept", "Explanation", "Example", "Watch out"]
-WIDTHS = [6, 32, 46, 90, 90, 60]
+HEADERS = ["Day", "Group", "Prompt", "Answer", "Explanation", "Example", "Watch out"]
+WIDTHS = [6, 30, 46, 60, 80, 80, 55]
 
 
 def main() -> None:
@@ -40,6 +40,7 @@ def main() -> None:
     for day, group in enumerate(deck["groups"], start=1):
         for item in group["items"]:
             blocks = {b["label"]: b["text"] for b in item["blocks"]}
+            answer = blocks.get("Answer") or blocks.get("In short", "")
             explanation = "\n\n".join(
                 text for label, text in blocks.items() if label.startswith("Explanation")
             )
@@ -47,7 +48,15 @@ def main() -> None:
                 text for label, text in blocks.items() if label.startswith("Example")
             )
             sheet.append(
-                [day, group["title"], item["label"], explanation, example, blocks.get("Watch out", "")]
+                [
+                    day,
+                    group["title"],
+                    item["label"],
+                    answer,
+                    explanation,
+                    example,
+                    blocks.get("Watch out", ""),
+                ]
             )
 
     header_fill = PatternFill("solid", fgColor="1F6FEB")
