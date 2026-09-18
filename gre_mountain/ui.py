@@ -208,6 +208,7 @@ def render_deck_page(deck: str) -> None:
         "marks": progress.marks(deck, day),
         "ui": ui_state,
         "height": height,
+        "reveal": meta["reveal"],
         "column_width": meta["column_width"],
     }
 

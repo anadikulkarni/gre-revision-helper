@@ -46,6 +46,11 @@ OUT_DIR = ROOT / "data"
 VOCAB_SHEET = "New Words"
 GROUP_COUNT = 16
 
+# The first block of a quant entry is what you are trying to recall before
+# pressing D: the formula or rule for a question-style prompt, or a one-line
+# summary for the entries that are not worth turning into a quiz.
+ANSWER_LABELS = {"Answer", "In short"}
+
 
 def cell(value) -> str:
     if value is None:
@@ -129,7 +134,7 @@ def parse_day(path: Path, warnings: list[str]) -> dict:
             text = "\n".join(block["lines"]).strip()
             if text:
                 entry["blocks"].append({"label": block["label"], "text": text})
-            else:
+            elif not block["implicit"]:
                 warnings.append(f"{path.name}: {entry['label']!r} has an empty {block['label']!r}")
         block = None
 
@@ -140,7 +145,12 @@ def parse_day(path: Path, warnings: list[str]) -> dict:
             if not entry["covers"] and not entry["new"]:
                 warnings.append(f"{path.name}: {entry['label']!r} has no 'covers:' line")
             if not entry["blocks"]:
-                warnings.append(f"{path.name}: {entry['label']!r} has no explanation")
+                warnings.append(f"{path.name}: {entry['label']!r} has no content")
+            elif entry["blocks"][0]["label"] not in ANSWER_LABELS:
+                warnings.append(
+                    f"{path.name}: {entry['label']!r} starts with "
+                    f"{entry['blocks'][0]['label']!r}, not one of {sorted(ANSWER_LABELS)}"
+                )
             group["items"].append(entry)
         entry = None
 
@@ -156,10 +166,12 @@ def parse_day(path: Path, warnings: list[str]) -> dict:
                 "split": False,
                 "blocks": [],
             }
-            block = {"label": "Explanation", "lines": []}
+            # Anything before the first "### " heading is the explanation; entries
+            # that open straight with "### Answer" simply leave it empty.
+            block = {"label": "Explanation", "lines": [], "implicit": True}
         elif line.startswith("### "):
             close_block()
-            block = {"label": line[4:].strip(), "lines": []}
+            block = {"label": line[4:].strip(), "lines": [], "implicit": False}
         elif entry is not None and not entry["blocks"] and line.lower().startswith("covers:"):
             # "covers: new" marks a concept added by the rewrite rather than one
             # carried over from the original sheet.
