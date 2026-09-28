@@ -3,18 +3,18 @@
 A Gregmat-style revision *mountain* for my own GRE notes, built from
 `data/GRE_Prep.xlsx`. Two boards:
 
-| Page      | Source                | Content                                           |
-| --------- | --------------------- | ------------------------------------------------- |
-| **Vocab** | `New Words` sheet     | 733 words → 16 groups of 45–46                     |
-| **Quant** | `content/quant/*.md`  | 188 concepts → 16 topic-coherent groups of 10–13   |
+| Page      | Source                | Content                                          |
+| --------- | --------------------- | ------------------------------------------------ |
+| **Vocab** | `New Words` sheet     | 454 words → 6 shuffled groups of 75–76            |
+| **Quant** | `content/quant/*.md`  | 148 concepts → 6 topic-coherent groups of 16–31   |
 
 Both decks work the same way: the board shows a **prompt** — a word, or a question
 like *"Compound interest formula?"* — you try to recall the answer, then press `D`
 to check. Quant entries open with the formula or rule, then explain it and work an
 example.
 
-The **day slider (1–16)** is the mountain: day 1 shows group 1, day 5 shows
-groups 1–5, day 16 shows everything. Each new day adds a column on the right and
+The **day slider (1–6)** is the mountain: day 1 shows group 1, day 4 shows
+groups 1–4, day 6 shows everything. Each new day adds a column on the right and
 you re-climb every column to its left.
 
 ## Running it
@@ -48,7 +48,8 @@ its own. `↺ Reset` clears the current day only; the sidebar can reset a whole 
 
 **Order** (dropdown above the board):
 
-- *Default order* — the spreadsheet order for vocab, the curated topic order for quant.
+- *Default order* — a fixed shuffle for vocab (so synonyms are not adjacent), the
+  curated topic order for quant.
 - *Shuffle within groups* — each column is scrambled, group membership unchanged.
 - *Shuffle all* — the items of the groups revealed so far are dealt back across
   those same columns. On day 2 that is groups 1 and 2 mixed into columns 1 and 2;
@@ -57,9 +58,15 @@ its own. `↺ Reset` clears the current day only; the sidebar can reset a whole 
 
 Shuffles are stable (the same order every rerun) until you press `🔀 Reshuffle`.
 
-**Filter** (under the board) narrows the climb to *not marked yet*, *green only*,
-*red only* or *red + not marked* — the one that matters once day 14 has 640 words
-on screen. The search box next to it filters by text.
+**Filter** (under the board) narrows the climb:
+
+- *Adaptive* hides anything you have marked green **three days running** — once a
+  word has been known on three consecutive days it is retired and stops competing
+  for your attention. It disappears the moment the third green lands, and the tally
+  counts how many are retired. Switch back to *Show all* to see them again.
+- *Not marked yet*, *green only*, *red only*, *red + not marked* do what they say.
+
+The search box next to it filters by text.
 
 ## Syncing between devices
 
@@ -110,14 +117,23 @@ That policy lets anyone with the anon key read and write the table, which is fin
 for a private study app on a URL nobody else has — tighten it if that is not true
 for you.
 
-### How merging works
+### When it writes, and how it merges
 
-Marks are flushed ~0.6s after you stop pressing keys (and at least every 4s while
-you keep going). Each flush re-reads the remote document and applies only the
-marks that changed, so the phone and the laptop merge instead of overwriting each
-other. A fresh page load pulls the latest, and an open tab re-reads it at most
-every two minutes; `⟳ Sync` forces it. If the network is down the app keeps the
-changes queued, tells you, and retries.
+**Marking never touches the network.** Changes are queued in the session and
+pushed when you press **💾 Save**, when the autosave timer expires (2 minutes by
+default; set it to 0 in the sidebar for save-only), or when you move to another
+day. Writing on every keypress is what tripped GitHub's *secondary* rate limit,
+which throttles bursts of writes to the same endpoint regardless of how much of
+your hourly quota is left.
+
+Each push re-reads the stored document and replays only the queued changes onto
+it, so the phone and the laptop merge instead of overwriting each other. A fresh
+page load pulls the latest; ⟳ Pull forces it, and is disabled while you have
+unsaved work so it cannot clobber it. If the push fails, the changes stay queued
+and the app says so — press Save again.
+
+The one thing to know: unsaved marks live in the browser session, so pressing Save
+before you close the tab is what makes them permanent.
 
 ## Deploying to Streamlit Community Cloud
 
@@ -144,8 +160,13 @@ python scripts/build_data.py --check  # non-zero exit if anything looks off
 ### Vocab
 
 Comes from the `New Words` sheet of `data/GRE_Prep.xlsx`: one row is one word
-(`Word`, `Definition`, `Synonyms`, `Example`). Rows keep their sheet order and are
-split into 16 even groups. Repeated words are dropped with a warning.
+(`Word`, `Definition`, `Synonyms`, `Example`). Words listed in
+`content/vocab/memorized.txt` are dropped — that file is a plain list, one word per
+line, and near-misses are matched and reported so a typo does not silently keep a
+word on the board. What is left is shuffled with a fixed seed and split into 6 even
+groups. The shuffle matters: the sheet keeps synonyms next to each other, which
+makes them far too easy to guess in order. The seed is fixed so a word never
+wanders into another group and loses its progress.
 
 ### Quant
 
@@ -180,16 +201,17 @@ The count includes 1 and the number itself.
   `*italic*`, `` `code` `` and `- ` bullet lists all render in the app.
 - `covers:` lists audit ids from `content/quant/_source_concepts.json`, the frozen
   list of the 162 concepts in the original sheet. Every id must be claimed by some
-  entry, so nothing can be silently dropped in a rewrite. Use `covers: new` for a
-  concept that was not in the original, and `covers: 23 (split)` when one original
-  concept is deliberately taught across two entries.
+  entry — or be listed in `content/quant/_retired_concepts.json`, which records the
+  26 concepts deliberately dropped as already memorized. Nothing can be lost by
+  accident. Use `covers: new` for a concept that was not in the original, and
+  `covers: 23 (split)` when one original concept is deliberately taught across two
+  entries.
 - The build prints a warning for any uncovered id, and `tests/test_mountain.py`
   fails on one.
 
-The days run number sense → divisibility → primes and factors → GCF/LCM and
-factorials → series → fractions and percents → exponents → algebra → coordinate
-geometry → plane geometry → area and volume → statistics → counting → probability,
-so each day continues where the previous one stopped.
+The six days run number properties and factors → ranges, series, percents and
+rates → exponents, algebra and functions → coordinate geometry and angles →
+triangles, area and solids → statistics, counting and probability.
 
 To read the same notes in a spreadsheet, `python scripts/export_quant_xlsx.py`
 writes `data/GRE_Quant_Notes_rewritten.xlsx` (one row per concept). That export is
@@ -217,6 +239,7 @@ gre_mountain/
   ui.py                   page chrome shared by both mountains
   component/static/       the board itself (vanilla JS, no build step)
 content/quant/            the rewritten quant notes, one file per day
+content/vocab/memorized.txt  words to leave off the vocab board
 scripts/build_data.py     workbook + markdown -> data/*.json
 scripts/export_quant_xlsx.py  the quant notes as a spreadsheet
 data/GRE_Prep.xlsx        the vocab source of truth

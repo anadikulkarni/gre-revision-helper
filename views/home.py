@@ -54,8 +54,8 @@ with st.expander("How the mountain works", expanded=False):
   *"Compound interest formula?"* — you try to recall the answer, then press `D` to check.
   Quant entries open with the formula or rule, then explain it, work an example and,
   where there is a trap, add a "watch out".
-- **The slider is the day.** Day 1 shows group 1, day 5 shows groups 1–5, day 16 shows all
-  16 groups. Each new day adds a column on the right and you re-climb everything to its left.
+- **The slider is the day.** Day 1 shows group 1, day 4 shows groups 1–4, day 6 shows all
+  6 groups. Each new day adds a column on the right and you re-climb everything to its left.
 - **Marks belong to a day.** `G` and `R` record *how today went*; move to the next day and
   every item starts unmarked again, so the mountain is worth climbing more than once.
 - **Keyboard** (click the board once so it has focus): `←↑↓→` move, `D` reveals the
@@ -66,8 +66,11 @@ with st.expander("How the mountain works", expanded=False):
   scrambles each column, *Shuffle all* deals the groups revealed so far back across those
   same columns (on day 2: groups 1 and 2 mixed into columns 1 and 2, never anything from
   a later group). The detail panel still tells you which group an item came from.
-- **Filters** under the board narrow the climb to what you got wrong, or to what you have
-  not marked yet — handy once day 12 has 550 words on screen.
+- **Adaptive filter.** Under the board, *Adaptive* hides anything marked green three days
+  running — those are retired and stop coming back. The other filters narrow the climb to
+  what you got wrong, or to what you have not marked yet.
+- **Saving is explicit.** Marks stay on this device until you press 💾 Save (or the autosave
+  timer runs out, or you change day). That is what keeps GitHub from rate-limiting the gist.
         """
     )
 
@@ -112,15 +115,30 @@ with left:
                 "`gre-mountain-default.json` and every device you open the app on "
                 "reads and writes that one document. Supabase works too — see the README."
             )
-    if progress.pending_count():
-        st.error(f"{progress.pending_count()} change(s) could not be saved.")
-        if st.button("Retry saving"):
-            progress.retry_pending()
-            st.rerun()
-    if st.button("⟳ Pull the latest progress"):
-        progress.retry_pending()
+    unsaved = progress.unsaved_count()
+    st.markdown(
+        f"**{unsaved} unsaved change(s)** — marks stay on this device until you save."
+        if unsaved
+        else "**Everything is saved.**"
+    )
+    save_col, pull_col = st.columns(2)
+    if save_col.button("💾 Save now", width="stretch", disabled=not unsaved, type="primary"):
+        if progress.save():
+            st.toast("Progress saved", icon="💾")
+        st.rerun()
+    if pull_col.button(
+        "⟳ Pull the latest progress",
+        width="stretch",
+        disabled=bool(unsaved),
+        help="Save first — pulling replaces the local copy with the stored one.",
+    ):
         progress.document(refresh=True)
         st.rerun()
+    st.caption(
+        "Marking never writes to the backend on its own; changes are pushed when you "
+        "press Save, when the autosave timer runs out, or when you change day. That is "
+        "what keeps GitHub from rate-limiting the gist."
+    )
 
     profile_name = st.text_input(
         "Profile",
@@ -139,6 +157,22 @@ with right:
         file_name=f"gre-mountain-{store.profile}.json",
         mime="application/json",
     )
+    st.markdown("**Start over**")
+    if st.button("Clear all progress and start a fresh mountain"):
+        st.session_state["confirm_fresh"] = True
+    if st.session_state.get("confirm_fresh"):
+        st.warning("This clears every mark on both mountains, on every device.")
+        yes, no = st.columns(2)
+        if yes.button("Yes, clear everything", width="stretch"):
+            progress.clear_everything()
+            progress.save()
+            st.session_state["confirm_fresh"] = False
+            st.success("Cleared. Both mountains start from day 1.")
+            st.rerun()
+        if no.button("Cancel", width="stretch"):
+            st.session_state["confirm_fresh"] = False
+            st.rerun()
+
     uploaded = st.file_uploader("Restore a backup", type="json")
     if uploaded is not None:
         if st.button("Replace my progress with this file", type="primary"):

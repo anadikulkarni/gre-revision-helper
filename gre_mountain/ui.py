@@ -12,6 +12,15 @@ from .component import mountain_board
 UI_DEFAULTS = {"filter": "all", "alwaysDef": False, "autoAdvance": True}
 
 
+def _autosave_minutes() -> int:
+    """Minutes of unsaved work before the app pushes without being asked."""
+    value = progress.setting("app", "autosave_minutes", progress.DEFAULT_AUTOSAVE_MINUTES)
+    try:
+        return max(0, int(value))
+    except (TypeError, ValueError):
+        return progress.DEFAULT_AUTOSAVE_MINUTES
+
+
 def _inject_css() -> None:
     st.markdown(
         """
@@ -52,10 +61,12 @@ def _step_day(deck: str, delta: int) -> None:
     key = _day_key(deck)
     st.session_state[key] = max(1, min(decks.TOTAL_DAYS, st.session_state[key] + delta))
     progress.set_setting(deck, "day", st.session_state[key])
+    progress.save()  # a day change ends a stretch of work, so bank it
 
 
 def _on_day_change(deck: str) -> None:
     progress.set_setting(deck, "day", st.session_state[_day_key(deck)])
+    progress.save()
 
 
 def _on_shuffle_change(deck: str) -> None:
@@ -73,6 +84,7 @@ def render_deck_page(deck: str) -> None:
     # fold it in before drawing anything: the counters below then show live numbers
     # without costing a second rerun (which would re-send the whole board payload).
     _handle_board_result(deck, st.session_state.get(f"board_{deck}"))
+    progress.maybe_autosave(_autosave_minutes())
 
     day_key = _day_key(deck)
     if day_key not in st.session_state:
@@ -160,15 +172,18 @@ def render_deck_page(deck: str) -> None:
         ):
             progress.clear_day(deck, day)
             st.rerun()
+    unsaved = progress.unsaved_count()
     with bar[3]:
         if st.button(
-            "⟳ Sync",
-            key=f"sync_{deck}",
+            f"💾 Save ({unsaved})" if unsaved else "💾 Saved",
+            key=f"save_{deck}",
             width="stretch",
-            help="Re-read progress saved on your other devices",
+            type="primary" if unsaved else "secondary",
+            disabled=not unsaved,
+            help="Push this session's marks to your synced copy",
         ):
-            progress.retry_pending()
-            progress.document(refresh=True)
+            if progress.save():
+                st.toast("Progress saved", icon="💾")
             st.rerun()
     with bar[4]:
         counts = decks.tally(deck, day, progress.marks(deck, day))
@@ -182,6 +197,10 @@ def render_deck_page(deck: str) -> None:
 
     if progress.store_error():
         st.warning(f"Progress is not syncing: {progress.store_error()}", icon="⚠️")
+    elif unsaved:
+        minutes = _autosave_minutes()
+        when = f"autosaves in under {minutes} min" if minutes else "autosave is off"
+        st.caption(f"💾 {unsaved} unsaved change(s) — press Save when you finish ({when}).")
 
     # ---------------------------------------------------------------- board
     board = decks.build_board(deck, day, shuffle, st.session_state[reshuffle_key])
@@ -191,6 +210,14 @@ def render_deck_page(deck: str) -> None:
         "autoAdvance": bool(progress.setting(deck, "auto_advance", UI_DEFAULTS["autoAdvance"])),
     }
     height = int(progress.setting(deck, "height", 760) or 760)
+    # Only items already on a run of two or more matter to the adaptive filter.
+    streaks = {
+        item: run
+        for item, run in progress.green_streaks(
+            deck, day, (i["id"] for i in decks.items_up_to(deck, day))
+        ).items()
+        if run >= 2
+    }
     board_key = "|".join(
         [
             deck,
@@ -199,6 +226,7 @@ def render_deck_page(deck: str) -> None:
             str(st.session_state[reshuffle_key]),
             str(progress.revision()),
             progress.profile() or "default",
+            str(len(streaks)),
         ]
     )
     payload: dict[str, Any] = {
@@ -206,6 +234,7 @@ def render_deck_page(deck: str) -> None:
         "columns": board["columns"],
         "details": board["details"],
         "marks": progress.marks(deck, day),
+        "streaks": streaks,
         "ui": ui_state,
         "height": height,
         "reveal": meta["reveal"],
@@ -247,7 +276,7 @@ def _handle_board_result(deck: str, result: dict[str, Any] | None) -> None:
                 }
             )
     if changes:
-        progress.apply_changes(changes)
+        progress.record(changes)
 
 
 def _render_sidebar(deck: str, day: int, height: int) -> None:
@@ -259,11 +288,44 @@ def _render_sidebar(deck: str, day: int, height: int) -> None:
             st.caption(f"Saving to {store.name} · profile `{store.profile}`")
         else:
             st.caption(f"Saving to {store.name} — this device only. See Home for cross-device sync.")
-        if progress.pending_count():
-            st.error(f"{progress.pending_count()} change(s) not saved yet.")
-            if st.button("Retry saving", width="stretch", key=f"retry_{deck}"):
-                progress.retry_pending()
-                st.rerun()
+
+        unsaved = progress.unsaved_count()
+        if unsaved:
+            st.warning(f"{unsaved} change(s) not saved yet.")
+        else:
+            ago = progress.saved_ago()
+            st.caption(
+                "Everything saved"
+                + (f" · {int(ago // 60)} min ago" if ago and ago > 60 else "")
+            )
+        save_col, pull_col = st.columns(2)
+        if save_col.button(
+            "💾 Save", width="stretch", key=f"sb_save_{deck}", disabled=not unsaved
+        ):
+            progress.save()
+            st.rerun()
+        if pull_col.button(
+            "⟳ Pull",
+            width="stretch",
+            key=f"sb_pull_{deck}",
+            disabled=bool(unsaved),
+            help="Re-read progress saved on your other devices",
+        ):
+            progress.document(refresh=True)
+            st.rerun()
+
+        minutes = st.number_input(
+            "Autosave after (minutes)",
+            min_value=0,
+            max_value=60,
+            value=_autosave_minutes(),
+            step=1,
+            key=f"autosave_{deck}",
+            help="0 means progress is only pushed when you press Save.",
+        )
+        if int(minutes) != _autosave_minutes():
+            progress.set_setting("app", "autosave_minutes", int(minutes))
+            st.rerun()
 
         st.divider()
         new_height = st.number_input(

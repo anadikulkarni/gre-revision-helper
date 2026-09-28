@@ -4,7 +4,10 @@
     python scripts/build_data.py --check    # rebuild and fail if anything looks off
 
 Vocab comes from the "New Words" sheet of data/GRE_Prep.xlsx: one row is one
-word, rows keep their sheet order and are split into 16 even groups.
+word. Words listed in content/vocab/memorized.txt are dropped, and the rest are
+shuffled (with a fixed seed, so the order is stable across rebuilds) and split
+into 6 even groups. The shuffle matters because the sheet keeps synonyms next to
+each other, which makes them far too easy to guess in order.
 
 Quant comes from content/quant/*.md, one file per day, written in this shape:
 
@@ -29,8 +32,10 @@ be checked for completeness. Every id must be claimed by exactly one entry.
 from __future__ import annotations
 
 import argparse
+import difflib
 import hashlib
 import json
+import random
 import re
 import sys
 from pathlib import Path
@@ -41,10 +46,16 @@ ROOT = Path(__file__).resolve().parent.parent
 WORKBOOK = ROOT / "data" / "GRE_Prep.xlsx"
 QUANT_CONTENT = ROOT / "content" / "quant"
 SOURCE_CONCEPTS = QUANT_CONTENT / "_source_concepts.json"
+RETIRED_CONCEPTS = QUANT_CONTENT / "_retired_concepts.json"
+MEMORIZED_WORDS = ROOT / "content" / "vocab" / "memorized.txt"
 OUT_DIR = ROOT / "data"
 
 VOCAB_SHEET = "New Words"
-GROUP_COUNT = 16
+GROUP_COUNT = 6
+
+# Any fixed number works; it only has to stay the same between rebuilds so that
+# a word does not wander into a different group and lose its progress.
+VOCAB_SHUFFLE_SEED = "gre-mountain-vocab-v1"
 
 # The first block of a quant entry is what you are trying to recall before
 # pressing D: the formula or rule for a question-style prompt, or a one-line
@@ -80,7 +91,33 @@ def chunk_evenly(items: list, n_groups: int) -> list[list]:
 # --------------------------------------------------------------------------- vocab
 
 
-def build_vocab(warnings: list[str]) -> dict:
+def load_memorized(known_words: dict[str, str], notes: list[str]) -> set[str]:
+    """Normalised words the user says they already know, matched to the deck.
+
+    The list is hand-typed, so a close match is accepted (and reported) and
+    anything that matches nothing at all is reported rather than dropped
+    silently.
+    """
+    if not MEMORIZED_WORDS.exists():
+        return set()
+    matched: set[str] = set()
+    for line in MEMORIZED_WORDS.read_text(encoding="utf-8").splitlines():
+        entry = norm(re.sub(r"\s*\(.*?\)\s*", " ", line))
+        if not entry:
+            continue
+        if entry in known_words:
+            matched.add(entry)
+            continue
+        close = difflib.get_close_matches(entry, list(known_words), n=1, cutoff=0.86)
+        if close:
+            notes.append(f"vocab: memorized {line.strip()!r} matched {known_words[close[0]]!r}")
+            matched.add(close[0])
+        else:
+            notes.append(f"vocab: memorized {line.strip()!r} is not in the deck - ignored")
+    return matched
+
+
+def build_vocab(warnings: list[str], notes: list[str]) -> dict:
     workbook = load_workbook(WORKBOOK, data_only=True, read_only=True)
     if VOCAB_SHEET not in workbook.sheetnames:
         raise SystemExit(f"Sheet {VOCAB_SHEET!r} not found in {WORKBOOK.name}")
@@ -91,14 +128,14 @@ def build_vocab(warnings: list[str]) -> dict:
             rows.append(row[:4])
     workbook.close()
 
-    items, seen = [], set()
+    items, seen = [], {}
     for word, definition, synonyms, example in rows:
         if not word:
             continue
         if norm(word) in seen:
-            warnings.append(f"vocab: duplicate word {word!r} (keeping the first entry)")
+            notes.append(f"vocab: duplicate word {word!r} (keeping the first entry)")
             continue
-        seen.add(norm(word))
+        seen[norm(word)] = word
         blocks = [{"label": "Definition", "text": definition}]
         if synonyms:
             blocks.append({"label": "Synonyms", "text": synonyms})
@@ -108,9 +145,16 @@ def build_vocab(warnings: list[str]) -> dict:
         if not definition:
             warnings.append(f"vocab: {word!r} has no definition")
 
+    memorized = load_memorized(seen, notes)
+    kept = [item for item in items if norm(item["label"]) not in memorized]
+    notes.append(f"vocab: dropped {len(items) - len(kept)} memorized word(s), {len(kept)} left")
+
+    # Shuffle so that synonyms, which sit together in the sheet, are spread out.
+    random.Random(VOCAB_SHUFFLE_SEED).shuffle(kept)
+
     groups = [
         {"title": f"Vocab {index}", "items": chunk}
-        for index, chunk in enumerate(chunk_evenly(items, GROUP_COUNT), start=1)
+        for index, chunk in enumerate(chunk_evenly(kept, GROUP_COUNT), start=1)
     ]
     return {"deck": "vocab", "noun": "word", "groups": groups}
 
@@ -189,7 +233,7 @@ def parse_day(path: Path, warnings: list[str]) -> dict:
     return group
 
 
-def build_quant(warnings: list[str]) -> dict:
+def build_quant(warnings: list[str], notes: list[str]) -> dict:
     files = sorted(QUANT_CONTENT.glob("[0-9]*.md"))
     if len(files) != GROUP_COUNT:
         raise SystemExit(
@@ -213,9 +257,17 @@ def build_quant(warnings: list[str]) -> dict:
                 f"quant: source concept {audit_id} ({source[str(audit_id)][:40]!r}) is claimed by "
                 f"{len(items)} entries without '(split)': {[i['label'] for i in items]}"
             )
+    retired = set()
+    if RETIRED_CONCEPTS.exists():
+        retired = {
+            int(k) for k in json.loads(RETIRED_CONCEPTS.read_text(encoding="utf-8"))["concepts"]
+        }
     for audit_id, title in sorted(source.items(), key=lambda kv: int(kv[0])):
-        if int(audit_id) not in claimed:
-            warnings.append(f"quant: source concept {audit_id} ({title[:60]!r}) is not covered")
+        if int(audit_id) in claimed or int(audit_id) in retired:
+            continue
+        warnings.append(f"quant: source concept {audit_id} ({title[:60]!r}) is not covered")
+    if retired:
+        notes.append(f"quant: {len(retired)} source concept(s) retired as already memorized")
 
     seen: set[str] = set()
     for group in groups:
@@ -238,7 +290,8 @@ def main() -> int:
     args = parser.parse_args()
 
     warnings: list[str] = []
-    decks = {"vocab": build_vocab(warnings), "quant": build_quant(warnings)}
+    notes: list[str] = []
+    decks = {"vocab": build_vocab(warnings, notes), "quant": build_quant(warnings, notes)}
 
     for name, deck in decks.items():
         path = OUT_DIR / f"{name}.json"
@@ -250,6 +303,8 @@ def main() -> int:
             f"({words:,} words) -> {path.relative_to(ROOT)}"
         )
 
+    for note in notes:
+        print(f"  · {note}")
     for warning in warnings:
         print(f"  ! {warning}")
     if warnings and args.check:

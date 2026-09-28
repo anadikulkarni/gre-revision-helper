@@ -1,8 +1,14 @@
-"""Session-level progress state: read once, write small deltas, survive conflicts.
+"""Session-level progress state: mark locally, push to the backend on save.
 
 Marks are stored per *day*: pressing G on day 5 records "I knew this on day 5".
 Move the slider to day 6 and every item starts unmarked again, which is what
 makes the mountain worth climbing a second time.
+
+Marking does **not** touch the network. Every change is applied to the in-memory
+document and queued; the queue is pushed when you press Save, when the autosave
+timer expires, or when you move to another day. Writing on every keypress is
+what tripped GitHub's secondary rate limit, which blocks bursts of writes to the
+same endpoint.
 """
 
 from __future__ import annotations
@@ -22,11 +28,16 @@ ERROR = "_gre_store_error"
 PROFILE = "_gre_profile"
 REVISION = "_gre_revision"
 LOADED_AT = "_gre_loaded_at"
+DIRTY_SINCE = "_gre_dirty_since"
+SAVED_AT = "_gre_saved_at"
 
-# How stale the in-memory copy may get before a rerun re-reads the remote one.
-# This is what makes "marked on my phone, carried on on my laptop" feel automatic
-# without asking the storage backend a question on every single keypress.
-AUTO_REFRESH_SECONDS = 120
+# How stale a *clean* in-memory copy may get before a rerun re-reads the remote
+# one. Never happens while there are unsaved changes.
+AUTO_REFRESH_SECONDS = 300
+
+# Default minutes before queued changes are pushed without being asked. 0 means
+# "only when I press Save".
+DEFAULT_AUTOSAVE_MINUTES = 2
 
 
 # --------------------------------------------------------------------------- store
@@ -130,21 +141,29 @@ def _apply(doc: dict[str, Any], change: dict[str, Any]) -> None:
         doc.setdefault("settings", {})
 
 
-def apply_changes(changes: Iterable[dict[str, Any]]) -> None:
-    """Apply changes locally, then merge them onto the freshly fetched remote copy.
-
-    Fetching before writing is what lets the phone and the laptop both mark
-    things without one of them overwriting the other's day.
-    """
+def record(changes: Iterable[dict[str, Any]]) -> None:
+    """Apply changes to the in-memory document and queue them. No network."""
     changes = list(changes)
     if not changes:
         return
-
     local = document()
     for change in changes:
         _apply(local, change)
+    st.session_state[PENDING] = st.session_state.get(PENDING, []) + changes
+    st.session_state.setdefault(DIRTY_SINCE, time.time())
 
-    queue = st.session_state.get(PENDING, []) + changes
+
+def save() -> bool:
+    """Push the queued changes onto a freshly fetched remote copy.
+
+    Fetching before writing is what lets the phone and the laptop both mark
+    things without one of them overwriting the other's day. Returns True when
+    there was nothing to do or the push succeeded.
+    """
+    queue = st.session_state.get(PENDING, [])
+    if not queue:
+        return True
+
     store = get_store()
     try:
         remote = store.load()
@@ -154,25 +173,40 @@ def apply_changes(changes: Iterable[dict[str, Any]]) -> None:
             _apply(remote, change)
         store.save(storage.stamp(remote))
     except StorageError as exc:
-        # Keep the change queued; the local document already reflects it.
-        st.session_state[PENDING] = queue
-        _set_error(f"{exc}  (holding {len(queue)} unsaved change(s))")
-        return
+        # Keep the queue; the local document already reflects every change.
+        _set_error(f"{exc}  ({len(queue)} change(s) still unsaved)")
+        return False
 
     st.session_state[PENDING] = []
+    st.session_state.pop(DIRTY_SINCE, None)
     st.session_state[DOC] = remote
     st.session_state[LOADED_AT] = time.time()
+    st.session_state[SAVED_AT] = time.time()
     _set_error("")
+    return True
 
 
-def retry_pending() -> None:
-    """Push whatever failed to save last time, then re-read the remote copy."""
-    queue = st.session_state.get(PENDING, [])
-    if not queue:
-        document(refresh=True)
-        return
-    st.session_state[PENDING] = []
-    apply_changes(queue)
+def unsaved_count() -> int:
+    return len(st.session_state.get(PENDING, []))
+
+
+def unsaved_for_seconds() -> float:
+    since = st.session_state.get(DIRTY_SINCE)
+    return 0.0 if since is None else time.time() - since
+
+
+def saved_ago() -> float | None:
+    saved = st.session_state.get(SAVED_AT)
+    return None if saved is None else time.time() - saved
+
+
+def maybe_autosave(minutes: int) -> bool:
+    """Push queued changes once they have been waiting longer than `minutes`."""
+    if minutes <= 0 or not unsaved_count():
+        return False
+    if unsaved_for_seconds() < minutes * 60:
+        return False
+    return save()
 
 
 # --------------------------------------------------------------------------- accessors
@@ -193,7 +227,32 @@ def setting(deck: str, key: str, default: Any = None) -> Any:
 def set_setting(deck: str, key: str, value: Any) -> None:
     if setting(deck, key) == value:
         return
-    apply_changes([{"kind": "setting", "deck": deck, "key": key, "value": value}])
+    record([{"kind": "setting", "deck": deck, "key": key, "value": value}])
+
+
+def streaks_from(marks_by_day: dict[str, dict[str, str]], day: int, item_ids: Iterable[str]) -> dict[str, int]:
+    """How many days in a row, ending yesterday, each item has been green.
+
+    Walking backwards from `day - 1` and dropping an item the moment it is not
+    green gives the length of its *current* run, which is what the adaptive
+    filter uses to retire an item that has been known three days running.
+    """
+    alive = set(item_ids)
+    streaks: dict[str, int] = {}
+    for earlier in range(day - 1, 0, -1):
+        if not alive:
+            break
+        day_marks = marks_by_day.get(str(earlier), {})
+        for item in list(alive):
+            if day_marks.get(item) == "green":
+                streaks[item] = streaks.get(item, 0) + 1
+            else:
+                alive.discard(item)
+    return streaks
+
+
+def green_streaks(deck: str, day: int, item_ids: Iterable[str]) -> dict[str, int]:
+    return streaks_from(all_marks(deck), day, item_ids)
 
 
 def diff_marks(deck: str, day: int, incoming: dict[str, str]) -> list[dict[str, Any]]:
@@ -210,15 +269,21 @@ def diff_marks(deck: str, day: int, incoming: dict[str, str]) -> list[dict[str, 
 
 
 def clear_day(deck: str, day: int) -> None:
-    apply_changes([{"kind": "clear_day", "deck": deck, "day": day}])
+    record([{"kind": "clear_day", "deck": deck, "day": day}])
     bump_revision()
 
 
 def clear_deck(deck: str) -> None:
-    apply_changes([{"kind": "clear_deck", "deck": deck}])
+    record([{"kind": "clear_deck", "deck": deck}])
+    bump_revision()
+
+
+def clear_everything() -> None:
+    """Wipe every mark in every deck - used to start a fresh mountain."""
+    record([{"kind": "clear_all"}])
     bump_revision()
 
 
 def replace_document(new_document: dict[str, Any]) -> None:
-    apply_changes([{"kind": "replace", "document": new_document}])
+    record([{"kind": "replace", "document": new_document}])
     bump_revision()
