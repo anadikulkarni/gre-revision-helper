@@ -1,8 +1,11 @@
 /* The mountain board: renders the group columns, owns selection + marking,
    and reports marks and UI preferences back to Streamlit (debounced). */
 
+const MASTERY_DAYS = 3;
+
 const state = {
   payload: null,
+  streaks: {},
   boardKey: null,
   marks: {},
   ui: { filter: "all", alwaysDef: false, autoAdvance: true },
@@ -37,9 +40,19 @@ function allItems() {
   return out;
 }
 
+/** True once an item has been green three days running (today may be day three). */
+function isMastered(id) {
+  const streak = state.streaks[id] || 0;
+  if (streak >= MASTERY_DAYS) return true;
+  return streak >= MASTERY_DAYS - 1 && state.marks[id] === "green";
+}
+
 function matchesFilter(id) {
   const status = state.marks[id] || "";
   switch (state.ui.filter) {
+    case "adaptive":
+      // Everything except what you have already proved you know.
+      return !isMastered(id);
     case "green":
       return status === "green";
     case "red":
@@ -308,7 +321,25 @@ function renderTally() {
     else if (status === "red") red += 1;
   });
   const left = items.length - green - red;
-  dom.tally.innerHTML = `<b class="g">${green}</b> known &middot; <b class="r">${red}</b> forgot &middot; ${left} left of ${items.length}`;
+  const mastered = items.filter(({ item }) => isMastered(item.id)).length;
+  dom.tally.replaceChildren();
+  const bits = [
+    [`${green}`, "g", " known"],
+    [`${red}`, "r", " forgot"],
+  ];
+  bits.forEach(([value, cls, label], index) => {
+    if (index) dom.tally.appendChild(document.createTextNode(" \u00b7 "));
+    const strong = document.createElement("b");
+    strong.className = cls;
+    strong.textContent = value;
+    dom.tally.append(strong, document.createTextNode(label));
+  });
+  dom.tally.appendChild(
+    document.createTextNode(
+      ` \u00b7 ${left} left of ${items.length}` +
+        (mastered ? ` \u00b7 ${mastered} retired` : "")
+    )
+  );
 }
 
 /** Shrink the iframe to the content on short days, scroll inside it on long ones. */
@@ -580,6 +611,7 @@ function onRender(event) {
   state.payload = payload;
   state.boardKey = payload.board_key;
   state.marks = Object.assign({}, payload.marks || {});
+  state.streaks = payload.streaks || {};
   state.ui = Object.assign({ filter: "all", alwaysDef: false, autoAdvance: true }, payload.ui || {});
   state.selectedId = null;
   state.revealed = state.ui.alwaysDef;

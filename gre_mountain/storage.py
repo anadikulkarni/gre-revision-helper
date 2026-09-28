@@ -37,6 +37,31 @@ import requests
 
 GIST_DESCRIPTION = "GRE revision mountain progress"
 REQUEST_TIMEOUT = 20
+MAX_RETRY_WAIT = 10
+
+
+def _is_rate_limited(response) -> bool:
+    body = (response.text or "").lower()
+    return (
+        "rate limit" in body
+        or "secondary rate" in body
+        or response.headers.get("x-ratelimit-remaining") == "0"
+        or "retry-after" in {k.lower() for k in response.headers}
+    )
+
+
+def _retry_after_seconds(response) -> float:
+    for header in ("retry-after", "x-ratelimit-reset"):
+        value = response.headers.get(header)
+        if not value:
+            continue
+        try:
+            seconds = float(value)
+        except ValueError:
+            continue
+        # x-ratelimit-reset is an absolute epoch; retry-after is a delay.
+        return max(1.0, seconds - time.time() if seconds > 10**8 else seconds)
+    return 2.0
 
 
 class StorageError(RuntimeError):
@@ -129,17 +154,39 @@ class GistStore(Store):
         }
 
     def _request(self, method: str, url: str, **kwargs) -> Any:
-        try:
-            response = requests.request(
-                method, url, headers=self._headers(), timeout=REQUEST_TIMEOUT, **kwargs
-            )
-        except requests.RequestException as exc:
-            raise StorageError(f"GitHub is unreachable: {exc}") from exc
-        if response.status_code == 401:
-            raise StorageError("GitHub rejected the token (needs the 'gist' scope).")
-        if not response.ok:
-            raise StorageError(f"GitHub returned {response.status_code}: {response.text[:200]}")
-        return response.json()
+        """One request, with a single polite retry if GitHub asks us to wait.
+
+        Writes are the scarce resource here: GitHub's *secondary* rate limit
+        throttles bursts of writes to the same endpoint even when the hourly
+        quota is untouched. The app avoids that by batching (see progress.save),
+        and this retry covers the occasional collision.
+        """
+        for attempt in (1, 2):
+            try:
+                response = requests.request(
+                    method, url, headers=self._headers(), timeout=REQUEST_TIMEOUT, **kwargs
+                )
+            except requests.RequestException as exc:
+                raise StorageError(f"GitHub is unreachable: {exc}") from exc
+
+            if response.status_code == 401:
+                raise StorageError("GitHub rejected the token (needs the 'gist' scope).")
+
+            if response.status_code in (403, 429) and _is_rate_limited(response):
+                wait = _retry_after_seconds(response)
+                if attempt == 1 and wait <= MAX_RETRY_WAIT:
+                    time.sleep(wait)
+                    continue
+                raise StorageError(
+                    "GitHub is rate-limiting writes to the gist. Wait a minute and press "
+                    "Save again; if it keeps happening, raise the autosave interval so "
+                    "the app writes less often."
+                )
+
+            if not response.ok:
+                raise StorageError(f"GitHub returned {response.status_code}: {response.text[:200]}")
+            return response.json()
+        raise StorageError("GitHub kept rate-limiting the request.")
 
     def _find_gist_id(self) -> str | None:
         page = 1

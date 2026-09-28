@@ -28,8 +28,8 @@ def load(name: str) -> dict:
 
 
 @pytest.mark.parametrize("deck", ["vocab", "quant"])
-def test_sixteen_groups(deck):
-    assert len(load(deck)["groups"]) == 16
+def test_six_groups(deck):
+    assert len(load(deck)["groups"]) == 6
 
 
 @pytest.mark.parametrize("deck", ["vocab", "quant"])
@@ -47,14 +47,35 @@ def test_ids_are_unique_and_items_complete(deck):
 
 def test_quant_group_sizes_are_reasonable():
     sizes = [len(g["items"]) for g in load("quant")["groups"]]
-    assert sum(sizes) >= 162, "the rewrite should not have fewer entries than concepts"
-    assert min(sizes) >= 8 and max(sizes) <= 13, f"lopsided days: {sizes}"
+    assert sum(sizes) == 148
+    assert min(sizes) >= 12, f"a day that small should be merged into its neighbour: {sizes}"
 
 
 def test_vocab_group_sizes_are_balanced():
     sizes = [len(g["items"]) for g in load("vocab")["groups"]]
-    assert sum(sizes) == 733
+    assert sum(sizes) == 454
     assert max(sizes) - min(sizes) <= 1
+
+
+def test_memorized_words_are_gone_and_the_order_is_shuffled():
+    """The words the user already knows are dropped, and synonyms are separated."""
+    import re
+
+    words = [i["label"] for g in load("vocab")["groups"] for i in g["items"]]
+    lower = {w.strip().lower() for w in words}
+    memorized = [
+        re.sub(r"\s*\(.*?\)\s*", " ", line).strip().lower()
+        for line in (ROOT / "content" / "vocab" / "memorized.txt").read_text().splitlines()
+        if line.strip()
+    ]
+    still_there = [w for w in memorized if w in lower]
+    assert still_there == [], f"memorized words still on the board: {still_there}"
+
+    # In the spreadsheet these three synonyms are adjacent; after the shuffle they
+    # should not be, otherwise the default order gives the answer away.
+    positions = {w: i for i, w in enumerate(w.strip().lower() for w in words)}
+    trio = [positions[w] for w in ("serpentine", "sinuous", "circuitous") if w in positions]
+    assert all(abs(a - b) > 1 for a in trio for b in trio if a != b) or len(trio) < 2
 
 
 def test_quant_titles_are_unique():
@@ -68,7 +89,7 @@ def parse_content() -> list[dict]:
 
     warnings: list[str] = []
     files = sorted((ROOT / "content" / "quant").glob("[0-9]*.md"))
-    assert len(files) == 16, "one markdown file per day"
+    assert len(files) == 6, "one markdown file per day"
     groups = [build_data.parse_day(path, warnings) for path in files]
     assert warnings == [], warnings
     return groups
@@ -87,8 +108,18 @@ def test_every_original_concept_is_still_covered():
             for audit_id in entry["covers"]:
                 claimed.setdefault(audit_id, []).append(entry["label"])
 
-    uncovered = {k: v for k, v in source.items() if int(k) not in claimed}
-    assert uncovered == {}, f"these original concepts lost their explanation: {uncovered}"
+    retired = json.loads(
+        (ROOT / "content" / "quant" / "_retired_concepts.json").read_text(encoding="utf-8")
+    )["concepts"]
+    uncovered = {
+        k: v for k, v in source.items() if int(k) not in claimed and k not in retired
+    }
+    assert uncovered == {}, (
+        "these original concepts lost their explanation without being listed in "
+        f"_retired_concepts.json: {uncovered}"
+    )
+    both = [k for k in retired if int(k) in claimed]
+    assert both == [], f"retired but still on the board: {both}"
     unknown = [k for k in claimed if str(k) not in source]
     assert unknown == [], f"covers unknown source ids: {unknown}"
 
@@ -138,7 +169,7 @@ def test_every_vocab_item_has_a_definition():
 # --------------------------------------------------------------------------- board
 
 
-@pytest.mark.parametrize("deck,day", [("vocab", 1), ("vocab", 16), ("quant", 5), ("quant", 16)])
+@pytest.mark.parametrize("deck,day", [("vocab", 1), ("vocab", 6), ("quant", 3), ("quant", 6)])
 def test_board_shows_groups_one_to_day(deck, day):
     from gre_mountain import decks
 
@@ -154,20 +185,20 @@ def test_board_shows_groups_one_to_day(deck, day):
 def test_shuffle_modes_differ_but_are_stable():
     from gre_mountain import decks
 
-    default = decks.build_board.__wrapped__("quant", 6, "none")
-    within = decks.build_board.__wrapped__("quant", 6, "within")
-    mixed = decks.build_board.__wrapped__("quant", 6, "all")
+    default = decks.build_board.__wrapped__("quant", 5, "none")
+    within = decks.build_board.__wrapped__("quant", 5, "within")
+    mixed = decks.build_board.__wrapped__("quant", 5, "all")
 
     order = lambda board: [i["id"] for c in board["columns"] for i in c["items"]]  # noqa: E731
     assert order(default) != order(within) != order(mixed)
-    assert order(within) == order(decks.build_board.__wrapped__("quant", 6, "within"))
-    assert order(within) != order(decks.build_board.__wrapped__("quant", 6, "within", 1))
+    assert order(within) == order(decks.build_board.__wrapped__("quant", 5, "within"))
+    assert order(within) != order(decks.build_board.__wrapped__("quant", 5, "within", 1))
 
     # "within" keeps each column's membership, "all" deals across columns.
     groups = load("quant")["groups"]
     for column, group in zip(within["columns"], groups):
         assert {i["id"] for i in column["items"]} == {i["id"] for i in group["items"]}
-    assert [c["title"] for c in mixed["columns"]] == [g["title"] for g in groups[:6]]
+    assert [c["title"] for c in mixed["columns"]] == [g["title"] for g in groups[:5]]
     assert any(
         {i["id"] for i in column["items"]} != {i["id"] for i in group["items"]}
         for column, group in zip(mixed["columns"], groups)
@@ -275,3 +306,37 @@ def test_unmarking_removes_the_key():
         ],
     )
     assert doc["marks"]["quant"]["1"] == {}
+
+
+# --------------------------------------------------------------------------- adaptive
+
+
+def test_green_streaks_count_consecutive_days():
+    from gre_mountain.progress import streaks_from
+
+    marks = {
+        "1": {"a": "green", "b": "green", "c": "red"},
+        "2": {"a": "green", "b": "red", "c": "green"},
+        "3": {"a": "green", "b": "green", "c": "green"},
+    }
+    streaks = streaks_from(marks, day=4, item_ids=["a", "b", "c", "d"])
+    assert streaks["a"] == 3, "green on days 1-3 is a run of three"
+    assert streaks["b"] == 1, "the run restarts after the red on day 2"
+    assert streaks["c"] == 2, "green on days 2-3 only"
+    assert "d" not in streaks, "never marked, so no run"
+
+
+def test_green_streaks_ignore_the_current_day():
+    from gre_mountain.progress import streaks_from
+
+    marks = {"1": {"a": "green"}, "2": {"a": "green"}, "3": {"a": "green"}}
+    # Standing on day 3, only days 1 and 2 are history.
+    assert streaks_from(marks, day=3, item_ids=["a"])["a"] == 2
+    assert streaks_from(marks, day=4, item_ids=["a"])["a"] == 3
+
+
+def test_a_gap_day_breaks_the_run():
+    from gre_mountain.progress import streaks_from
+
+    marks = {"1": {"a": "green"}, "3": {"a": "green"}}  # day 2 never marked
+    assert streaks_from(marks, day=4, item_ids=["a"])["a"] == 1

@@ -1,0 +1,31 @@
+{
+ "note": "Concepts from the original spreadsheet that were deliberately retired because they are already memorized (see the list supplied on 2026-09-28). The build and tests treat these as covered so the audit stays meaningful for everything else; delete an id here to make the build demand it back.",
+ "concepts": {
+  "2": "Always keep in mind units",
+  "3": "Equal/Not Equal strategy for comparison",
+  "4": "\"No Math Needed\" strategy",
+  "5": "Pattern Recognition Strategy",
+  "8": "Quotient and remainder",
+  "9": "Quotient and remainder for negative numbers",
+  "16": "Divisibility rule of 3",
+  "17": "Divisibility rule of 4",
+  "18": "Divisibility rule of 6",
+  "19": "Divisibility rule of 8",
+  "20": "Divisibility rule of 9",
+  "21": "Divisibility rule of 11",
+  "33": "Factorial division m!/n!",
+  "34": "How many factors does a factorial have?",
+  "35": "How to do Legendres method for n!",
+  "36": "Legendres trick",
+  "37": "How many of a certain number r in a factorial n!?",
+  "38": "Largest factor r of factorial n!",
+  "39": "How many trailing zeroes at the end of factorial?",
+  "40": "Smallest non-prime numbers that are not factor of factorial n!",
+  "48": "Series formula for geometric sequence sums",
+  "52": "Difference between repeating and non-repeating decimals",
+  "53": "How to know if a decimal terminates",
+  "54": "How to convert repeating decimal to a fraction",
+  "55": "Smallest positive integer to multiply with a/b to result in an integer",
+  "56": "Proportions and cross-multiplications of proportions"
+ }
+}

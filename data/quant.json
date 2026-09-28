@@ -3,30 +3,8 @@
  "noun": "concept",
  "groups": [
   {
-   "title": "Number Sense & Strategy",
+   "title": "Number Properties & Factors",
    "items": [
-    {
-     "id": "qba3b601f53",
-     "label": "Two quantities given in different units — first move?",
-     "blocks": [
-      {
-       "label": "Answer",
-       "text": "Convert to a common unit **before** comparing anything. Multiply by a conversion fraction arranged so the unwanted unit cancels."
-      },
-      {
-       "label": "Explanation",
-       "text": "A question will happily give one speed in km/h and another in m/s and ask which is greater. The numbers are not comparable until they share a unit, and the fastest way to lose a point is to treat 20 > 8 as settling it.\n\nWrite the conversion as a fraction that cancels the unit you want gone: to turn m/s into km/h, multiply by `3600 s / 1 hr` and by `1 km / 1000 m`, so seconds and metres both cancel."
-      },
-      {
-       "label": "Example",
-       "text": "Which is greater: a car at 20 km/h or a runner at 8 m/s? `8 x 3600 = 28,800 m/hr = 28.8 km/h`. The runner is faster, even though \"20\" looks bigger."
-      },
-      {
-       "label": "Watch out",
-       "text": "The same trap hides in time (minutes vs hours), money (cents vs dollars) and area (cm² vs m²). If two units appear anywhere in a question, convert first."
-      }
-     ]
-    },
     {
      "id": "q09183aa990",
      "label": "Converting an area or a volume between units — what happens to the factor?",
@@ -46,156 +24,6 @@
      ]
     },
     {
-     "id": "qc83e19b7e6",
-     "label": "Quantitative Comparison: how do you prove the answer is D?",
-     "blocks": [
-      {
-       "label": "Answer",
-       "text": "Find one case where the quantities are **equal** and one where they are **not**. Two different relationships means the relationship is not fixed, so the answer is D."
-      },
-      {
-       "label": "Explanation",
-       "text": "A QC question does not ask for a value, it asks whether one column is always bigger. That makes D a target rather than a last resort, and the equal/not-equal pair is the quickest proof.\n\nChoose test values deliberately, not randomly. The ones that break intuition are 0, 1, a negative, a fraction between 0 and 1, and something large."
-      },
-      {
-       "label": "Example",
-       "text": "Quantity A: `x^2`. Quantity B: `x`. Try `x = 1`: both equal 1. Try `x = 2`: A is 4, B is 2. Two different relationships, so **D**. (Told that `x > 1`, the answer would be A.)"
-      },
-      {
-       "label": "Watch out",
-       "text": "One case is never enough. Finding A = B once only rules out \"A is always greater\"; you still need a second case to choose between C and D."
-      }
-     ]
-    },
-    {
-     "id": "qfa6663dd48",
-     "label": "When you are about to do heavy arithmetic, what should you do instead?",
-     "blocks": [
-      {
-       "label": "Answer",
-       "text": "Stop and look for the shortcut: estimate, compare structure, cancel common factors, or test a convenient number. Comparing is easier than computing."
-      },
-      {
-       "label": "Explanation",
-       "text": "Every comparison and most multiple-choice questions are built so a full calculation is possible but unnecessary. Four-digit multiplication is a sign you have missed the intended route.\n\nTo decide whether `17/33` beats `1/2` you do not need the decimal — half of 33 is 16.5, and 17 is more than that."
-      },
-      {
-       "label": "Example",
-       "text": "Which is greater, `47 x 52` or `48 x 51`? Both pairs sum to 99, and for a fixed sum the product is largest when the numbers are closest together. 48 and 51 are closer, so `48 x 51` wins — no multiplication done."
-      },
-      {
-       "label": "Watch out",
-       "text": "Estimation is only safe when the quantities are far apart. If your estimate makes them look nearly equal, go back and compute exactly."
-      }
-     ]
-    },
-    {
-     "id": "q275572e3aa",
-     "label": "\"What is the 50th term / the 200th digit?\" — what is the question really about?",
-     "blocks": [
-      {
-       "label": "Answer",
-       "text": "A repeating cycle. Compute the first few terms, find the cycle length `k`, then take the remainder of `n / k` to see where term `n` lands."
-      },
-      {
-       "label": "Explanation",
-       "text": "No GRE question wants you to grind out 50 steps. Asking for a far-away term is a signal that the sequence repeats, and the whole job is finding the length of the repeat.\n\nRemainder 0 means you have landed on the **last** item of the cycle, not the first. That off-by-one is where most of the errors live."
-      },
-      {
-       "label": "Example",
-       "text": "The 50th term of 7, 4, 1, 7, 4, 1, …? The cycle is (7, 4, 1), length 3. `50 / 3` leaves remainder 2, so the 50th term is the 2nd item: **4**."
-      },
-      {
-       "label": "Watch out",
-       "text": "Write out enough terms to see the cycle repeat *twice*. Two equal terms in a row is not proof of a cycle."
-      }
-     ]
-    },
-    {
-     "id": "q2090b0a831",
-     "label": "Unit digit — what is it, and why does it get its own rules?",
-     "blocks": [
-      {
-       "label": "Answer",
-       "text": "The rightmost digit (the ones place). It is independent of everything to its left: when you add or multiply, the unit digit of the answer depends only on the unit digits of the inputs."
-      },
-      {
-       "label": "Explanation",
-       "text": "That independence is what makes \"last digit of `7^100`\" answerable in seconds — the other 84 digits never matter."
-      },
-      {
-       "label": "Example",
-       "text": "In 3,472 the unit digit is 2. The unit digit of `3,472 x 1,238` comes from `2 x 8 = 16`, so it is **6**, with no long multiplication."
-      }
-     ]
-    },
-    {
-     "id": "qe1339a508e",
-     "label": "Even and odd: what do the four operations give you?",
-     "blocks": [
-      {
-       "label": "Answer",
-       "text": "`even ± even = even`, `odd ± odd = even`, `even ± odd = odd`. For products, **anything times an even is even**; only `odd x odd = odd`."
-      },
-      {
-       "label": "Explanation",
-       "text": "Multiplication is the lopsided one: a single even factor is enough to make the whole product even, which is why the product of consecutive integers is always even.\n\nDivision breaks the pattern entirely — an even divided by an even can be either (`8/4 = 2`, `6/4 = 1.5`), so never assume parity survives a division."
-      },
-      {
-       "label": "Example",
-       "text": "If `n` is odd, is `n^2 + n` odd or even? `odd x odd = odd`, and `odd + odd = even`, so it is always even. Testing `n = 3` gives 12 ✓."
-      },
-      {
-       "label": "Watch out",
-       "text": "0 is even, and 2 is the only even prime. Both show up in \"must be true\" questions."
-      }
-     ]
-    },
-    {
-     "id": "qd2e4f6ac2d",
-     "label": "Signs: what do products and powers do to them?",
-     "blocks": [
-      {
-       "label": "Answer",
-       "text": "Multiplying or dividing: same signs give positive, different signs give negative. Powers: a negative base raised to an **even** power is positive, to an **odd** power stays negative."
-      },
-      {
-       "label": "Explanation",
-       "text": "Count the negatives in a product — an even number of them cancels out, an odd number leaves the result negative.\n\nThe power rule is the source of endless QC traps: `x^2` is never negative, so `x^2 = 9` has two solutions while `x^3 = 27` has one."
-      },
-      {
-       "label": "Example",
-       "text": "`(-2)^4 = 16` but `(-2)^3 = -8`. And `(-2)(-3)(-4) = -24`: three negatives, so the result is negative."
-      },
-      {
-       "label": "Watch out",
-       "text": "`-2^4` and `(-2)^4` are different. Without brackets the power binds first, so `-2^4 = -16`."
-      }
-     ]
-    },
-    {
-     "id": "qec78a901e8",
-     "label": "Absolute value — what does |x| actually mean?",
-     "blocks": [
-      {
-       "label": "Answer",
-       "text": "The distance from zero on the number line, so it is never negative. `|x| = x` when `x >= 0` and `|x| = -x` when `x < 0`."
-      },
-      {
-       "label": "Explanation",
-       "text": "Reading it as *distance* rather than \"make it positive\" is what makes the harder questions easy: `|x - 3|` is the distance between `x` and 3, so `|x - 3| = 5` immediately gives the two points 5 away from 3."
-      },
-      {
-       "label": "Example",
-       "text": "`|-7| = 7` and `|7| = 7`. `|x - 3| < 5` means \"x is less than 5 away from 3\", i.e. `-2 < x < 8` — no algebra needed."
-      },
-      {
-       "label": "Watch out",
-       "text": "`|a + b|` is not `|a| + |b|`: take `a = 3, b = -3`. It is always less than or equal to it."
-      }
-     ]
-    },
-    {
      "id": "qa9b275d37a",
      "label": "Floor of a negative number — which way does it go?",
      "blocks": [
@@ -210,42 +38,6 @@
       {
        "label": "Example",
        "text": "`floor(16.7) = 16`, `floor(-16.7) = -17`, `floor(-3.01) = -4`, `floor(-3) = -3` (integers are their own floor)."
-      }
-     ]
-    },
-    {
-     "id": "q6642a56a7e",
-     "label": "Quotient and remainder — what is the identity that ties them together?",
-     "blocks": [
-      {
-       "label": "Answer",
-       "text": "`a = bq + r` with `0 <= r < b`. The quotient `q` is the whole-number part; the remainder `r` is what is left, and it is never negative and always smaller than the divisor."
-      },
-      {
-       "label": "Explanation",
-       "text": "The constraint on `r` is the important half. A remainder of 7 when dividing by 6 is impossible — it means you did not take out enough copies of 6.\n\nMost remainder questions are solved by writing the number in this form and substituting, not by trying values at random."
-      },
-      {
-       "label": "Example",
-       "text": "`47 / 5`: quotient 9, remainder 2, since `47 = 5 x 9 + 2`. \"n leaves remainder 2 when divided by 5\" means `n = 5q + 2`, so n is 2, 7, 12, 17, …"
-      }
-     ]
-    },
-    {
-     "id": "qf65bf96817",
-     "label": "Quotient and remainder when the number is negative?",
-     "blocks": [
-      {
-       "label": "Answer",
-       "text": "The quotient goes one step further down, because the remainder must stay non-negative. `-15 / 9` gives quotient **-2**, remainder **3**."
-      },
-      {
-       "label": "Explanation",
-       "text": "It is tempting to say quotient -1 remainder -6, but remainders cannot be negative. Taking the quotient down to -2 gives `-15 = 9(-2) + 3`, with `0 <= 3 < 9` ✓.\n\nThis is the same idea as the floor of a negative: the quotient *is* `floor(a/b)`."
-      },
-      {
-       "label": "Example",
-       "text": "`-15 / 9` → quotient -2, remainder 3. Compare `15 / 9` → quotient 1, remainder 6. The absolute value of the quotient went up by one."
       }
      ]
     },
@@ -270,49 +62,26 @@
        "text": "This does **not** work for division — the remainder of `a/b` has no simple relationship to the remainders of `a` and `b`."
       }
      ]
-    }
-   ]
-  },
-  {
-   "title": "Unit Digits & Divisibility Rules",
-   "items": [
+    },
     {
-     "id": "q7743bf771c",
-     "label": "Last digit of a large power — what do you need?",
+     "id": "q69223fc183",
+     "label": "Last digit of a huge power like `7^103`?",
      "blocks": [
       {
        "label": "Answer",
-       "text": "The unit digit's **cycle**, which is always length 4 or shorter. Divide the exponent by 4 and use the remainder to pick the entry.\n\n2: 2, 4, 8, 6 · 3: 3, 9, 7, 1 · 7: 7, 9, 3, 1 · 8: 8, 4, 2, 6 · 4: 4, 6 · 9: 9, 1 · 0, 1, 5, 6 never change."
+       "text": "Two steps. **Keep only the base's last digit** — `unitdigit(a^b) = unitdigit(unitdigit(a)^b)` — then use that digit's **cycle**, which is never longer than 4. Divide the exponent by 4 and the remainder picks the entry.\n\n2: 2, 4, 8, 6 · 3: 3, 9, 7, 1 · 7: 7, 9, 3, 1 · 8: 8, 4, 2, 6 · 4: 4, 6 · 9: 9, 1 · 0, 1, 5, 6 never change."
       },
       {
        "label": "Explanation",
-       "text": "Raise any digit to higher powers and its last digit starts repeating within four steps. Since every cycle length divides 4, dividing the exponent by 4 works for all of them."
+       "text": "The unit digit is the rightmost digit, and it behaves independently of everything to its left: multiplying two numbers only lets their unit digits interact. That is why `1,234,567^40` ends in the same digit as `7^40`, and why you can answer questions about 80-digit numbers in seconds.\n\nRaise any digit to higher powers and the last digit starts repeating within four steps. Since every cycle length divides 4, dividing the exponent by 4 works for all of them."
       },
       {
        "label": "Example",
-       "text": "Last digit of `7^103`? The cycle for 7 is (7, 9, 3, 1). `103 / 4` leaves remainder 3, so take the 3rd entry: **3**. Check on a small case: `7^3 = 343` ✓."
+       "text": "`7^103`: the cycle for 7 is (7, 9, 3, 1), and `103 / 4` leaves remainder 3, so the answer is the 3rd entry, **3**. Check on a small case: `7^3 = 343` ✓.\n\n`2,468^15`: keep the 8, whose cycle is (8, 4, 2, 6); `15 / 4` leaves remainder 3, so the answer is **2**."
       },
       {
        "label": "Watch out",
-       "text": "Remainder 0 means the **last** entry of the cycle, not the first. `7^100` has remainder 0, so its unit digit is 1."
-      }
-     ]
-    },
-    {
-     "id": "q4d4c0b1415",
-     "label": "Unit digit of `1,234,567^40` — what can you throw away?",
-     "blocks": [
-      {
-       "label": "Answer",
-       "text": "Everything except the base's last digit: `unitdigit(a^b) = unitdigit(unitdigit(a)^b)`. So `1,234,567^40` ends in the same digit as `7^40`."
-      },
-      {
-       "label": "Explanation",
-       "text": "Multiplying two numbers only lets their unit digits interact, so the digits further left can never reach the ones place. This is what makes the cycles usable on monstrous numbers."
-      },
-      {
-       "label": "Example",
-       "text": "Unit digit of `2,468^15`? Keep the 8; its cycle is (8, 4, 2, 6). `15 / 4` leaves remainder 3, so the answer is the 3rd entry, **2**."
+       "text": "Remainder 0 means the **last** entry of the cycle, not the first. `7^100` leaves remainder 0, so it ends in 1."
       }
      ]
     },
@@ -375,137 +144,6 @@
      ]
     },
     {
-     "id": "q00e6a4f6c2",
-     "label": "Divisibility by 2, 5 and 10?",
-     "blocks": [
-      {
-       "label": "Answer",
-       "text": "Read the last digit: **2** if it is even (0, 2, 4, 6, 8), **5** if it is 0 or 5, **10** only if it is 0."
-      },
-      {
-       "label": "Explanation",
-       "text": "These are the building blocks the composite rules are made from, so they are worth stating before the clever ones."
-      },
-      {
-       "label": "Example",
-       "text": "4,938 is divisible by 2 but not 5. 4,935 is divisible by 5 but not 2, so not by 10. 4,930 ends in 0, so it is divisible by all three."
-      }
-     ]
-    },
-    {
-     "id": "q50220f2f7f",
-     "label": "Divisibility by 3?",
-     "blocks": [
-      {
-       "label": "Answer",
-       "text": "Add the digits. If the sum is a multiple of 3, so is the number — and you can repeat the test on the sum."
-      },
-      {
-       "label": "Explanation",
-       "text": "It works because 10, 100, 1000 … all leave remainder 1 on division by 3, so each digit contributes exactly its own value to the remainder."
-      },
-      {
-       "label": "Example",
-       "text": "4,938 → `4+9+3+8 = 24`, a multiple of 3, so yes. 987,654 → 39 → `3+9 = 12`, so yes."
-      }
-     ]
-    },
-    {
-     "id": "qd903c4bd4e",
-     "label": "Divisibility by 9?",
-     "blocks": [
-      {
-       "label": "Answer",
-       "text": "The same digit sum, but it must be a multiple of **9**."
-      },
-      {
-       "label": "Explanation",
-       "text": "Every multiple of 9 is therefore also a multiple of 3, though the reverse fails.\n\nRepeating the digit sum until one digit is left gives the *digital root*, and a digital root of 9 is the same test. It is a quick way to check arithmetic: the digital roots of the inputs must match the digital root of the answer."
-      },
-      {
-       "label": "Example",
-       "text": "4,938: digits sum to 24, divisible by 3 but not 9 → multiple of 3 only. 4,932: digits sum to 18 → divisible by 9 and by 3.\n\nDigital root of 987,654: `39 → 12 → 3`, so it is divisible by 3 but not 9."
-      }
-     ]
-    },
-    {
-     "id": "q1671c97d91",
-     "label": "Divisibility by 4?",
-     "blocks": [
-      {
-       "label": "Answer",
-       "text": "Look only at the **last two digits**. If that two-digit number is a multiple of 4, so is the whole number."
-      },
-      {
-       "label": "Explanation",
-       "text": "100 is itself a multiple of 4, so the hundreds and everything above them can never affect the answer. Anything ending in 00 is divisible by 4.\n\nA second shortcut: if the tens digit is even, the number is divisible by 4 exactly when the unit digit is 0, 4 or 8; if the tens digit is odd, the unit digit must be 2 or 6."
-      },
-      {
-       "label": "Example",
-       "text": "7,318 → 18 is not a multiple of 4, so no. 7,316 → 16 is, so yes.\n\nSquares are a good stress test: every even square is divisible by 4 (`14^2 = 196` → 96 ✓), and every odd square leaves remainder 1."
-      }
-     ]
-    },
-    {
-     "id": "q561559fb9b",
-     "label": "Divisibility by 8?",
-     "blocks": [
-      {
-       "label": "Answer",
-       "text": "Look at the **last three digits**, because 1,000 is a multiple of 8. Anything ending in 000 qualifies."
-      },
-      {
-       "label": "Explanation",
-       "text": "For a quick check on those three digits, halve three times — if you stay on whole numbers, it divides."
-      },
-      {
-       "label": "Example",
-       "text": "12,344 → 344, and `344 / 8 = 43` exactly, so yes. Halving: 344 → 172 → 86 → 43 ✓. 12,346 → 346 → 173 → 86.5 ✗."
-      }
-     ]
-    },
-    {
-     "id": "q7f84b4acd9",
-     "label": "Divisibility by 6, 12 or any composite?",
-     "blocks": [
-      {
-       "label": "Answer",
-       "text": "Split it into **coprime** factors and apply both rules. 6 = 2 x 3, so even **and** digit sum divisible by 3. 12 = 4 x 3, so the last two digits divide by 4 **and** the digit sum by 3."
-      },
-      {
-       "label": "Explanation",
-       "text": "The factors must share no common factor. `12 = 2 x 6` is useless, because every number divisible by 2 and 6 is just divisible by 6."
-      },
-      {
-       "label": "Example",
-       "text": "4,938: even ✓, digits sum to 24 ✓ → divisible by 6. 7,316: last two digits 16 divide by 4 ✓, but `7+3+1+6 = 17` is not a multiple of 3 ✗ → not divisible by 12."
-      }
-     ]
-    },
-    {
-     "id": "q90a277101c",
-     "label": "Divisibility by 11?",
-     "blocks": [
-      {
-       "label": "Answer",
-       "text": "Alternate the digit signs from left to right starting with plus, and add. If that alternating sum is a multiple of 11 (0 counts), so is the number."
-      },
-      {
-       "label": "Explanation",
-       "text": "10 leaves remainder -1 on division by 11, so each place value flips sign as you move left."
-      },
-      {
-       "label": "Example",
-       "text": "918,082 → `+9 -1 +8 -0 +8 -2 = 22`, a multiple of 11, so yes (`918,082 / 11 = 83,462`). 4,938 → `+4 -9 +3 -8 = -10` ✗."
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "title": "Primes, Factors & GCF",
-   "items": [
-    {
      "id": "q77d6b2792a",
      "label": "How far do you test before declaring `n` prime?",
      "blocks": [
@@ -524,24 +162,6 @@
       {
        "label": "Watch out",
        "text": "1 is not prime, and 2 is the only even prime — the source of most \"all primes are odd\" errors."
-      }
-     ]
-    },
-    {
-     "id": "qee2ade8ffa",
-     "label": "Prime factorization — why is it the first move on so many questions?",
-     "blocks": [
-      {
-       "label": "Answer",
-       "text": "Because every integer above 1 is a unique product of primes, and factor counts, GCF, LCM, divisibility and rational roots are all read straight off that product. Build it by dividing out the smallest prime repeatedly."
-      },
-      {
-       "label": "Explanation",
-       "text": "`360 / 2 = 180 / 2 = 90 / 2 = 45 / 3 = 15 / 3 = 5 / 5 = 1`, so `360 = 2^3 x 3^2 x 5`. Writing this line before doing anything else is the highest-return habit in the quant section."
-      },
-      {
-       "label": "Example",
-       "text": "`60 = 2^2 x 3 x 5`. From that one line: divisible by 4 (two 2s), not by 8 (no third 2), not by 9 (only one 3), and it has 12 factors."
       }
      ]
     },
@@ -736,12 +356,7 @@
        "text": "The LCM is never smaller than the largest number and the GCF never bigger than the smallest. If that fails, you have swapped the rules."
       }
      ]
-    }
-   ]
-  },
-  {
-   "title": "LCM, Factorials & Ranges",
-   "items": [
+    },
     {
      "id": "qd6f5260f29",
      "label": "`n` is divisible by `a` and by `b` — what else must it be divisible by?",
@@ -781,155 +396,12 @@
        "text": "The identity breaks for three or more numbers."
       }
      ]
-    },
-    {
-     "id": "qe465746a7c",
-     "label": "`m!/n!` with `m > n` — how do you simplify it?",
-     "blocks": [
-      {
-       "label": "Answer",
-       "text": "Cancel the smaller factorial: `m!/n! = m x (m-1) x ... x (n+1)`. Never compute the factorials themselves."
-      },
-      {
-       "label": "Explanation",
-       "text": "`n!` sits inside `m!` whole, so everything up to `n!` cancels and only the handful of terms in between survive."
-      },
-      {
-       "label": "Example",
-       "text": "`8!/5! = (8 x 7 x 6 x 5!)/5! = 336`. And `100!/98! = 100 x 99 = 9,900` in your head, while `100!` has 158 digits."
-      },
-      {
-       "label": "Watch out",
-       "text": "`0! = 1` by definition, which keeps formulas like `nPn = n!/0!` working."
-      }
-     ]
-    },
-    {
-     "id": "qc6f701da27",
-     "label": "How do you find the prime factorization of `n!`?",
-     "blocks": [
-      {
-       "label": "Answer",
-       "text": "Legendre's method: for each prime `p`, count the multiples of `p` up to `n`, then the multiples of `p^2`, then `p^3`, until the count hits 0. The total is the exponent of `p`."
-      },
-      {
-       "label": "Explanation",
-       "text": "The extra rounds exist because a number like 9 contributes *two* 3s, so it must be counted once as a multiple of 3 and again as a multiple of 9."
-      },
-      {
-       "label": "Example",
-       "text": "Exponent of 3 in `10!`: multiples of 3 are 3, 6, 9 → 3; multiples of 9 → 1; multiples of 27 → 0. Total **4**. Doing all the primes gives `10! = 2^8 x 3^4 x 5^2 x 7`."
-      }
-     ]
-    },
-    {
-     "id": "q1012a3c0c9",
-     "label": "Legendre's method without listing multiples?",
-     "blocks": [
-      {
-       "label": "Answer",
-       "text": "Divide `n` by `p` and drop the decimal, divide that result by `p` again, and keep going until you reach 0. Add up everything you wrote."
-      },
-      {
-       "label": "Explanation",
-       "text": "Each division asks the same question one level deeper, which is exactly what counting multiples of `p`, `p^2`, `p^3` does."
-      },
-      {
-       "label": "Example",
-       "text": "Exponent of 5 in `100!`: `100/5 = 20`, `20/5 = 4`, `4/5 = 0` → **24**. Exponent of 2 in `100!`: 50, 25, 12, 6, 3, 1 → **97**."
-      }
-     ]
-    },
-    {
-     "id": "qd080fb0ad7",
-     "label": "How many factors does `n!` have?",
-     "blocks": [
-      {
-       "label": "Answer",
-       "text": "Legendre for the prime factorization, then the ordinary exponent-plus-one rule. No separate formula — two techniques stacked."
-      },
-      {
-       "label": "Explanation",
-       "text": "The only work is being systematic about every prime up to `n`.\n\nThe counts grow startlingly fast, which is why these questions always name a small factorial: `10!` has 270 factors, but `15!` has 4,032."
-      },
-      {
-       "label": "Example",
-       "text": "`10! = 2^8 x 3^4 x 5^2 x 7^1`, so the count is `(8+1)(4+1)(2+1)(1+1) = 270`.\n\nFor `6! = 720 = 2^4 x 3^2 x 5`: `(4+1)(2+1)(1+1) = 30` factors. Legendre gives the exponents: 2 → `3+1 = 4`, 3 → `2`, 5 → `1`."
-      }
-     ]
-    },
-    {
-     "id": "qacc6b371f9",
-     "label": "How many copies of `r` are inside `n!`?",
-     "blocks": [
-      {
-       "label": "Answer",
-       "text": "If `r` is prime, run Legendre for `r`. If `r` is composite, factorize it, run Legendre for each prime, and take the **minimum** — the scarcest prime is the bottleneck."
-      },
-      {
-       "label": "Explanation",
-       "text": "Making one copy of `r` uses one of each of its primes, so you can build only as many as the rarest ingredient allows."
-      },
-      {
-       "label": "Example",
-       "text": "Copies of 15 inside `20!`? `15 = 3 x 5`. 3s: `20/3 = 6`, `6/3 = 2` → 8. 5s: `20/5 = 4` → 4. The 5s run out first, so **4**."
-      }
-     ]
-    },
-    {
-     "id": "qb024a2c3aa",
-     "label": "If `n!/r^x` is an integer, what is the largest `x`?",
-     "blocks": [
-      {
-       "label": "Answer",
-       "text": "Legendre each prime of `r`; if a prime carries an exponent inside `r`, divide that prime's total by the exponent and drop the decimal; then take the **minimum** across primes."
-      },
-      {
-       "label": "Explanation",
-       "text": "The floor comes *after* dividing by the exponent, and the minimum comes at the very end. Swapping those two steps gives the wrong answer."
-      },
-      {
-       "label": "Example",
-       "text": "`30!/3^x`: Legendre for 3 gives `10 + 3 + 1 = 14`, so **x = 14**.\n\nHarder — `100!/24^x`, where `24 = 2^3 x 3`. Legendre for 2 gives 97, but each 24 needs three 2s: `97/3 = 32.3 → 32`. Legendre for 3 gives `33+11+3+1 = 48`, one per 24 → 48. Minimum: **32**."
-      }
-     ]
-    },
-    {
-     "id": "q7701073419",
-     "label": "How many zeros does `n!` end in?",
-     "blocks": [
-      {
-       "label": "Answer",
-       "text": "Count the **5s** — run Legendre for 5 and stop. A trailing zero needs a `2 x 5`, and the 2s always outnumber the 5s."
-      },
-      {
-       "label": "Explanation",
-       "text": "The only work is remembering the higher powers: 25, 50, 75 and 100 each contribute a second 5.\n\nThe reverse question is common too: \"for which `n` does `n!` first end in 6 zeros?\" Walk the counts up — `20!` has 4, `25!` has 6 (25 contributes two 5s), so the answer is 25."
-      },
-      {
-       "label": "Example",
-       "text": "`100!` ends in `20 + 4 = 24` zeros. Answering 20 is the classic mistake.\n\n`50!`: `50/5 = 10`, `10/5 = 2` → 12 zeros. `200!`: `40 + 8 + 1 = 49` zeros."
-      }
-     ]
-    },
-    {
-     "id": "q60ab630909",
-     "label": "Smallest integer that is **not** a factor of `n!`?",
-     "blocks": [
-      {
-       "label": "Answer",
-       "text": "The next **prime** after `n`. Every integer up to `n` divides `n!`, so the first failure must need a prime bigger than `n`."
-      },
-      {
-       "label": "Explanation",
-       "text": "After that first prime come its multiples and the primes beyond it. Do not just take \"the next number after n\" — that only works when it happens to be prime."
-      },
-      {
-       "label": "Example",
-       "text": "Smallest non-factor of `10!` is **11**. Next come 13, 17, 19 and 22 (`= 2 x 11`). For `12!` it is 13, not 14, since `14 = 2 x 7` and both are present."
-      }
-     ]
-    },
+    }
+   ]
+  },
+  {
+   "title": "Ranges, Series, Percents & Rates",
+   "items": [
     {
      "id": "q314d93a1ac",
      "label": "How many integers are there from `a` to `b`?",
@@ -969,12 +441,7 @@
        "text": "The count is `b - a + 1`, not `a - b + 1`. Reversing the subtraction gives a negative count and nonsense."
       }
      ]
-    }
-   ]
-  },
-  {
-   "title": "Sequences, Series & Averages",
-   "items": [
+    },
     {
      "id": "q4c059af93b",
      "label": "How many multiples of `r` lie between `a` and `b`?",
@@ -1008,6 +475,28 @@
       {
        "label": "Example",
        "text": "Multiples of 7 between 50 and 200: average `= (56 + 196)/2 = 126`, count `= 21`, sum `= 2,646`.\n\nMultiples of 4 between 1 and 100: first 4, last 100, count `(100-4)/4 + 1 = 25`, average 52, sum `= 1,300`."
+      }
+     ]
+    },
+    {
+     "id": "q57c74b7a69",
+     "label": "Median of an evenly spaced list, without counting to the middle?",
+     "blocks": [
+      {
+       "label": "Answer",
+       "text": "`median = (first + last)/2`, and it equals the mean. Works for consecutive integers, consecutive multiples, any arithmetic sequence."
+      },
+      {
+       "label": "Explanation",
+       "text": "Evenly spaced lists are symmetric about their centre, so the midpoint of the ends is the middle value."
+      },
+      {
+       "label": "Example",
+       "text": "Median of the multiples of 7 between 50 and 200: `(56 + 196)/2 = 126`. Median of 1 to 100: `(1 + 100)/2 = 50.5`."
+      },
+      {
+       "label": "Watch out",
+       "text": "Only for even spacing. An arbitrary list must be sorted first."
       }
      ]
     },
@@ -1062,24 +551,6 @@
       {
        "label": "Example",
        "text": "`1 + 2 + ... + 100 = 100 x 101/2 = 5,050`. `1^2 + ... + 10^2 = 10 x 11 x 21/6 = 385`. For a sum starting at 11, subtract: `1,275 - 55 = 1,220`.\n\nThe first 50 **even** numbers: `2 + 4 + ... + 100 = 2(1 + 2 + ... + 50) = 2 x 1,275 = 2,550`. Factoring the 2 out first is nearly always the quickest route."
-      }
-     ]
-    },
-    {
-     "id": "q9f6a6cef2f",
-     "label": "Sum of the first `n` terms of a geometric series?",
-     "blocks": [
-      {
-       "label": "Answer",
-       "text": "`sum = a(r^n - 1)/(r - 1)`, with `a` the first term and `r` the ratio. If `|r| < 1`, an infinite series sums to `a/(1 - r)`."
-      },
-      {
-       "label": "Explanation",
-       "text": "Average-times-count fails here because the terms are not evenly spaced — the later terms dominate."
-      },
-      {
-       "label": "Example",
-       "text": "First 20 terms of 3, 6, 12, 24, …: `3(2^20 - 1)/1 = 3 x 1,048,575 = 3,145,725`. Infinite case: `1 + 1/2 + 1/4 + ... = 1/(1 - 1/2) = 2`."
       }
      ]
     },
@@ -1142,241 +613,6 @@
      ]
     },
     {
-     "id": "q0b0e256d1c",
-     "label": "Arithmetic mean — definition and the trick that matters?",
-     "blocks": [
-      {
-       "label": "Answer",
-       "text": "`mean = sum / count`, so `sum = mean x count`. Most mean questions are really about the **sum**."
-      },
-      {
-       "label": "Explanation",
-       "text": "When a question changes a list — adds a value, removes one, or reports a new average — convert every average into its total first, adjust the totals, then convert back.\n\nFor an evenly spaced list the mean also equals the median, which is a big shortcut."
-      },
-      {
-       "label": "Example",
-       "text": "Five numbers average 12, so their sum is 60. Add a sixth number, 18: the new sum is 78 and the new mean is `78/6 = 13`. What value would pull the average of the five up to 15? The sum would need to be 90, so the new number must be 30."
-      },
-      {
-       "label": "Watch out",
-       "text": "The average of two averages is only valid when the groups are the same size — otherwise you need a weighted average."
-      }
-     ]
-    },
-    {
-     "id": "q15ee43d514",
-     "label": "Median, mode and range — definitions?",
-     "blocks": [
-      {
-       "label": "Answer",
-       "text": "**Median**: middle value of the sorted list (average the two middle ones if the count is even). **Mode**: the most frequent value. **Range**: `largest - smallest`."
-      },
-      {
-       "label": "Explanation",
-       "text": "Sorting first is non-negotiable for the median, and it is the step people skip. The median ignores outliers while the mean does not, which is exactly what comparison questions probe."
-      },
-      {
-       "label": "Example",
-       "text": "For 3, 9, 4, 4, 12: sorted it is 3, 4, 4, 9, 12 → median **4**, mode **4**, range **9**, mean **6.4**. Replace 12 with 120 and the median stays 4 while the mean jumps to 28 — the classic outlier contrast."
-      }
-     ]
-    },
-    {
-     "id": "q57c74b7a69",
-     "label": "Median of an evenly spaced list, without counting to the middle?",
-     "blocks": [
-      {
-       "label": "Answer",
-       "text": "`median = (first + last)/2`, and it equals the mean. Works for consecutive integers, consecutive multiples, any arithmetic sequence."
-      },
-      {
-       "label": "Explanation",
-       "text": "Evenly spaced lists are symmetric about their centre, so the midpoint of the ends is the middle value."
-      },
-      {
-       "label": "Example",
-       "text": "Median of the multiples of 7 between 50 and 200: `(56 + 196)/2 = 126`. Median of 1 to 100: `(1 + 100)/2 = 50.5`."
-      },
-      {
-       "label": "Watch out",
-       "text": "Only for even spacing. An arbitrary list must be sorted first."
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "title": "Fractions, Ratios & Percents",
-   "items": [
-    {
-     "id": "q424dc42e5b",
-     "label": "Repeating versus non-repeating decimals — which are rational?",
-     "blocks": [
-      {
-       "label": "Answer",
-       "text": "Both terminating and **repeating** decimals are rational. Only a decimal that runs forever with **no** repeating block is irrational."
-      },
-      {
-       "label": "Explanation",
-       "text": "Every ratio of two integers either stops or falls into a repeating block. So `1/3 = 0.333...` is rational despite never terminating, while `sqrt(2) = 1.41421356...` never settles and cannot be written as a fraction."
-      },
-      {
-       "label": "Example",
-       "text": "`1/3 = 0.333...` (rational, repeating). `1/8 = 0.125` (rational, terminating). `pi` and `sqrt(2)` (irrational)."
-      },
-      {
-       "label": "Watch out",
-       "text": "\"Non-terminating\" does not mean irrational — that confusion is the whole question."
-      }
-     ]
-    },
-    {
-     "id": "qd3f6e9c7d3",
-     "label": "Will `a/b` terminate as a decimal?",
-     "blocks": [
-      {
-       "label": "Answer",
-       "text": "Reduce it first, then factorize the denominator. It terminates **only if the denominator's primes are 2s and 5s**."
-      },
-      {
-       "label": "Explanation",
-       "text": "Base 10 is `2 x 5`, so only denominators built from 2s and 5s can be rewritten as a power of 10."
-      },
-      {
-       "label": "Example",
-       "text": "`7/40`: `40 = 2^3 x 5` → terminates (0.175). `7/30`: `30 = 2 x 3 x 5` → repeats (0.2333…). `6/30` looks like it repeats, but reduces to `1/5 = 0.2`."
-      },
-      {
-       "label": "Watch out",
-       "text": "Always reduce first — the unreduced denominator can hide primes that cancel away."
-      }
-     ]
-    },
-    {
-     "id": "qb4278cd068",
-     "label": "Turning a repeating decimal into a fraction?",
-     "blocks": [
-      {
-       "label": "Answer",
-       "text": "`n` repeating digits sit over `n` nines: `0.444... = 4/9`, `0.373737... = 37/99`, `0.123123... = 123/999`."
-      },
-      {
-       "label": "Explanation",
-       "text": "The mechanism: set `x` equal to the decimal, multiply by `10^n` where `n` is the block length, and subtract. The infinite tails cancel exactly."
-      },
-      {
-       "label": "Example",
-       "text": "`x = 0.3737...`; the block is 2 digits so `100x = 37.3737...`. Subtracting gives `99x = 37`, so `x = 37/99`."
-      },
-      {
-       "label": "Watch out",
-       "text": "A non-repeating head needs an extra step: for `0.1666...`, use `10x = 1.666...` and `100x = 16.66...`, so `90x = 15` and `x = 1/6`."
-      }
-     ]
-    },
-    {
-     "id": "qcc7bafcfe2",
-     "label": "Smallest positive integer that turns `a/b` into an integer?",
-     "blocks": [
-      {
-       "label": "Answer",
-       "text": "`b` — but only once `a/b` is in **lowest terms**."
-      },
-      {
-       "label": "Explanation",
-       "text": "After reducing, the numerator shares nothing with the denominator, so nothing smaller than `b` can clear it."
-      },
-      {
-       "label": "Example",
-       "text": "`14/21` reduces to `2/3`, so the answer is **3**, not 21. And `3 x (2/3) = 2` ✓."
-      },
-      {
-       "label": "Watch out",
-       "text": "Skipping the reduction gives a number that works but is not the smallest — exactly the wrong answer they will offer."
-      }
-     ]
-    },
-    {
-     "id": "q143de870d1",
-     "label": "Setting up a proportion?",
-     "blocks": [
-      {
-       "label": "Answer",
-       "text": "Put the same kind of quantity in the same position on both sides, then cross-multiply."
-      },
-      {
-       "label": "Explanation",
-       "text": "Keep units aligned: if the left is km over minutes, the right must be km over minutes too. Then sanity-check the direction — more time should mean more distance.\n\nCheck whether the relationship is **direct** (more of one means more of the other, so `a/b = c/d`) or **inverse** (more of one means less of the other, so `a x b = c x d`). Workers and time are inverse: twice the workers, half the time."
-      },
-      {
-       "label": "Example",
-       "text": "4 km in 30 minutes; how far in 45? `4/30 = a/45` → `30a = 180` → `a = 6 km`.\n\nInverse case: 6 workers finish a job in 10 days; how long for 15 workers? `6 x 10 = 15 x d`, so `d = 4 days` — not `15/6 x 10`."
-      }
-     ]
-    },
-    {
-     "id": "q17a31fc0f6",
-     "label": "Ratios: what does `a : b` actually let you write down?",
-     "blocks": [
-      {
-       "label": "Answer",
-       "text": "Introduce the multiplier `x`: the parts are `ax` and `bx`, and the whole is `(a + b)x`. Part-to-part is `a : b`; part-to-whole is `a : (a+b)`."
-      },
-      {
-       "label": "Explanation",
-       "text": "The multiplier is what turns a ratio into an equation. Confusing part-to-part with part-to-whole is the most common ratio error: 2:3 means 2/5 and 3/5 of the total, not 2/3 and 3/3.\n\nTo combine two ratios sharing a term, scale them until that term matches — `A:B = 2:3` and `B:C = 4:5` become `A:B:C = 8:12:15`."
-      },
-      {
-       "label": "Example",
-       "text": "Boys to girls is 3:5 in a class of 40. Total parts `= 8`, so `8x = 40` and `x = 5`: 15 boys and 25 girls. Boys are `3/8` of the class, not `3/5`."
-      }
-     ]
-    },
-    {
-     "id": "q52ff6faa3d",
-     "label": "Percents: converting, and finding \"x percent of y\"?",
-     "blocks": [
-      {
-       "label": "Answer",
-       "text": "Percent means \"per hundred\": `x% = x/100`. \"Of\" means multiply, so `x% of y = (x/100) x y`. Useful ones: `1/8 = 12.5%`, `1/6 ≈ 16.7%`, `1/3 ≈ 33.3%`, `3/8 = 37.5%`, `5/8 = 62.5%`."
-      },
-      {
-       "label": "Explanation",
-       "text": "Percent questions become easy once you translate word by word: \"is\" is `=`, \"of\" is `x`, \"what\" is the variable."
-      },
-      {
-       "label": "Example",
-       "text": "\"18 is what percent of 45?\" → `18 = (p/100) x 45` → `p = 40`. And 15% of 60 is `0.15 x 60 = 9`. Reversing: \"12 is 30% of what?\" → `12 = 0.3y` → `y = 40`."
-      },
-      {
-       "label": "Watch out",
-       "text": "`x% of y` always equals `y% of x`, which can turn an awkward computation into an easy one: 8% of 50 is the same as 50% of 8, i.e. 4."
-      }
-     ]
-    },
-    {
-     "id": "q6f14c6e812",
-     "label": "Percent change — and what happens with two changes in a row?",
-     "blocks": [
-      {
-       "label": "Answer",
-       "text": "`percent change = (new - old)/old x 100`, always over the **original**. Successive changes **multiply**: a 20% rise then a 20% fall is `1.2 x 0.8 = 0.96`, a 4% net loss."
-      },
-      {
-       "label": "Explanation",
-       "text": "Increases and decreases are not symmetric, because the second change is applied to a different base. A rise of 25% needs a fall of only 20% to undo it.\n\nMultipliers are the fast way through: +30% is `x1.3`, -15% is `x0.85`."
-      },
-      {
-       "label": "Example",
-       "text": "Price rises from 80 to 100: `(100-80)/80 = 25%` increase. Falling back from 100 to 80 is `(80-100)/100 = -20%`. Two successive 10% rises give `1.1 x 1.1 = 1.21`, a 21% increase, not 20%."
-      },
-      {
-       "label": "Watch out",
-       "text": "\"Increased by 300%\" means the result is 4 times the original, not 3 times."
-      }
-     ]
-    },
-    {
      "id": "q9bafe012ca",
      "label": "Simple interest formula?",
      "blocks": [
@@ -1399,42 +635,24 @@
      ]
     },
     {
-     "id": "q9588cb92a9",
-     "label": "Compound interest formula?",
+     "id": "qd617297dfd",
+     "label": "Compound interest formula — annually, and more often than that?",
      "blocks": [
       {
        "label": "Answer",
-       "text": "`A = p(1 + r)^t`."
+       "text": "Once a year: `A = p(1 + r)^t`.\n\n`n` times a year: `A = p(1 + r/n)^(nt)` — divide the rate by `n`, multiply the periods by `n`."
       },
       {
        "label": "Explanation",
-       "text": "Each period's interest is applied to the new balance, so growth is exponential rather than linear. The gap over simple interest is small at first and grows fast — which is why comparison questions love it."
+       "text": "Each period's interest is applied to the new balance, so growth is exponential rather than linear. The gap over simple interest is small at first and widens fast, which is why comparison questions like it.\n\nMore frequent compounding always yields slightly more, because the interest starts earning sooner. There is a ceiling: compounding infinitely often multiplies by `e^(rt)`, only a little above monthly."
       },
       {
        "label": "Example",
-       "text": "$300 at 4% compounded annually for 5 years: `300(1.04)^5 ≈ $365.00`, against $360 simple — $5 of interest earning interest."
+       "text": "$300 at 4% compounded annually for 5 years: `300(1.04)^5 ≈ $365.00`, against $360 simple.\n\n$1,000 at 12% for 2 years — annually `1000(1.12)^2 = $1,254.40`; quarterly `1000(1.03)^8 ≈ $1,266.77`; monthly about $1,269.73. A rate quoted as \"12% compounded quarterly\" is really 3% four times, an effective annual rate of `1.03^4 - 1 ≈ 12.55%`."
       },
       {
        "label": "Watch out",
-       "text": "`(1.04)^5` is not `1 + 5(0.04)`. Powers do not distribute over sums."
-      }
-     ]
-    },
-    {
-     "id": "q2b3171ab99",
-     "label": "Compound interest when it compounds more than once a year?",
-     "blocks": [
-      {
-       "label": "Answer",
-       "text": "`A = p(1 + r/n)^(nt)` — divide the rate by `n`, multiply the periods by `n`."
-      },
-      {
-       "label": "Explanation",
-       "text": "More frequent compounding always yields slightly more, because interest starts earning sooner.\n\nComparison questions usually only need the direction: for the same nominal rate, more frequent compounding always wins, and the gap widens with time. There is a ceiling, though — compounding infinitely often multiplies by `e^(rt)`, only slightly above monthly."
-      },
-      {
-       "label": "Example",
-       "text": "$1,000 at 12% for 2 years. Annually: `1000(1.12)^2 = $1,254.40`. Quarterly: `1000(1.03)^8 ≈ $1,266.77`. Monthly: about $1,269.73.\n\nA rate quoted as \"12% compounded quarterly\" is really 3% four times, which is an effective annual rate of `1.03^4 - 1 ≈ 12.55%`."
+       "text": "`(1.04)^5` is not `1 + 5(0.04)`. Powers do not distribute over sums, and assuming they do is the error being tested."
       }
      ]
     },
@@ -1455,12 +673,7 @@
        "text": "A $20,000 car depreciating 15% a year for 3 years: `20,000(0.85)^3 ≈ $12,282`. Note that is a 38.6% total drop, not 45%.\n\nA population falling 10% a year takes about 7 years to halve: `0.9^7 ≈ 0.478`. And a 50% fall followed by a 50% rise leaves you at `0.5 x 1.5 = 0.75` — down 25%, not back where you started."
       }
      ]
-    }
-   ]
-  },
-  {
-   "title": "Rates, Exponents & Roots",
-   "items": [
+    },
     {
      "id": "q78811eab73",
      "label": "The one formula behind speed, work and production?",
@@ -1500,7 +713,12 @@
        "text": "300 km apart, driving toward each other at 60 and 40 km/h: closing speed 100, so they meet after 3 hours. If instead the 60 chases the 40 from 30 km back, the gap closes at 20 km/h, taking 1.5 hours."
       }
      ]
-    },
+    }
+   ]
+  },
+  {
+   "title": "Exponents, Algebra & Functions",
+   "items": [
     {
      "id": "q661192ee5d",
      "label": "`(a^b)^c` = ?",
@@ -1682,12 +900,7 @@
        "text": "In a comparison, \"`x^2 = 16`\" means `x` could be 4 **or** -4. Any question that squares away a sign is usually heading for D."
       }
      ]
-    }
-   ]
-  },
-  {
-   "title": "Equations & Quadratics",
-   "items": [
+    },
     {
      "id": "q2e4cc56386",
      "label": "Degree of a polynomial — how is it measured?",
@@ -1761,28 +974,6 @@
       {
        "label": "Watch out",
        "text": "Two equations that are multiples of each other have infinitely many solutions; two with the same slope and different constants have none."
-      }
-     ]
-    },
-    {
-     "id": "qedeb9b4a06",
-     "label": "Expanding brackets, and factoring `x^2 + bx + c`?",
-     "blocks": [
-      {
-       "label": "Answer",
-       "text": "Expand with FOIL: `(x + p)(x + q) = x^2 + (p+q)x + pq`. To factor, find two numbers that **multiply to `c` and add to `b`**."
-      },
-      {
-       "label": "Explanation",
-       "text": "Factoring is FOIL run backwards, and the multiply-to/add-to search is quick because you only test factor pairs of `c`. If the `x^2` has a coefficient, factor it out first or test pairs on `ac`."
-      },
-      {
-       "label": "Example",
-       "text": "`x^2 + 7x + 12`: which pair multiplies to 12 and adds to 7? 3 and 4, so it is `(x+3)(x+4)`. `x^2 - 5x + 6` → -2 and -3 → `(x-2)(x-3)`."
-      },
-      {
-       "label": "Watch out",
-       "text": "Signs are where it goes wrong: a positive `c` with a negative `b` means **both** numbers are negative."
       }
      ]
     },
@@ -1885,20 +1076,24 @@
      ]
     },
     {
-     "id": "q0e4c8f886e",
-     "label": "When you cancel a factor from a fraction, what must you record first?",
+     "id": "q2781e7ea94",
+     "label": "Cancelling a factor from a fraction — what happens to the domain?",
      "blocks": [
       {
        "label": "Answer",
-       "text": "The **domain of the original expression**. Cancelling `(x - 5)` quietly divides by it, so `x = 5` stays excluded even though the factor has vanished."
+       "text": "The **domain is fixed by the original expression, not the simplified one**. Cancelling `(x - 5)` is dividing by it, so `x = 5` stays out of the domain even after the factor disappears from the page. Work the domain out **before** you simplify."
       },
       {
        "label": "Explanation",
-       "text": "The restriction belongs to the original expression, not the simplified one, so work the domain out before you simplify. This is exactly how a graph ends up with a hole in it."
+       "text": "The domain of an expression is the set of inputs it is allowed to take — everything that does not make a denominator zero or put a negative under an even root. When you cancel, you have quietly assumed the factor you cancelled is not zero, and that assumption has to be carried forward as a domain restriction.\n\nThis is exactly how a graph ends up with a hole in it: the simplified function is defined at that point, the original one is not, so the domain says \"undefined\" where the picture looks continuous."
       },
       {
        "label": "Example",
-       "text": "`(x^2 - 25)/((x+5)(x-5))` simplifies to 1, but the domain still excludes **both** `x = 5` and `x = -5`. Reading the simplified form alone would lose both."
+       "text": "`(x^2 - 25)/((x + 5)(x - 5))` simplifies to 1, but the domain still excludes **both** `x = 5` and `x = -5`, since either would have made the original denominator zero. Reading the domain off the simplified expression would lose both restrictions.\n\nAnother: `(x^2 - 4)/(x - 2)` simplifies to `x + 2`, whose domain looks like every real number — but the original is undefined at `x = 2`, so the domain is \"all reals except 2\" and the graph of `x + 2` has a hole at `(2, 4)`."
+      },
+      {
+       "label": "Watch out",
+       "text": "The same care applies to multiplying both sides of an equation by an expression containing the variable: you may introduce a solution the original equation never had, so check every answer against the **original**."
       }
      ]
     },
@@ -1923,12 +1118,7 @@
        "text": "Isolate first: `2|x| + 3 = 11` must become `|x| = 4`. And if the right side is negative there are **no** solutions."
       }
      ]
-    }
-   ]
-  },
-  {
-   "title": "Inequalities, Functions & Coordinate Basics",
-   "items": [
+    },
     {
      "id": "q3a1202a7a1",
      "label": "The one rule that makes inequalities different from equations?",
@@ -1992,24 +1182,24 @@
      ]
     },
     {
-     "id": "q8f3bb03e23",
-     "label": "`(x + 3)(x - 2) > 0` — what is the solution set?",
+     "id": "qfdfe702cd9",
+     "label": "A factored inequality like `(x + 3)(x - 2) > 0` — how do you get the solution set?",
      "blocks": [
       {
        "label": "Answer",
-       "text": "`x < -3` **or** `x > 2`. Mark the critical values on a line and **test a value in each of the three regions** — do not guess from the signs."
+       "text": "Move everything to one side, find the critical values where each factor is zero, mark them on a number line, and **test one value in every region**. Never guess the signs from the inequality."
       },
       {
        "label": "Explanation",
-       "text": "For a product of two factors with a positive leading coefficient: positive outside the roots, negative between them."
+       "text": "The critical values split the line into regions, and the expression cannot change sign inside a region — so one test value settles the whole region. For two factors with a positive leading coefficient the pattern is positive outside the roots and negative between them, but testing takes two seconds and works for any number of factors, for `>=` versus `>`, and for a negative leading coefficient, where the pattern reverses.\n\nThe habit matters more than the pattern: as soon as there are three factors, or a squared factor that touches zero without crossing, memorised patterns fail and testing does not."
       },
       {
        "label": "Example",
-       "text": "Test `x = -4`: `(-1)(-6) = +6` ✓. Test `x = 0`: `(3)(-2) = -6` ✗. Test `x = 3`: `(6)(1) = +6` ✓. So the outside regions win."
+       "text": "`(x + 3)(x - 2) > 0`. Critical values -3 and 2. Test `x = -4`: `(-1)(-6) = +6` ✓. Test `x = 0`: `(3)(-2) = -6` ✗. Test `x = 3`: `(6)(1) = +6` ✓. So the solution is `x < -3` **or** `x > 2`.\n\nSame method with a sign flip: `-(x - 1)(x - 4) > 0` tests positive only between 1 and 4, so the answer is `1 < x < 4` — the opposite shape, caught by testing rather than recall."
       },
       {
        "label": "Watch out",
-       "text": "Move everything to one side first. Solving `(x+3)(x-2) > 6` by setting each factor against 6 is meaningless — expand, subtract 6, refactor, then test."
+       "text": "Rearrange to \"something > 0\" first. Solving `(x+3)(x-2) > 6` by setting each factor against 6 is meaningless — expand, subtract 6, refactor, then test."
       }
      ]
     },
@@ -2110,7 +1300,12 @@
        "text": "`f(x) = x^3 - x` is odd: `f(-2) = -6`, `f(2) = 6`. Adding a constant breaks it — `x^3 + 1` is neither. Only `f(x) = 0` is both even and odd.\n\nFor any odd function `f(0) = 0`, because `f(-0) = -f(0)` forces it. That single fact answers many \"which could be odd\" questions immediately."
       }
      ]
-    },
+    }
+   ]
+  },
+  {
+   "title": "Coordinate Geometry & Angles",
+   "items": [
     {
      "id": "qad297dbabc",
      "label": "Slope of a line, and the equation of a line?",
@@ -2172,12 +1367,7 @@
        "text": "Midpoint of `(1, 2)` and `(7, 10)` is `(4, 6)`. Backwards: if `(4, 6)` is the midpoint and one endpoint is `(1, 2)`, the other satisfies `(1 + x)/2 = 4`, so it is `(7, 10)`.\n\nIf `(2,1)` and `(8,9)` are the ends of a diameter, the centre is `(5,5)` and the radius is half the distance, `= 5`, so the circle is `(x-5)^2 + (y-5)^2 = 25`."
       }
      ]
-    }
-   ]
-  },
-  {
-   "title": "Lines, Parabolas & Circles",
-   "items": [
+    },
     {
      "id": "q7068c00480",
      "label": "What do the signs of a line's two intercepts tell you?",
@@ -2413,12 +1603,7 @@
        "text": "`(2, 3)` → `(3, 2)`. Across `y = -x` instead it becomes `(-y, -x)`, so `(2, 3)` → `(-3, -2)`.\n\nSo the point `(0, 5)` on the y-axis lands on `(5, 0)` on the x-axis, and any point already on `y = x` stays put."
       }
      ]
-    }
-   ]
-  },
-  {
-   "title": "Rotations, Angles & Polygons",
-   "items": [
+    },
     {
      "id": "q7c4d92a8ce",
      "label": "Rotating `(x, y)` 90° anticlockwise about the origin?",
@@ -2638,7 +1823,7 @@
    ]
   },
   {
-   "title": "Triangles & Area",
+   "title": "Triangles, Area & Solids",
    "items": [
     {
      "id": "qca43bc4c7a",
@@ -2905,12 +2090,7 @@
        "text": "Parallel sides 8 and 12, height 5 → `10 x 5 = 50`.\n\nA trapezoid of area 60 with bases 7 and 13 has height `60 = 10h`, so `h = 6`."
       }
      ]
-    }
-   ]
-  },
-  {
-   "title": "Circles & Solids",
-   "items": [
+    },
     {
      "id": "q6b9ce45d84",
      "label": "Circumference and area of a circle?",
@@ -3150,7 +2330,7 @@
    ]
   },
   {
-   "title": "Statistics & Data",
+   "title": "Statistics, Counting & Probability",
    "items": [
     {
      "id": "q125942a7e5",
@@ -3355,12 +2535,7 @@
        "text": "A percentage increase from 5% to 10% is a rise of 5 percentage **points** but a 100% **increase**."
       }
      ]
-    }
-   ]
-  },
-  {
-   "title": "Sets & Counting",
-   "items": [
+    },
     {
      "id": "q3db1b5e3a1",
      "label": "Set versus list — what is the difference?",
@@ -3582,12 +2757,7 @@
        "text": "Divide by each repeat's factorial **separately**: three As and two Ns means `3! x 2! = 12`, not `5!`."
       }
      ]
-    }
-   ]
-  },
-  {
-   "title": "Counting Strategy & Probability",
-   "items": [
+    },
     {
      "id": "q1c2c9a9e37",
      "label": "Repeats **and** restrictions together?",

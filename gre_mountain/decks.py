@@ -36,7 +36,7 @@ SHUFFLE_MODES = {
     "all": "Shuffle all",
 }
 
-TOTAL_DAYS = 16
+TOTAL_DAYS = 6
 
 
 @st.cache_data(show_spinner=False)
